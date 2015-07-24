@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include layout="@layout/toolbar" />
+
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical">
+        <!-- Event Title-->
+        <EditText
+            android:id="@+id/edit_title"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_margin="5dip"
+            android:hint="Enter Title"
+            android:drawableLeft="@drawable/ic_edit"
+            android:background="@drawable/text_view_back"
+            />
+
+        <!-- Event Time-->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/text_view_back"
+            android:layout_margin="5dip">
+
+            <!-- switch -->
+            <Switch
+                android:id="@+id/switch_all_day"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textOff="No"
+                android:textOn="Yes"
+                android:text="All Day"
+                android:layout_margin="5dip"
+                android:drawableLeft="@drawable/ic_edit"/>
+
+            <!-- start date-->
+            <TextView
+                android:id="@+id/txt_start_date"
+                android:text="From"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dip"
+                android:layout_below="@id/switch_all_day"
+                android:visibility="visible"/>
+
+            <TextView
+                android:id="@+id/start_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dip"
+                android:layout_marginTop="5dip"
+                android:layout_marginBottom="5dip"
+                android:layout_below="@id/txt_start_date"
+                android:visibility="visible" />
+
+            <!-- end date-->
+            <TextView
+                android:id="@+id/txt_end_date"
+                android:text="To"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/start_date"
+                android:layout_marginLeft="20dip"
+                android:visibility="visible"/>
+
+            <TextView
+                android:id="@+id/end_date"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_marginLeft="20dip"
+                android:layout_marginTop="5dip"
+                android:layout_marginBottom="5dip"
+                android:layout_below="@id/txt_end_date"
+                android:visibility="visible"/>
+        </RelativeLayout>
+
+        <!-- Repeat reminder-->
+        <TextView
+            android:id="@+id/edit_repeat_time"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:drawableLeft="@drawable/ic_edit"
+            android:text="Does not repeat"
+            android:background="@drawable/text_view_back"
+            android:layout_margin="5dip" />
+
+        <!-- location-->
+        <EditText
+            android:id="@+id/edit_location"
+            android:hint="Add location"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ic_edit"
+            android:background="@drawable/text_view_back"
+            android:layout_margin="5dip"/>
+
+        <!-- reminder time-->
+        <TextView
+            android:id="@+id/edit_reminder_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Remind you at "
+            android:layout_margin="5dip"
+            android:background="@drawable/text_view_back"
+            android:drawableLeft="@drawable/ic_edit"/>
+
+        <!-- invited people-->
+        <TextView
+            android:id="@+id/edit_invite_people"
+            android:drawableLeft="@drawable/ic_edit"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_margin="5dip"
+            android:background="@drawable/text_view_back"
+            android:text="Invite People"/>
+
+        <!-- note -->
+        <TextView
+            android:id="@+id/edit_note"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_margin="5dip"
+            android:drawableLeft="@drawable/ic_edit"
+            android:background="@drawable/text_view_back"
+            android:text="Add note" />
+</LinearLayout>>
+</ScrollView>
+</LinearLayout>
