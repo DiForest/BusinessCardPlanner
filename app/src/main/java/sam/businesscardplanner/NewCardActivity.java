@@ -15,9 +15,17 @@ import android.widget.TextView;
  */
 public class NewCardActivity extends AppCompatActivity {
 
-    ImageView image;
-    EditText name, job, company,email,phone,address,workPhone, workAddress,workWebsite;
-    TextView group;
+    ImageView imageImageView;
+    EditText nameEditText;
+    EditText jobEditText;
+    EditText companyEditText;
+    EditText emailEditText;
+    EditText phoneEditText;
+    EditText addressEditText;
+    EditText workPhoneEditText;
+    EditText workAddressEditText;
+    EditText workWebsiteEditText;
+    TextView groupEditText;
 
     private Toolbar mToolbar;
 
@@ -26,17 +34,17 @@ public class NewCardActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_card);
 
-        image = (ImageView) findViewById(R.id.image);
-        name = (EditText)findViewById(R.id.name_label);
-        job = (EditText) findViewById(R.id.job_label);
-        company = (EditText) findViewById(R.id.company_label);
-        email = (EditText) findViewById(R.id.email_label);
-        phone = (EditText) findViewById(R.id.phone_label);
-        address = (EditText) findViewById(R.id.address_label);
-        workAddress = (EditText) findViewById(R.id.address_company_label);
-        workPhone = (EditText) findViewById(R.id.phone_company_label);
-        workWebsite = (EditText) findViewById(R.id.web_company_label);
-        group = (TextView) findViewById(R.id.group_tag);
+        imageImageView = (ImageView) findViewById(R.id.image);
+        nameEditText = (EditText)findViewById(R.id.name_label);
+        jobEditText = (EditText) findViewById(R.id.job_label);
+        companyEditText = (EditText) findViewById(R.id.company_label);
+        emailEditText = (EditText) findViewById(R.id.email_label);
+        phoneEditText = (EditText) findViewById(R.id.phone_label);
+        addressEditText = (EditText) findViewById(R.id.address_label);
+        workAddressEditText = (EditText) findViewById(R.id.address_company_label);
+        workPhoneEditText = (EditText) findViewById(R.id.phone_company_label);
+        workWebsiteEditText = (EditText) findViewById(R.id.web_company_label);
+        groupEditText = (TextView) findViewById(R.id.group_tag);
 
 
         //setup the menu
@@ -67,7 +75,8 @@ public class NewCardActivity extends AppCompatActivity {
 
         switch (item.getItemId()) {
             case R.id.action_save:
-                //save into database
+                saveInfo();
+                NewCardActivity.this.finish();
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -86,6 +95,36 @@ public class NewCardActivity extends AppCompatActivity {
 
             });
         }
+    }
+
+    public void saveInfo(){
+        String name = nameEditText.getText().toString();
+        String job = jobEditText.getText().toString();
+        String address = addressEditText.getText().toString();
+        String company = companyEditText.getText().toString();
+        String email = emailEditText.getText().toString();
+        String phone = phoneEditText.getText().toString();
+        String workAddress = workAddressEditText.getText().toString();
+        String workPhone = workPhoneEditText.getText().toString();
+        String workWebsite = workWebsiteEditText.getText().toString();
+        String group = "nope";
+        DataBaseHandler mdb = null;
+
+        BusinessCard businessCard = new BusinessCard();
+        businessCard.set_name(name);
+        businessCard.set_company(company);
+        businessCard.set_address(address);
+        businessCard.set_job(job);
+        businessCard.set_email(email);
+        businessCard.set_phone(phone);
+        businessCard.set_workPhone(workPhone);
+        businessCard.set_workWebsite(workWebsite);
+        businessCard.set_workAddress(workAddress);
+        businessCard.set_category(group);
+
+        mdb = new DataBaseHandler(getBaseContext());
+        mdb.addBusinessCard(businessCard);
+
     }
 }
 

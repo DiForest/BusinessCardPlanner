@@ -8,7 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Administrator on 7/20/2015.
@@ -16,13 +16,13 @@ import java.util.ArrayList;
 public class BussinessCardAdapter extends ArrayAdapter<BusinessCard> {
 
     private final Context context;
-    private final ArrayList<BusinessCard> cardsArrayList;
+    private final List<BusinessCard> cardsList;
 
-    public BussinessCardAdapter(Context context, ArrayList<BusinessCard> cardsArrayList){
-        super(context, R.layout.list_cards_items, cardsArrayList);
+    public BussinessCardAdapter(Context context, List<BusinessCard> cardsList){
+        super(context, R.layout.list_cards_items, cardsList);
 
         this.context = context;
-        this.cardsArrayList = cardsArrayList;
+        this.cardsList = cardsList;
 
     }
 
@@ -41,8 +41,8 @@ public class BussinessCardAdapter extends ArrayAdapter<BusinessCard> {
         TextView createdate = (TextView) rowView.findViewById(R.id.create_date);
 
         // 4. Set the text for textView
-        labelView.setText(cardsArrayList.get(position).get_name());
-        valueView.setText(cardsArrayList.get(position).get_company());
+        labelView.setText(cardsList.get(position).get_name());
+        valueView.setText(cardsList.get(position).get_company());
 
         // 5. retrn rowView
         return rowView;

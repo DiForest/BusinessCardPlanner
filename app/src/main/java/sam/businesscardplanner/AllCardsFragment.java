@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Administrator on 7/16/2015.
@@ -20,6 +21,7 @@ import java.util.ArrayList;
 public class AllCardsFragment extends Fragment {
 
     ArrayList<BusinessCard> imageArry = new ArrayList<BusinessCard>();
+    List list = null;
     ListView business_card_list;
     DataBaseHandler db;
     private static final int CAMERA_REQUEST = 1;
@@ -28,12 +30,10 @@ public class AllCardsFragment extends Fragment {
     byte[] imageName;
     int imageId;
 
-    //onCreateView
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.activity_all_cards, container, false);
-
 
         // Inflate the layout for this fragment
         setHasOptionsMenu(true);
@@ -43,20 +43,20 @@ public class AllCardsFragment extends Fragment {
     //set up the listview
     public void onActivityCreated(Bundle savedInstanceState){
         super.onActivityCreated(savedInstanceState);
+        
 
-
-        BussinessCardAdapter BCadapter =  new BussinessCardAdapter(getActivity(), generateData());
+        BussinessCardAdapter BCadapter =  new BussinessCardAdapter(getActivity().getApplicationContext(), generateData());
         ListView listView = (ListView) getActivity().findViewById(R.id.business_card_list);
         listView.setAdapter(BCadapter);
+
     }
 
-    private ArrayList<BusinessCard> generateData(){
-        ArrayList<BusinessCard> cards = new ArrayList<BusinessCard>();
-        cards.add(new BusinessCard("Sam Soh", "Alliances Bank"));
-        cards.add(new BusinessCard("James", "UTAR"));
-        cards.add(new BusinessCard("Fred", "Nettium"));
 
-        return cards;
+
+    private List<BusinessCard> generateData(){
+        DataBaseHandler db1 = new DataBaseHandler(getActivity().getApplicationContext());
+        list = db1.getAllBusinessCard();
+        return list;
     }
 
 

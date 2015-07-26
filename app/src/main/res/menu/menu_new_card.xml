@@ -7,8 +7,8 @@
     <item
         android:id="@+id/action_save"
         android:title="save"
-        android:icon="@drawable/ic_add"
+        android:icon="@drawable/ic_saved_file"
         android:orderInCategory="100"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="always|withText"/>
 
 </menu>
