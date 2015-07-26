@@ -17,6 +17,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.ByteArrayOutputStream;
+
 /**
  * Created by Administrator on 7/17/2015.
  */
@@ -139,9 +141,22 @@ public class NewCardActivity extends AppCompatActivity {
         businessCard.set_workAddress(workAddress);
         businessCard.set_category(group);
 
+        /*
+        imageImageView.buildDrawingCache();
+        Bitmap bmap = imageImageView.getDrawingCache();
+        byte[] data = getBitmapAsByteArray(bmap);
+        businessCard.set_image(data);
+        */
+
         mdb = new DataBaseHandler(getBaseContext());
         mdb.addBusinessCard(businessCard);
 
+    }
+
+    public static byte[] getBitmapAsByteArray(Bitmap bitmap) {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 0, outputStream);
+        return outputStream.toByteArray();
     }
 
     protected void onCreateDialog() {
@@ -227,11 +242,15 @@ public class NewCardActivity extends AppCompatActivity {
     }
 
     public String getPath(Uri uri) {
+        String res = null;
         String[] projection = { MediaStore.Images.Media.DATA };
-        Cursor cursor = managedQuery(uri, projection, null, null, null);
-        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-        cursor.moveToFirst();
-        return cursor.getString(column_index);
+        Cursor cursor = getContentResolver().query(uri, projection, null, null, null);
+        if(cursor.moveToFirst()){;
+            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            res = cursor.getString(column_index);
+        }
+        cursor.close();
+        return res;
     }
 
 }

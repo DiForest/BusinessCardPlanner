@@ -19,7 +19,7 @@ public class DataBaseHandler extends SQLiteOpenHelper {
     private static final String TABLE_BUSINESS_CARD ="businessCard";
     private static final String KEY_ID = "id";
     private static final String KEY_NAME = "name";
-    private static final String KEY_IMAGE = "image";
+    private static final String KEY_IMAGE = "profileImage";
     private static final String KEY_COMPANY = "company";
     private static final String KEY_JOB = "job";
     private static final String KEY_PHONE = "phone";
@@ -37,6 +37,7 @@ public class DataBaseHandler extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db){
         String CREATE_BUSINESS_CARD_TABLE = "CREATE TABLE "+ TABLE_BUSINESS_CARD + "(" +
                 KEY_ID + " INTEGER PRIMARY KEY," +
+                //KEY_IMAGE + " BLOB," +
                 KEY_NAME + " TEXT," +
                 KEY_COMPANY + " TEXT," +
                 KEY_JOB + " TEXT," +

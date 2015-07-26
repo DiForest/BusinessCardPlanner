@@ -43,7 +43,14 @@ public class BussinessCardAdapter extends ArrayAdapter<BusinessCard> {
         // 4. Set the text for textView
         labelView.setText(cardsList.get(position).get_name());
         valueView.setText(cardsList.get(position).get_company());
- 
+
+        /*
+        BusinessCard picture = cardsList.get(position);
+        byte[] outImage = picture._image;
+        ByteArrayInputStream imageStream = new ByteArrayInputStream(outImage);
+        Bitmap theImage = BitmapFactory.decodeStream(imageStream);
+        bcImage.setImageBitmap(theImage);
+        */
 
         // 5. retrn rowView
         return rowView;
