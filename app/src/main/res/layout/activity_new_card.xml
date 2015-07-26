@@ -22,8 +22,7 @@
                 android:layout_height="200dip"
                 android:id="@+id/image"
                 android:layout_margin="5dip"
-                android:background="@drawable/round_corner"
-                android:src="@drawable/header_background" />
+                android:background="@drawable/round_corner" />
 
                 <!-- name-->
                 <EditText

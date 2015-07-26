@@ -1,6 +1,13 @@
 package sam.businesscardplanner;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -27,8 +34,12 @@ public class NewCardActivity extends AppCompatActivity {
     EditText workWebsiteEditText;
     TextView groupEditText;
 
+    private static final int CAMERA_REQUEST = 1;
+    private static final int PICK_FROM_GALLERY = 2;
+
     private Toolbar mToolbar;
 
+    private String selectedImagePath;
 
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -46,6 +57,12 @@ public class NewCardActivity extends AppCompatActivity {
         workWebsiteEditText = (EditText) findViewById(R.id.web_company_label);
         groupEditText = (TextView) findViewById(R.id.group_tag);
 
+        imageImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onCreateDialog();
+            }
+        });
 
         //setup the menu
         setUpToolbar();
@@ -126,6 +143,97 @@ public class NewCardActivity extends AppCompatActivity {
         mdb.addBusinessCard(businessCard);
 
     }
+
+    protected void onCreateDialog() {
+
+        final CharSequence[] items = { "Camera", "Gallery" };
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Select State");
+
+        builder.setItems(items, new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (which == 0) {
+                    callCamera();
+                } else
+                    callGallery();
+            }
+        });
+        AlertDialog alert = builder.create();
+        alert.show();
+
+    }
+
+    public void callCamera() {
+        Intent cameraIntent = new Intent(
+                android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+        /*
+        cameraIntent.putExtra("crop", "true");
+        cameraIntent.putExtra("aspectX", 0);
+        cameraIntent.putExtra("aspectY", 0);
+        cameraIntent.putExtra("outputX", 200);
+        cameraIntent.putExtra("outputY", 150);
+        */
+        startActivityForResult(cameraIntent, CAMERA_REQUEST);
+
+    }
+
+    //open gallery method
+
+    public void callGallery() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent,
+                "Select Picture"), PICK_FROM_GALLERY);
+        //intent.setType("image/*");
+        //intent.setAction(Intent.ACTION_GET_CONTENT);
+        /*
+        intent.putExtra("crop", "true");
+        intent.putExtra("aspectX", 0);
+        intent.putExtra("aspectY", 0);
+        intent.putExtra("outputX", 200);
+        intent.putExtra("outputY", 150);
+        intent.putExtra("return-data", true);
+        */
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data){
+        ImageView image = (ImageView) findViewById(R.id.image);
+        if (resultCode == RESULT_OK ) {
+
+            switch (requestCode) {
+                case CAMERA_REQUEST:
+                    Bundle extras = data.getExtras();
+                    if (extras != null) {
+                        Bitmap photo = (Bitmap) data.getExtras().get("data");
+                        image.setImageBitmap(photo);
+                    }
+                    break;
+
+                case PICK_FROM_GALLERY:
+                    Bundle extras2 = data.getExtras();
+                    if (extras2 != null) {
+                        Uri selectedImageUri = data.getData();
+                        selectedImagePath = getPath(selectedImageUri);
+                        System.out.println("Image Path : " + selectedImagePath);
+                        image.setImageURI(selectedImageUri);
+                    }
+                    break;
+
+            }
+        }
+    }
+
+    public String getPath(Uri uri) {
+        String[] projection = { MediaStore.Images.Media.DATA };
+        Cursor cursor = managedQuery(uri, projection, null, null, null);
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+        return cursor.getString(column_index);
+    }
+
 }
 
 

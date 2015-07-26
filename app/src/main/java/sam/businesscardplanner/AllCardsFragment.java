@@ -43,7 +43,7 @@ public class AllCardsFragment extends Fragment {
     //set up the listview
     public void onActivityCreated(Bundle savedInstanceState){
         super.onActivityCreated(savedInstanceState);
-        
+
 
         BussinessCardAdapter BCadapter =  new BussinessCardAdapter(getActivity().getApplicationContext(), generateData());
         ListView listView = (ListView) getActivity().findViewById(R.id.business_card_list);
