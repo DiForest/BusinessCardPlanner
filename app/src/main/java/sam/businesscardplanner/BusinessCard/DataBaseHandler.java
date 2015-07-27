@@ -1,4 +1,4 @@
-package sam.businesscardplanner;
+package sam.businesscardplanner.BusinessCard;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -48,6 +48,9 @@ public class DataBaseHandler extends SQLiteOpenHelper {
                 KEY_WORK_ADDRESS + " TEXT," +
                 KEY_WORK_WEBSITE + " TEXT," +
                 KEY_CATEGORY + " TEXT" + ")";
+
+        //data order: id, name, company, job, address,phone,email, work_phone, work address, website
+        //group
         db.execSQL(CREATE_BUSINESS_CARD_TABLE);
     }
 
@@ -73,22 +76,6 @@ public class DataBaseHandler extends SQLiteOpenHelper {
         db.insert(TABLE_BUSINESS_CARD, null, values);
         db.close();
     }
-
-    /*
-    BusinessCard getBusinessCard(int id){
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.query(TABLE_BUSINESS_CARD, new String[] {KEY_ID,
-                KEY_NAME, KEY_IMAGE}, KEY_ID + "=?",
-                new String[] { String.valueOf(id) }, null, null, null, null);
-        if(cursor != null)
-            cursor.moveToFirst();
-
-        BusinessCard businessCard = new BusinessCard(Integer.parseInt(cursor.getString(0)),
-                cursor.getString(1), cursor.getBlob(1));
-
-        return businessCard;
-    }
-    */
 
     public List<BusinessCard> getAllBusinessCard() {
         List<BusinessCard> businessCardList = new ArrayList<BusinessCard>();
@@ -116,6 +103,34 @@ public class DataBaseHandler extends SQLiteOpenHelper {
         }
         db.close();
         return businessCardList;
+    }
+    //data order: id, name, company, job, address,phone,email, work_phone, work address, website
+    //group
+
+    public BusinessCard getBusinessCard(int id){
+
+        BusinessCard businessCard = new BusinessCard();
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.query(TABLE_BUSINESS_CARD,new String[]{KEY_ID,
+                KEY_NAME, KEY_JOB, KEY_COMPANY, KEY_ADDRESS, KEY_PHONE,KEY_PHONE,
+                KEY_EMAIL,KEY_WORK_PHONE, KEY_ADDRESS,KEY_CATEGORY},KEY_ID + "=?",
+                new String[]{ String.valueOf(id) }, null,null,null,null);
+
+        if(cursor != null){
+            cursor.moveToFirst();
+
+            businessCard.set_name(cursor.getString(1));
+            businessCard.set_company(cursor.getString(2));
+            businessCard.set_job(cursor.getString(3));
+            businessCard.set_address(cursor.getString(4));
+            businessCard.set_phone(cursor.getString(5));
+            businessCard.set_email(cursor.getString(6));
+            businessCard.set_workPhone(cursor.getString(7));
+            businessCard.set_address(cursor.getString(8));
+            businessCard.set_workWebsite(cursor.getString(9));
+            businessCard.set_category(cursor.getString(10));
+        }
+        return businessCard;
     }
 
     public int updateBusinessCard(BusinessCard businessCard){

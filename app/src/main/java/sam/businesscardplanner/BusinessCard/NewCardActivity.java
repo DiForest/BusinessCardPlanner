@@ -1,4 +1,4 @@
-package sam.businesscardplanner;
+package sam.businesscardplanner.BusinessCard;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -18,6 +18,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.io.ByteArrayOutputStream;
+
+import sam.businesscardplanner.R;
 
 /**
  * Created by Administrator on 7/17/2015.
@@ -183,18 +185,9 @@ public class NewCardActivity extends AppCompatActivity {
     public void callCamera() {
         Intent cameraIntent = new Intent(
                 android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-        /*
-        cameraIntent.putExtra("crop", "true");
-        cameraIntent.putExtra("aspectX", 0);
-        cameraIntent.putExtra("aspectY", 0);
-        cameraIntent.putExtra("outputX", 200);
-        cameraIntent.putExtra("outputY", 150);
-        */
         startActivityForResult(cameraIntent, CAMERA_REQUEST);
 
     }
-
-    //open gallery method
 
     public void callGallery() {
         Intent intent = new Intent();
@@ -202,22 +195,11 @@ public class NewCardActivity extends AppCompatActivity {
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(intent,
                 "Select Picture"), PICK_FROM_GALLERY);
-        //intent.setType("image/*");
-        //intent.setAction(Intent.ACTION_GET_CONTENT);
-        /*
-        intent.putExtra("crop", "true");
-        intent.putExtra("aspectX", 0);
-        intent.putExtra("aspectY", 0);
-        intent.putExtra("outputX", 200);
-        intent.putExtra("outputY", 150);
-        intent.putExtra("return-data", true);
-        */
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         ImageView image = (ImageView) findViewById(R.id.image);
         if (resultCode == RESULT_OK ) {
-
             switch (requestCode) {
                 case CAMERA_REQUEST:
                     Bundle extras = data.getExtras();
@@ -226,7 +208,6 @@ public class NewCardActivity extends AppCompatActivity {
                         image.setImageBitmap(photo);
                     }
                     break;
-
                 case PICK_FROM_GALLERY:
                     Bundle extras2 = data.getExtras();
                     if (extras2 != null) {
@@ -236,7 +217,6 @@ public class NewCardActivity extends AppCompatActivity {
                         image.setImageURI(selectedImageUri);
                     }
                     break;
-
             }
         }
     }
@@ -252,7 +232,6 @@ public class NewCardActivity extends AppCompatActivity {
         cursor.close();
         return res;
     }
-
 }
 
 

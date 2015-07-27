@@ -1,4 +1,4 @@
-package sam.businesscardplanner;
+package sam.businesscardplanner.BusinessCard;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,20 +10,21 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import sam.businesscardplanner.R;
+
 /**
  * Created by Administrator on 7/20/2015.
  */
-public class BussinessCardAdapter extends ArrayAdapter<BusinessCard> {
+public class RowViewAdapter extends ArrayAdapter<BusinessCard> {
 
     private final Context context;
     private final List<BusinessCard> cardsList;
 
-    public BussinessCardAdapter(Context context, List<BusinessCard> cardsList){
+    public RowViewAdapter(Context context, List<BusinessCard> cardsList){
         super(context, R.layout.list_cards_items, cardsList);
 
         this.context = context;
         this.cardsList = cardsList;
-
     }
 
     public View getView(int position, View convertView, ViewGroup parent){
@@ -44,15 +45,12 @@ public class BussinessCardAdapter extends ArrayAdapter<BusinessCard> {
         labelView.setText(cardsList.get(position).get_name());
         valueView.setText(cardsList.get(position).get_company());
 
-        /*
-        BusinessCard picture = cardsList.get(position);
-        byte[] outImage = picture._image;
-        ByteArrayInputStream imageStream = new ByteArrayInputStream(outImage);
-        Bitmap theImage = BitmapFactory.decodeStream(imageStream);
-        bcImage.setImageBitmap(theImage);
-        */
+        BusinessCard cards = cardsList.get(position);
 
-        // 5. retrn rowView
         return rowView;
+    }
+
+    public int getItemId(int position, View convertView, ViewGroup parent){
+        return cardsList.get(position).get_id();
     }
 }

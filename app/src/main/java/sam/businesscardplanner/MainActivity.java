@@ -12,6 +12,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import sam.businesscardplanner.BusinessCard.AllCardsFragment;
+import sam.businesscardplanner.BusinessGroup.GroupsFragment;
+
 /**
  * Created by Administrator on 7/16/2015.
  */

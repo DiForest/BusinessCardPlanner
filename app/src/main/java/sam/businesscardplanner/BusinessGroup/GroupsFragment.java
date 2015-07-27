@@ -1,4 +1,4 @@
-package sam.businesscardplanner;
+package sam.businesscardplanner.BusinessGroup;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +9,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+
+import sam.businesscardplanner.NewEventActivity;
+import sam.businesscardplanner.R;
 
 /**
  * Created by Administrator on 7/16/2015.

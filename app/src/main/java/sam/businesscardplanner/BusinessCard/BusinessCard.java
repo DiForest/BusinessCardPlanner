@@ -1,9 +1,9 @@
-package sam.businesscardplanner;
+package sam.businesscardplanner.BusinessCard;
 
 /**
  * Created by Administrator on 7/19/2015.
  */
-public class BusinessCard {
+public class  BusinessCard {
 
     int _id;
     String _name;
