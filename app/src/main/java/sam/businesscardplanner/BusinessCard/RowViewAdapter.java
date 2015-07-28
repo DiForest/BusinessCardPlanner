@@ -50,7 +50,7 @@ public class RowViewAdapter extends ArrayAdapter<BusinessCard> {
         return rowView;
     }
 
-    public int getItemId(int position, View convertView, ViewGroup parent){
+    public int getListItemId(int position){
         return cardsList.get(position).get_id();
     }
 }

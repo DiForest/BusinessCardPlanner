@@ -33,6 +33,7 @@ public class BusinessCardProfile extends AppCompatActivity{
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.business_card_profile);
+
         setUpToolbar();
         setUpNavDrawer();
 
@@ -54,9 +55,19 @@ public class BusinessCardProfile extends AppCompatActivity{
         cardGroup = (TextView) findViewById(R.id.card_group);
 
         Intent intent = getIntent();
-        int itemID = (int)intent.getLongExtra("KEY", 1);
+        int itemID = intent.getExtras().getInt("ITEM ID",-1);
         DataBaseHandler cards = new DataBaseHandler(this);
-        cards.getBusinessCard(itemID);
+        BusinessCard businessCard = cards.getBusinessCard(itemID);
+
+        cardName.setText(businessCard.get_name());
+        cardCompany.setText(businessCard.get_company());
+        cardEmail.setText(businessCard.get_email());
+        cardWorkPhone.setText(businessCard.get_workPhone());
+        cardPhone.setText(businessCard.get_phone());
+        cardWorkAddress.setText(businessCard.get_workAddress());
+        cardJob.setText(businessCard.get_job());
+        cardWorkWebsite.setText(businessCard.get_workWebsite());
+        cardAddress.setText(businessCard.get_address());
     }
 
     private void setUpToolbar() {

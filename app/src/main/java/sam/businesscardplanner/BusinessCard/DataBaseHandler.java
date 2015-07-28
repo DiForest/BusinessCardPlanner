@@ -109,12 +109,23 @@ public class DataBaseHandler extends SQLiteOpenHelper {
 
     public BusinessCard getBusinessCard(int id){
 
+        String[] projection ={KEY_ID,
+                KEY_NAME,
+                KEY_JOB,
+                KEY_COMPANY,
+                KEY_ADDRESS,
+                KEY_PHONE,
+                KEY_PHONE,
+                KEY_EMAIL,
+                KEY_WORK_PHONE,
+                KEY_ADDRESS,
+                KEY_CATEGORY};
+
+        String query = "SELECT * FROM " + TABLE_BUSINESS_CARD +
+                " WHERE "+ KEY_ID+ " = " + id;
         BusinessCard businessCard = new BusinessCard();
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.query(TABLE_BUSINESS_CARD,new String[]{KEY_ID,
-                KEY_NAME, KEY_JOB, KEY_COMPANY, KEY_ADDRESS, KEY_PHONE,KEY_PHONE,
-                KEY_EMAIL,KEY_WORK_PHONE, KEY_ADDRESS,KEY_CATEGORY},KEY_ID + "=?",
-                new String[]{ String.valueOf(id) }, null,null,null,null);
+        Cursor cursor = db.rawQuery(query,null);
 
         if(cursor != null){
             cursor.moveToFirst();

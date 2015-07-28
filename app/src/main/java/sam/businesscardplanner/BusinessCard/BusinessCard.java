@@ -17,6 +17,7 @@ public class  BusinessCard {
     String _workAddress;
     String _workWebsite;
     String _category;
+    
 
     //constructor
     public BusinessCard(){
@@ -146,11 +147,6 @@ public class  BusinessCard {
     public void set_workAddress(String workAddress)
     {
         this._workAddress = workAddress;
-    }
-
-    public String get_workAddress()
-    {
-        return this._workAddress;
     }
 
     public String get_workWebsite()

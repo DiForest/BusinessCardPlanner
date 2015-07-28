@@ -31,6 +31,8 @@
 
         <activity android:name=".BusinessCard.NewCardActivity"
             android:label="create new card"/>
+
+        <activity android:name=".BusinessCard.BusinessCardProfile" />
     </application>
 
 </manifest>
