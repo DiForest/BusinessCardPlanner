@@ -24,7 +24,7 @@ import sam.businesscardplanner.R;
 /**
  * Created by Administrator on 7/17/2015.
  */
-public class NewCardActivity extends AppCompatActivity {
+public class AddNewCardActivity extends AppCompatActivity {
 
     ImageView imageImageView;
     EditText nameEditText;
@@ -97,7 +97,7 @@ public class NewCardActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_save:
                 saveInfo();
-                NewCardActivity.this.finish();
+                AddNewCardActivity.this.finish();
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -111,7 +111,7 @@ public class NewCardActivity extends AppCompatActivity {
             mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    NewCardActivity.this.finish();
+                    AddNewCardActivity.this.finish();
                 }
 
             });
@@ -129,7 +129,7 @@ public class NewCardActivity extends AppCompatActivity {
         String workPhone = workPhoneEditText.getText().toString();
         String workWebsite = workWebsiteEditText.getText().toString();
         String group = "nope";
-        DataBaseHandler mdb = null;
+        CardsDatabaseHandler mdb = null;
 
         BusinessCard businessCard = new BusinessCard();
         businessCard.set_name(name);
@@ -150,9 +150,14 @@ public class NewCardActivity extends AppCompatActivity {
         businessCard.set_image(data);
         */
 
-        mdb = new DataBaseHandler(getBaseContext());
+        mdb = new CardsDatabaseHandler(getBaseContext());
         mdb.addBusinessCard(businessCard);
 
+    }
+
+    private String getDateTime() {
+        String date = "2015-10-10";
+        return date;
     }
 
     public static byte[] getBitmapAsByteArray(Bitmap bitmap) {

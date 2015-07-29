@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Created by Administrator on 7/19/2015.
  */
-public class DataBaseHandler extends SQLiteOpenHelper {
+public class CardsDatabaseHandler extends SQLiteOpenHelper {
 
     private static final int DATABASE_VERSION = 1;
     private static final String  DATABASE_NAME = "plannerDB";
@@ -30,7 +30,7 @@ public class DataBaseHandler extends SQLiteOpenHelper {
     private static final String KEY_WORK_WEBSITE = "workWebsite";
     private static final String KEY_CATEGORY = "CATEGORY";
 
-    public DataBaseHandler (Context context){
+    public CardsDatabaseHandler(Context context){
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
@@ -47,7 +47,7 @@ public class DataBaseHandler extends SQLiteOpenHelper {
                 KEY_WORK_PHONE + " TEXT," +
                 KEY_WORK_ADDRESS + " TEXT," +
                 KEY_WORK_WEBSITE + " TEXT," +
-                KEY_CATEGORY + " TEXT" + ")";
+                KEY_CATEGORY + " TEXT" +")";
 
         //data order: id, name, company, job, address,phone,email, work_phone, work address, website
         //group
@@ -108,18 +108,6 @@ public class DataBaseHandler extends SQLiteOpenHelper {
     //group
 
     public BusinessCard getBusinessCard(int id){
-
-        String[] projection ={KEY_ID,
-                KEY_NAME,
-                KEY_JOB,
-                KEY_COMPANY,
-                KEY_ADDRESS,
-                KEY_PHONE,
-                KEY_PHONE,
-                KEY_EMAIL,
-                KEY_WORK_PHONE,
-                KEY_ADDRESS,
-                KEY_CATEGORY};
 
         String query = "SELECT * FROM " + TABLE_BUSINESS_CARD +
                 " WHERE "+ KEY_ID+ " = " + id;

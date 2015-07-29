@@ -20,13 +20,13 @@ import sam.businesscardplanner.R;
 /**
  * Created by Administrator on 7/16/2015.
  */
-public class AllCardsFragment extends Fragment {
+public class BusinessCardsFragment extends Fragment {
     List list = null;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.activity_all_cards, container, false);
+        View view = inflater.inflate(R.layout.fragment_business_cards, container, false);
 
         // Inflate the layout for this fragment
         setHasOptionsMenu(true);
@@ -49,7 +49,7 @@ public class AllCardsFragment extends Fragment {
                         "Click ListItem Number " + itemID, Toast.LENGTH_LONG)
                         .show();
 
-                Intent intent = new Intent(AllCardsFragment.this.getActivity(),
+                Intent intent = new Intent(BusinessCardsFragment.this.getActivity(),
                         BusinessCardProfile.class);
                 intent.putExtra("ITEM ID", itemID);
                 startActivity(intent);
@@ -59,7 +59,7 @@ public class AllCardsFragment extends Fragment {
     }
 
     private List<BusinessCard> generateData(){
-        DataBaseHandler db1 = new DataBaseHandler(getActivity().getApplicationContext());
+        CardsDatabaseHandler db1 = new CardsDatabaseHandler(getActivity().getApplicationContext());
         list = db1.getAllBusinessCard();
         return list;
     }
@@ -76,7 +76,7 @@ public class AllCardsFragment extends Fragment {
 
         switch (item.getItemId()) {
             case R.id.action_add:
-                Intent intent = new Intent(this.getActivity(),NewCardActivity.class);
+                Intent intent = new Intent(this.getActivity(),AddNewCardActivity.class);
                 this.startActivity(intent);
                 return true;
         }

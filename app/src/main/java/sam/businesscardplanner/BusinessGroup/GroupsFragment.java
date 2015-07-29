@@ -10,7 +10,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import sam.businesscardplanner.NewEventActivity;
 import sam.businesscardplanner.R;
 
 /**
@@ -38,8 +37,6 @@ public class GroupsFragment extends Fragment {
 
         switch (item.getItemId()) {
             case R.id.action_add:
-                intent = new Intent(this.getActivity(), NewEventActivity.class);
-                this.startActivity(intent);
                 return true;
         }
         return super.onOptionsItemSelected(item);

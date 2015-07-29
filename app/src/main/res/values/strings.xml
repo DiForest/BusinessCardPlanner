@@ -16,4 +16,6 @@
     <string name="created_date">Created at</string>
     <string name="website">Website</string>
     <string name="email">email</string>
+
+    <string name="member">Member</string>
 </resources>

@@ -17,7 +17,7 @@ public class  BusinessCard {
     String _workAddress;
     String _workWebsite;
     String _category;
-    
+
 
     //constructor
     public BusinessCard(){
@@ -144,6 +144,10 @@ public class  BusinessCard {
         this._workPhone = workPhone;
     }
 
+    public String get_workAddress()
+    {
+        return this._workAddress;
+    }
     public void set_workAddress(String workAddress)
     {
         this._workAddress = workAddress;
@@ -168,4 +172,6 @@ public class  BusinessCard {
     {
         return this._category;
     }
+
+
 }

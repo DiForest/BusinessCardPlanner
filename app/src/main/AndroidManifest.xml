@@ -29,7 +29,7 @@
         <activity android:name=".NewEventActivity"
             android:label="create new event"/>
 
-        <activity android:name=".BusinessCard.NewCardActivity"
+        <activity android:name=".BusinessCard.AddNewCardActivity"
             android:label="create new card"/>
 
         <activity android:name=".BusinessCard.BusinessCardProfile" />

@@ -7,6 +7,7 @@ public class Groups {
     int _id;
     String _name;
     String _description;
+    String _created_date;
 
     public Groups(){
 
@@ -46,5 +47,15 @@ public class Groups {
     public void set_description(String description)
     {
         this._description = description;
+    }
+
+    public String get_created_date()
+    {
+        return this._created_date;
+    }
+
+    public void set_created_date(String created_date)
+    {
+        this._created_date = created_date;
     }
 }

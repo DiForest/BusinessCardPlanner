@@ -12,7 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import sam.businesscardplanner.BusinessCard.AllCardsFragment;
+import sam.businesscardplanner.BusinessCard.BusinessCardsFragment;
 import sam.businesscardplanner.BusinessGroup.GroupsFragment;
 
 /**
@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         //setup the main layout
-        setContentView(R.layout.activity_nav_drawer);
+        setContentView(R.layout.nav_drawer);
 
         //setup the toolbar
         setUpToolbar();
@@ -108,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
 
         switch(menuItem.getItemId()) {
             case R.id.navigation_item_1:
-                fragmentClass = AllCardsFragment.class;
+                fragmentClass = BusinessCardsFragment.class;
                 break;
             case R.id.navigation_item_2:
                 fragmentClass = GroupsFragment.class;
@@ -129,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
                 fragmentClass = SettingFragment.class;
                 break;
             default:
-                fragmentClass = AllCardsFragment.class;
+                fragmentClass = BusinessCardsFragment.class;
         }
 
         try {

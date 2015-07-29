@@ -26,7 +26,7 @@
             android:background="@drawable/round_corner">
 
             <ImageView
-                android:layout_height="100dip"
+                android:layout_height="200dip"
                 android:layout_width="fill_parent"
                 android:id="@+id/card_image"/>
 
@@ -184,7 +184,8 @@
                 android:id="@+id/card_group"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:drawableRight="@drawable/ic_edit_grey"/>
+                android:drawableRight="@drawable/ic_edit_grey"
+                android:layout_marginBottom="10dip"/>
             </LinearLayout>
 
             </LinearLayout>

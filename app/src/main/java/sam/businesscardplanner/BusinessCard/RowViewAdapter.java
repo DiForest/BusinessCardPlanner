@@ -21,7 +21,7 @@ public class RowViewAdapter extends ArrayAdapter<BusinessCard> {
     private final List<BusinessCard> cardsList;
 
     public RowViewAdapter(Context context, List<BusinessCard> cardsList){
-        super(context, R.layout.list_cards_items, cardsList);
+        super(context, R.layout.business_cards_row_items, cardsList);
 
         this.context = context;
         this.cardsList = cardsList;
@@ -33,13 +33,12 @@ public class RowViewAdapter extends ArrayAdapter<BusinessCard> {
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         // 2. Get rowView from inflater
-        View rowView = inflater.inflate(R.layout.list_cards_items, parent, false);
+        View rowView = inflater.inflate(R.layout.business_cards_row_items, parent, false);
 
         // 3. Get the two text view from the rowView
         TextView labelView = (TextView) rowView.findViewById(R.id.label);
         TextView valueView = (TextView) rowView.findViewById(R.id.value);
         ImageView bcImage = (ImageView) rowView.findViewById(R.id.bc_image);
-        TextView createdate = (TextView) rowView.findViewById(R.id.create_date);
 
         // 4. Set the text for textView
         labelView.setText(cardsList.get(position).get_name());
