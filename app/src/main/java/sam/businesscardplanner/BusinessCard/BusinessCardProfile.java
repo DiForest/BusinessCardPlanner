@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import sam.businesscardplanner.DatabaseHandler.CardsDatabaseHandler;
 import sam.businesscardplanner.R;
 
 /**

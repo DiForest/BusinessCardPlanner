@@ -14,6 +14,7 @@ import android.widget.ListView;
 
 import java.util.List;
 
+import sam.businesscardplanner.DatabaseHandler.GroupsDatabaseHandler;
 import sam.businesscardplanner.R;
 
 /**
@@ -28,7 +29,7 @@ public class GroupsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         setHasOptionsMenu(true);
-        return inflater.inflate(R.layout.activity_schedule, container, false);
+        return inflater.inflate(R.layout.fragment_groups, container, false);
     }
 
     public void onActivityCreated(Bundle savedInstanceState){

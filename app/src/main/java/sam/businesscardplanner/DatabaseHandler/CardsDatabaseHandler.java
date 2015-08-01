@@ -1,4 +1,4 @@
-package sam.businesscardplanner.BusinessCard;
+package sam.businesscardplanner.DatabaseHandler;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -8,6 +8,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import sam.businesscardplanner.BusinessCard.BusinessCard;
 
 /**
  * Created by Administrator on 7/19/2015.
@@ -46,8 +48,7 @@ public class CardsDatabaseHandler extends SQLiteOpenHelper {
                 KEY_EMAIL + " TEXT," +
                 KEY_WORK_PHONE + " TEXT," +
                 KEY_WORK_ADDRESS + " TEXT," +
-                KEY_WORK_WEBSITE + " TEXT," +
-                KEY_CATEGORY + " TEXT" +")";
+                KEY_WORK_WEBSITE + " TEXT" +")";
 
         //data order: id, name, company, job, address,phone,email, work_phone, work address, website
         //group
@@ -62,15 +63,14 @@ public class CardsDatabaseHandler extends SQLiteOpenHelper {
     public void addBusinessCard(BusinessCard businessCard){
         SQLiteDatabase db =  this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(KEY_NAME , businessCard._name);
-        values.put(KEY_JOB, businessCard._job);
-        values.put(KEY_COMPANY, businessCard._company);
-        values.put(KEY_ADDRESS, businessCard._address);
-        values.put(KEY_PHONE, businessCard._phone);
-        values.put(KEY_EMAIL, businessCard._email);
-        values.put(KEY_WORK_PHONE, businessCard._workPhone);
-        values.put(KEY_WORK_ADDRESS, businessCard._workAddress);
-        values.put(KEY_CATEGORY, businessCard._category);
+        values.put(KEY_NAME , businessCard.get_name());
+        values.put(KEY_JOB, businessCard.get_job());
+        values.put(KEY_COMPANY, businessCard.get_company());
+        values.put(KEY_ADDRESS, businessCard.get_address());
+        values.put(KEY_PHONE, businessCard.get_phone());
+        values.put(KEY_EMAIL, businessCard.get_email());
+        values.put(KEY_WORK_PHONE, businessCard.get_workPhone());
+        values.put(KEY_WORK_ADDRESS, businessCard.get_workAddress());
         //values.put(KEY_IMAGE, businessCard._image);
 
         db.insert(TABLE_BUSINESS_CARD, null, values);
@@ -127,7 +127,6 @@ public class CardsDatabaseHandler extends SQLiteOpenHelper {
             businessCard.set_workPhone(cursor.getString(7));
             businessCard.set_address(cursor.getString(8));
             businessCard.set_workWebsite(cursor.getString(9));
-            businessCard.set_category(cursor.getString(10));
         }
         return businessCard;
     }

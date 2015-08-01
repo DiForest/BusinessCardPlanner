@@ -43,8 +43,9 @@ public class MainActivity extends AppCompatActivity {
 
         //setup the content in the nav drawer
         setUpNavDrawerContent(mNavigationView);
-        
 
+        Menu menu= mNavigationView.getMenu();
+        selectDrawerItem(menu.getItem(0));
     }
 
     @Override

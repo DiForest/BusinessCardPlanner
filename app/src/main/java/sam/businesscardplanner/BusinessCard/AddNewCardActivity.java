@@ -15,10 +15,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import java.io.ByteArrayOutputStream;
 
+import sam.businesscardplanner.DatabaseHandler.CardsDatabaseHandler;
 import sam.businesscardplanner.R;
 
 /**
@@ -36,7 +36,6 @@ public class AddNewCardActivity extends AppCompatActivity {
     EditText workPhoneEditText;
     EditText workAddressEditText;
     EditText workWebsiteEditText;
-    TextView groupEditText;
 
     private static final int CAMERA_REQUEST = 1;
     private static final int PICK_FROM_GALLERY = 2;
@@ -59,7 +58,6 @@ public class AddNewCardActivity extends AppCompatActivity {
         workAddressEditText = (EditText) findViewById(R.id.address_company_label);
         workPhoneEditText = (EditText) findViewById(R.id.phone_company_label);
         workWebsiteEditText = (EditText) findViewById(R.id.web_company_label);
-        groupEditText = (TextView) findViewById(R.id.group_tag);
 
         imageImageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -128,7 +126,6 @@ public class AddNewCardActivity extends AppCompatActivity {
         String workAddress = workAddressEditText.getText().toString();
         String workPhone = workPhoneEditText.getText().toString();
         String workWebsite = workWebsiteEditText.getText().toString();
-        String group = "nope";
         CardsDatabaseHandler mdb = null;
 
         BusinessCard businessCard = new BusinessCard();
@@ -141,7 +138,6 @@ public class AddNewCardActivity extends AppCompatActivity {
         businessCard.set_workPhone(workPhone);
         businessCard.set_workWebsite(workWebsite);
         businessCard.set_workAddress(workAddress);
-        businessCard.set_category(group);
 
         /*
         imageImageView.buildDrawingCache();

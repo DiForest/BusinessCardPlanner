@@ -133,18 +133,6 @@
                 android:drawableLeft="@drawable/ic_internet_grey"
                 android:background="@drawable/round_corner"/>
 
-            <!-- group-->
-            <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/group_tag"
-                android:text="Group"
-                android:padding="10dp"
-                android:layout_margin="5dip"
-                android:textSize="18sp"
-                android:drawableLeft="@drawable/ic_group_grey"
-                android:background="@drawable/round_corner"/>
-
             </LinearLayout>
         </ScrollView>
 </LinearLayout>

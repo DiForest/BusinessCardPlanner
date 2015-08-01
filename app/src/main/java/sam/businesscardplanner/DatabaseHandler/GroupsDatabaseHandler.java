@@ -1,4 +1,4 @@
-package sam.businesscardplanner.BusinessGroup;
+package sam.businesscardplanner.DatabaseHandler;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -8,6 +8,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import sam.businesscardplanner.BusinessGroup.BusinessGroups;
 
 /**
  * Created by Administrator on 7/29/2015.
@@ -34,7 +36,7 @@ import java.util.List;
 
         public void onCreate(SQLiteDatabase db){
             String CREATE_BUSINESS_GROUP_TABLE = "CREATE TABLE "+ TABLE_BUSINESS_GROUP + "(" +
-                    GROUP_KEY + " INTEGER PRIMARY KEY" +
+                    GROUP_KEY + " INTEGER PRIMARY KEY, " +
                     KEY_GROUP_NAME + " TEXT,"+
                     KEY_GROUP_DESCRIPTION + " TEXT," +
                     KEY_GROUP_CREATED_DATE + " TEXT" + ")";
@@ -50,9 +52,9 @@ import java.util.List;
         public void addGroup(BusinessGroups group){
             SQLiteDatabase db = this.getWritableDatabase();
             ContentValues values = new ContentValues();
-            values.put(KEY_GROUP_NAME, group._group_name);
-            values.put(KEY_GROUP_DESCRIPTION, group._group_description);
-            values.put(KEY_GROUP_CREATED_DATE, group._group_created_date);
+            values.put(KEY_GROUP_NAME, group.get_name());
+            values.put(KEY_GROUP_DESCRIPTION, group.get_description());
+            values.put(KEY_GROUP_CREATED_DATE, group.get_created_date());
 
             db.insert(TABLE_BUSINESS_GROUP, null, values);
             db.close();

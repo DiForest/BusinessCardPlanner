@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import java.util.List;
 
+import sam.businesscardplanner.DatabaseHandler.CardsDatabaseHandler;
 import sam.businesscardplanner.R;
 
 /**
