@@ -19,6 +19,7 @@ public class CardsDatabaseHandler extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
     private static final String  DATABASE_NAME = "plannerDB";
     private static final String TABLE_BUSINESS_CARD ="businessCard";
+
     private static final String KEY_ID = "id";
     private static final String KEY_NAME = "name";
     private static final String KEY_IMAGE = "profileImage";
@@ -30,7 +31,13 @@ public class CardsDatabaseHandler extends SQLiteOpenHelper {
     private static final String KEY_WORK_ADDRESS = "workAddress";
     private static final String KEY_WORK_PHONE = "workPhone";
     private static final String KEY_WORK_WEBSITE = "workWebsite";
-    private static final String KEY_CATEGORY = "CATEGORY";
+
+    private static final String TABLE_BUSINESS_GROUP ="businessGroup";
+
+    private static final String GROUP_KEY = "groupKey";
+    private static final String KEY_GROUP_NAME = "groupName";
+    private static final String KEY_GROUP_DESCRIPTION = "groupDescription";
+    private static final String KEY_GROUP_CREATED_DATE = "groupCreatedDate";
 
     public CardsDatabaseHandler(Context context){
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -52,11 +59,21 @@ public class CardsDatabaseHandler extends SQLiteOpenHelper {
 
         //data order: id, name, company, job, address,phone,email, work_phone, work address, website
         //group
+
+        String CREATE_BUSINESS_GROUP_TABLE = "CREATE TABLE "+ TABLE_BUSINESS_GROUP + "(" +
+                GROUP_KEY + " INTEGER PRIMARY KEY, " +
+                KEY_GROUP_NAME + " TEXT,"+
+                KEY_GROUP_DESCRIPTION + " TEXT," +
+                KEY_GROUP_CREATED_DATE + " TEXT" + ")";
+
+
         db.execSQL(CREATE_BUSINESS_CARD_TABLE);
+        db.execSQL(CREATE_BUSINESS_GROUP_TABLE);
     }
 
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion){
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_BUSINESS_CARD);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_BUSINESS_GROUP);
         onCreate(db);
     }
 
