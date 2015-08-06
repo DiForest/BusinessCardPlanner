@@ -2,8 +2,10 @@
 <resources>
 
     <string name="app_name">BusinessCardPlanner</string>
-    <string name="hello_world">Hello world!</string>
+
     <string name="action_settings">Settings</string>
+    <string name="action_sort_by_name">Sort by Name A-Z</string>
+    <string name="action_sort_by_date">Sort by Created Date</string>
 
     <string name="contact_information">Contact Information</string>
     <string name="work">Work</string>

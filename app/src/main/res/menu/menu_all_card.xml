@@ -1,0 +1,33 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools" tools:context=".MainActivity">
+
+    <item android:id="@+id/action_search"
+        android:title="search"
+        android:icon="@drawable/ic_search"
+        android:orderInCategory="100"
+        app:showAsAction="always" />
+
+    <item android:id="@+id/action_add"
+        android:title="add"
+        android:icon="@drawable/ic_add"
+        android:orderInCategory="100"
+        app:showAsAction="always" />
+
+    <item android:id="@+id/action_settings"
+        android:title="@string/action_settings"
+        android:orderInCategory="999"
+        app:showAsAction="never">
+
+        <menu>
+            <item android:id="@+id/refresh"
+                android:title="Refresh" />
+
+            <item android:id="@+id/action_sort_by_name"
+                android:title="@string/action_sort_by_name"/>
+
+            <item android:id="@+id/action_sort_by_date"
+                android:title="@string/action_sort_by_date" />
+        </menu>
+    </item>
+</menu>

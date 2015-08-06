@@ -6,17 +6,16 @@ package sam.businesscardplanner.BusinessGroup;
 public class BusinessGroups {
     int _group_id;
     String _group_name;
-    String _group_description;
     String _group_created_date;
 
     public BusinessGroups(){
 
     }
 
-    public BusinessGroups(int keyId, String name, String description){
+    public BusinessGroups(int keyId, String name, String group_created_date){
         this._group_id = keyId;
         this._group_name = name;
-        this._group_description = description;
+        this._group_created_date = group_created_date;
     }
 
     public int get_id()
@@ -37,16 +36,6 @@ public class BusinessGroups {
     public void set_name(String name)
     {
         this._group_name = name;
-    }
-
-    public String get_description()
-    {
-        return this._group_description;
-    }
-
-    public void set_description(String description)
-    {
-        this._group_description = description;
     }
 
     public String get_created_date()

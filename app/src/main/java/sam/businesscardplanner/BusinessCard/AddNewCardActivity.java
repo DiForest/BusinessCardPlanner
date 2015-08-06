@@ -18,7 +18,7 @@ import android.widget.ImageView;
 
 import java.io.ByteArrayOutputStream;
 
-import sam.businesscardplanner.DatabaseHandler.CardsDatabaseHandler;
+import sam.businesscardplanner.DatabaseHandler.DatabaseHandler;
 import sam.businesscardplanner.R;
 
 /**
@@ -84,7 +84,7 @@ public class AddNewCardActivity extends AppCompatActivity {
     //setup the menu
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_new_event, menu);
+        getMenuInflater().inflate(R.menu.menu_new_card, menu);
         return true;
     }
 
@@ -126,9 +126,10 @@ public class AddNewCardActivity extends AppCompatActivity {
         String workAddress = workAddressEditText.getText().toString();
         String workPhone = workPhoneEditText.getText().toString();
         String workWebsite = workWebsiteEditText.getText().toString();
-        CardsDatabaseHandler mdb = null;
 
+        DatabaseHandler mdb = null;
         BusinessCard businessCard = new BusinessCard();
+
         businessCard.set_name(name);
         businessCard.set_company(company);
         businessCard.set_address(address);
@@ -146,7 +147,7 @@ public class AddNewCardActivity extends AppCompatActivity {
         businessCard.set_image(data);
         */
 
-        mdb = new CardsDatabaseHandler(getBaseContext());
+        mdb = new DatabaseHandler(getBaseContext());
         mdb.addBusinessCard(businessCard);
 
     }

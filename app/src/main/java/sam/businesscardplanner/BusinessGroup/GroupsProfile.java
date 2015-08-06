@@ -6,14 +6,12 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.List;
 
 import sam.businesscardplanner.BusinessCard.BusinessCard;
-import sam.businesscardplanner.DatabaseHandler.CardsDatabaseHandler;
-import sam.businesscardplanner.DatabaseHandler.GroupsDatabaseHandler;
+import sam.businesscardplanner.DatabaseHandler.DatabaseHandler;
 import sam.businesscardplanner.R;
 
 /**
@@ -43,20 +41,21 @@ public class GroupsProfile extends AppCompatActivity{
 
         Intent intent = getIntent();
         int itemID = intent.getExtras().getInt("ITEM ID", -1);
-        GroupsDatabaseHandler groupsDB = new GroupsDatabaseHandler(this);
+        DatabaseHandler groupsDB = new DatabaseHandler(this);
         BusinessGroups businessGroups = groupsDB.getGroup(itemID);
 
         groupName.setText(businessGroups.get_name());
-        groupDescription.setText(businessGroups.get_description());
         groupCreateDate.setText(businessGroups.get_created_date());
 
+        /*
         final GroupMemberListAdapter adapter = new GroupMemberListAdapter(this,generateData());
         final ListView listView = (ListView) findViewById(R.id.member_list);
         listView.setAdapter(adapter);
+        */
     }
 
     private List<BusinessCard> generateData(){
-        CardsDatabaseHandler db1 = new CardsDatabaseHandler(this);
+        DatabaseHandler db1 = new DatabaseHandler(this);
         list = db1.getAllBusinessCard();
         return list;
     }

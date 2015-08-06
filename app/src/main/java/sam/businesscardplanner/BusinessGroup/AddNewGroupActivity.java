@@ -8,25 +8,23 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 
-import sam.businesscardplanner.DatabaseHandler.GroupsDatabaseHandler;
+import java.util.Calendar;
+
+import sam.businesscardplanner.DatabaseHandler.DatabaseHandler;
 import sam.businesscardplanner.R;
 
-
-
-public class AddNewGroupsActivity extends AppCompatActivity {
+public class AddNewGroupActivity extends AppCompatActivity {
 
     EditText editGroupName;
-    EditText editGroupDescription;
     Toolbar mToolbar;
 
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_group);
+        setUpNavDrawer();
+        setUpToolbar();
 
         editGroupName = (EditText) findViewById(R.id.edit_group_name);
-        editGroupDescription =(EditText) findViewById(R.id.edit_group_description);
-
-        saveInfo();
     }
 
     //setup the toolbar
@@ -37,11 +35,10 @@ public class AddNewGroupsActivity extends AppCompatActivity {
         }
     }
 
-
     //setup the menu
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_new_event, menu);
+        getMenuInflater().inflate(R.menu.menu_add_group_name, menu);
         return true;
     }
 
@@ -50,9 +47,9 @@ public class AddNewGroupsActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()) {
-            case R.id.action_save:
+            case R.id.action_next:
                 saveInfo();
-                AddNewGroupsActivity.this.finish();
+                AddNewGroupActivity.this.finish();
                 //next actiivty to add member
                 return true;
         }
@@ -61,14 +58,23 @@ public class AddNewGroupsActivity extends AppCompatActivity {
 
     public void saveInfo(){
         String groupName = editGroupName.getText().toString();
-        String groupDescription = editGroupDescription.getText().toString();
 
-        BusinessGroups businessGroups = new BusinessGroups();
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month_ = calendar.get(Calendar.MONTH) +1;
+        int day_ = calendar.get(Calendar.DATE);
+
+        String date = ("" + day_+"/"+month_+"/"+year);
+
+        DatabaseHandler db = new DatabaseHandler(getBaseContext());
+        BusinessGroups businessGroups= new BusinessGroups();
         businessGroups.set_name(groupName);
-        businessGroups.set_description(groupDescription);
-        //temporary function
-        GroupsDatabaseHandler db = new GroupsDatabaseHandler(getBaseContext());
+        businessGroups.set_created_date(date);
         db.addGroup(businessGroups);
+
+        //Intent intent = new Intent(this, AddNewGroupActivity.class);
+        //intent.putExtra("groupName", groupName);
+        //startActivity(intent);
     }
 
     //setup the toolbar home title can be clicked and open the drawer
@@ -79,7 +85,7 @@ public class AddNewGroupsActivity extends AppCompatActivity {
             mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    AddNewGroupsActivity.this.finish();
+                    AddNewGroupActivity.this.finish();
                 }
 
             });

@@ -9,4 +9,5 @@
         android:layout_height="0dp"
         android:layout_weight="0.55"
         android:cacheColorHint="#00000000" />
+
 </LinearLayout>

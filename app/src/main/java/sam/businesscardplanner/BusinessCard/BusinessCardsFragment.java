@@ -15,7 +15,7 @@ import android.widget.Toast;
 
 import java.util.List;
 
-import sam.businesscardplanner.DatabaseHandler.CardsDatabaseHandler;
+import sam.businesscardplanner.DatabaseHandler.DatabaseHandler;
 import sam.businesscardplanner.R;
 
 /**
@@ -60,7 +60,7 @@ public class BusinessCardsFragment extends Fragment {
     }
 
     private List<BusinessCard> generateData(){
-        CardsDatabaseHandler db1 = new CardsDatabaseHandler(getActivity().getApplicationContext());
+        DatabaseHandler db1 = new DatabaseHandler(getActivity().getApplicationContext());
         list = db1.getAllBusinessCard();
         return list;
     }
@@ -68,7 +68,7 @@ public class BusinessCardsFragment extends Fragment {
     //setup the menu
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_main, menu);
+        inflater.inflate(R.menu.menu_all_card, menu);
     }
 
     //setup the menu items

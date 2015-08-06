@@ -27,12 +27,17 @@
         </activity>
 
         <activity android:name=".NewEventActivity"
-            android:label="create new event"/>
+            android:label="Create new Event"/>
 
         <activity android:name=".BusinessCard.AddNewCardActivity"
-            android:label="create new card"/>
+            android:label="Create new Card"/>
 
         <activity android:name=".BusinessCard.BusinessCardProfile" />
+
+        <activity android:name=".BusinessGroup.AddNewGroupActivity"
+            android:label="Create new Group"/>
+
+        <activity android:name=".BusinessGroup.GroupsProfile" />
     </application>
 
 </manifest>

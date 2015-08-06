@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import sam.businesscardplanner.DatabaseHandler.CardsDatabaseHandler;
+import sam.businesscardplanner.DatabaseHandler.DatabaseHandler;
 import sam.businesscardplanner.R;
 
 /**
@@ -57,7 +57,7 @@ public class BusinessCardProfile extends AppCompatActivity{
 
         Intent intent = getIntent();
         int itemID = intent.getExtras().getInt("ITEM ID", -1);
-        CardsDatabaseHandler cards = new CardsDatabaseHandler(this);
+        DatabaseHandler cards = new DatabaseHandler(this);
         BusinessCard businessCard = cards.getBusinessCard(itemID);
 
         cardName.setText(businessCard.get_name());
