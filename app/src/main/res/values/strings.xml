@@ -20,6 +20,7 @@
     <string name="email">email</string>
 
     <string name="member">Member</string>
+    <string name="add_member">Add a Member</string>
 
     <string name="groupName">Group name</string>
     <string name="groupDescription">Description your group</string>

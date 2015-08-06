@@ -38,6 +38,8 @@
             android:label="Create new Group"/>
 
         <activity android:name=".BusinessGroup.GroupsProfile" />
+
+        <activity android:name=".BusinessGroup.AddMemberActivity" />
     </application>
 
 </manifest>

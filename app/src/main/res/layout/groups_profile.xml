@@ -63,6 +63,28 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content" />
 
+            </LinearLayout>
+
+            <LinearLayout
+                    android:layout_height="fill_parent"
+                    android:layout_width="fill_parent"
+                    android:orientation="vertical"
+                    android:layout_marginTop="2dip"
+                    android:layout_marginLeft="5dip"
+                    android:layout_marginRight="5dip"
+                    android:layout_marginBottom="2dip"
+                    android:padding="10dip"
+                    android:background="@drawable/round_corner">
+
+                <Button
+                    android:id="@+id/add_member"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:drawableTop="@drawable/ic_add_people"
+                    android:background="#ffffff"
+                    android:text="@string/add_member" />
+
                 <ListView
                     android:id="@+id/member_list"
                     android:layout_width="fill_parent"
@@ -71,6 +93,20 @@
                     android:cacheColorHint="#00000000" />
 
             </LinearLayout>
+
+            <Button
+                android:id="@+id/btn_detele_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dip"
+                android:layout_marginLeft="20dip"
+                android:layout_marginRight="20dip"
+                android:layout_marginBottom="2dip"
+                android:text="Detele Group"
+                android:textColor="#fdfcfc"
+                android:clickable="true"
+                android:background="@drawable/round_corner_red"/>
+
             </LinearLayout>
     </ScrollView>
 </LinearLayout>
