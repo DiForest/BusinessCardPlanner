@@ -3,4 +3,13 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <include layout="@layout/toolbar" />
+
+    <ListView
+        android:id="@+id/business_card_list"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.55"
+        android:cacheColorHint="#00000000" />
+
 </LinearLayout>
