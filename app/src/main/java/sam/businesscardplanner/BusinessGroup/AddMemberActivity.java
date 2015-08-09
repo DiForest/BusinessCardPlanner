@@ -1,7 +1,6 @@
 package sam.businesscardplanner.BusinessGroup;
 
-import android.app.SearchManager;
-import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -10,7 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.SearchView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -27,6 +26,8 @@ public class AddMemberActivity extends AppCompatActivity {
     List list = null;
     Toolbar mToolbar;
 
+    private int GROUP_ID;
+
     public void onCreate(Bundle savedInstance){
         super.onCreate(savedInstance);
         //reuse the fragment business card layout, list
@@ -35,19 +36,38 @@ public class AddMemberActivity extends AppCompatActivity {
         setUpToolbar();
         setTitle("Select member..");
 
+        //get the group id
+        Intent intent = getIntent();
+        GROUP_ID = intent.getExtras().getInt("groupID", -1);
+
+        //set up the list
         final RowViewAdapter adapter =  new RowViewAdapter(this.getApplicationContext(), generateData());
         final ListView listView = (ListView) this.findViewById(R.id.business_card_list);
         listView.setAdapter(adapter);
 
+        //on click any card to add the member
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
-
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                int itemID = adapter.getListItemId(position);
+                DatabaseHandler db = new DatabaseHandler(getBaseContext());
 
+                BusinessGroups bg = new BusinessGroups();
+                BusinessCard bc = new BusinessCard();
+                bc = db.getBusinessCard(itemID);
+                bg = db.getGroup(GROUP_ID);
+                String cardName = bc.get_name();
+                String groupName = bg.get_name();
+
+                //add the member into database
+                db.addMemberInGroup(GROUP_ID,itemID);
+                Toast.makeText(getApplicationContext(),
+                        "Added " + cardName + " into " + groupName, Toast.LENGTH_LONG)
+                        .show();
+
+                AddMemberActivity.this.finish();
             }
         });
-
-
     }
 
     private List<BusinessCard> generateData(){
@@ -82,6 +102,7 @@ public class AddMemberActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.search_menu, menu);
 
+        /*
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
@@ -107,8 +128,9 @@ public class AddMemberActivity extends AppCompatActivity {
             }
         };
         searchView.setOnQueryTextListener(textChangeListener);
-
+        */
         return true;
+
     }
 
     //setup the menu items

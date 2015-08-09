@@ -70,6 +70,7 @@ public class AddNewGroupActivity extends AppCompatActivity {
         BusinessGroups businessGroups= new BusinessGroups();
         businessGroups.set_name(groupName);
         businessGroups.set_created_date(date);
+        businessGroups.set_group_member_number(0);
         db.addGroup(businessGroups);
 
         //Intent intent = new Intent(this, AddNewGroupActivity.class);

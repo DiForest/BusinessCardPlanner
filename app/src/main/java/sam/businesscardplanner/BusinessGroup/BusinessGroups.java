@@ -7,15 +7,17 @@ public class BusinessGroups {
     int _group_id;
     String _group_name;
     String _group_created_date;
+    int _group_member;
 
     public BusinessGroups(){
 
     }
 
-    public BusinessGroups(int keyId, String name, String group_created_date){
+    public BusinessGroups(int keyId, String name, String group_created_date, int group_member){
         this._group_id = keyId;
         this._group_name = name;
         this._group_created_date = group_created_date;
+        this._group_member = group_member;
     }
 
     public int get_id()
@@ -46,5 +48,13 @@ public class BusinessGroups {
     public void set_created_date(String created_date)
     {
         this._group_created_date = created_date;
+    }
+
+    public int get_group_member(){
+        return this._group_member;
+    }
+
+    public void set_group_member_number(int group_member_number){
+        this._group_member = group_member_number;
     }
 }

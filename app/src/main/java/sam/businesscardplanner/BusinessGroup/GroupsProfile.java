@@ -9,11 +9,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.List;
 
 import sam.businesscardplanner.BusinessCard.BusinessCard;
+import sam.businesscardplanner.BusinessCard.RowViewAdapter;
 import sam.businesscardplanner.DatabaseHandler.DatabaseHandler;
 import sam.businesscardplanner.R;
 
@@ -25,11 +27,13 @@ public class GroupsProfile extends AppCompatActivity{
     private Toolbar mToolbar;
 
     TextView groupName;
-    TextView groupDescription;
+    TextView groupMemberNumber;
     TextView groupCreateDate;
     Button btnAddMember;
     Button btnDeteleGroup;
+
     List list = null;
+    ListView memberList;
 
     Context context;
 
@@ -42,7 +46,7 @@ public class GroupsProfile extends AppCompatActivity{
 
         //set up all the elements of the layout
         groupName = (TextView) findViewById(R.id.group_name);
-        groupDescription = (TextView) findViewById(R.id.group_description);
+        groupMemberNumber = (TextView) findViewById(R.id.group_member_number);
         groupCreateDate = (TextView) findViewById(R.id.group_created_date);
 
         btnAddMember = (Button) findViewById(R.id.add_member);
@@ -50,9 +54,16 @@ public class GroupsProfile extends AppCompatActivity{
 
         //get the id and display the information
         Intent intent = getIntent();
-        int itemID = intent.getExtras().getInt("ITEM ID", -1);
+        final int groupId = intent.getExtras().getInt("ITEM ID", -1);
         final DatabaseHandler groupsDB = new DatabaseHandler(this);
-        final BusinessGroups businessGroups = groupsDB.getGroup(itemID);
+        final BusinessGroups businessGroups = groupsDB.getGroup(groupId);
+
+        //setup the member list view
+        memberList = (ListView) findViewById(R.id.member_list);
+
+        final RowViewAdapter adapter =  new RowViewAdapter(this.getApplicationContext(),
+                generateData(groupId));
+        memberList.setAdapter(adapter);
 
         //set the activity label
         setTitle(businessGroups.get_name());
@@ -60,6 +71,9 @@ public class GroupsProfile extends AppCompatActivity{
         //set up the information
         groupName.setText(businessGroups.get_name());
         groupCreateDate.setText(businessGroups.get_created_date());
+        int group_member_number = businessGroups.get_group_member();
+        String s = String.valueOf(group_member_number);
+        groupMemberNumber.setText("eee");
 
         //set up the detele button
         btnDeteleGroup.setOnClickListener(new View.OnClickListener() {
@@ -70,21 +84,38 @@ public class GroupsProfile extends AppCompatActivity{
             }
         });
 
+        //add member into the group
         btnAddMember.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent addMemberIntent = new Intent(GroupsProfile.this,AddMemberActivity.class);
+                addMemberIntent.putExtra("groupID", groupId);
                 startActivity(addMemberIntent);
 
             }
         });
     }
 
-    private List<BusinessCard> generateData(){
+    /*
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==2){
+            int cardID = data.getIntExtra("itemID",-1);
+            final DatabaseHandler cardDB = new DatabaseHandler(this);
+            final BusinessCard businessCard = cardDB.getBusinessCard(cardID);
+            //memberList.add
+        }
+    }
+    */
+
+
+    private List<BusinessCard> generateData(int groupId){
         DatabaseHandler db1 = new DatabaseHandler(this);
-        list = db1.getAllBusinessCard();
+        //get all member of the group
+        list = db1.getAllMemberFromGroup(groupId);
         return list;
     }
+
 
     private void setUpToolbar() {
         mToolbar = (Toolbar) findViewById(R.id.toolbar);

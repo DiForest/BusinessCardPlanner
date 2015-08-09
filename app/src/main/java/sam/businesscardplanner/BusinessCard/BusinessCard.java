@@ -16,7 +16,7 @@ public class  BusinessCard {
     String _workPhone;
     String _workAddress;
     String _workWebsite;
-    String _category;
+
 
 
     //constructor
@@ -25,11 +25,20 @@ public class  BusinessCard {
     }
 
     //constructor
-    public BusinessCard(int keyId, String name, byte[] image, String company){
+    public BusinessCard(int keyId, String name, byte[] image, String company,String job,
+                        String address, String email,String phone,String workPhone,
+                        String workAddress, String workWebsite){
         this._id = keyId;
         this._name = name;
         this._image = image;
         this._company = company;
+        this._job = job;
+        this._address= address;
+        this._email = email;
+        this._phone = phone;
+        this._workPhone = workPhone;
+        this._workAddress = workAddress;
+        this._workWebsite = workWebsite;
     }
 
     //constructor tat have name and image
@@ -161,16 +170,6 @@ public class  BusinessCard {
     public void set_workWebsite(String workWebsite)
     {
         this._workWebsite =  workWebsite;
-    }
-
-    public void set_category(String category)
-    {
-        this._category = category;
-    }
-
-    public String get_category()
-    {
-        return this._category;
     }
 
 

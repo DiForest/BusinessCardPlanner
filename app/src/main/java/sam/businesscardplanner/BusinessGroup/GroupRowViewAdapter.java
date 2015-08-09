@@ -19,6 +19,7 @@ public class GroupRowViewAdapter extends ArrayAdapter<BusinessGroups> {
     private final Context context;
     private final List<BusinessGroups> groupsList;
 
+
     public GroupRowViewAdapter(Context context, List<BusinessGroups> groupsList) {
         super(context, R.layout.groups_row_items,groupsList);
 
@@ -30,6 +31,7 @@ public class GroupRowViewAdapter extends ArrayAdapter<BusinessGroups> {
         LayoutInflater inflater = (LayoutInflater) context.
                 getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
+
         View rowView = inflater.inflate(R.layout.groups_row_items, parent, false);
 
         TextView  groupName = (TextView) rowView.findViewById(R.id.name);
@@ -37,7 +39,11 @@ public class GroupRowViewAdapter extends ArrayAdapter<BusinessGroups> {
         TextView groupMember = (TextView) rowView.findViewById(R.id.member_number);
 
         groupName.setText(groupsList.get(position).get_name());
-        groupCreatedDate.setText(groupsList.get(position).get_created_date());
+        groupCreatedDate.setText("created by "+groupsList.get(position).get_created_date());
+
+        //display the number of member
+        int group_member_number = groupsList.get(position).get_group_member();
+        groupMember.setText(group_member_number + " members");
 
         BusinessGroups groups = groupsList.get(position);
 

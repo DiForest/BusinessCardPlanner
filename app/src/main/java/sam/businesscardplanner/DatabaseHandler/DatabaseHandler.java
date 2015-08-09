@@ -39,12 +39,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String KEY_GROUP_ID = "id";
     private static final String KEY_GROUP_NAME = "groupName";
     private static final String KEY_GROUP_CREATED_DATE = "groupCreatedDate";
+    private static final String KEY_GROUP_MEMBER_NUMBER = "groupMemberNumber";
 
     //group and people table elements
-    private static final String TABLE_GROUPS_PEOPLE = "groupPeople";
-    private static final String GROUP_PEOPLE_ID = "id";
+    private static final String TABLE_GROUP_PEOPLE = "groupPeople";
+    private static final String GP_ID = "id";
     private static final String GROUP_FOREIGN_KEY = "groupForeignKey";
     private static final String PEOPLE_FOREIGN_KEY = "peopleForeignKey";
+    private static final String PEOPLE_NAME = "peopleName";
 
     //create card statement
     private static String CREATE_BUSINESS_CARD_TABLE = "CREATE TABLE "+ TABLE_BUSINESS_CARD
@@ -64,9 +66,22 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static String CREATE_BUSINESS_GROUP_TABLE = "CREATE TABLE "+ TABLE_BUSINESS_GROUP
             + " (" + KEY_GROUP_ID + " INTEGER PRIMARY KEY, " +
             KEY_GROUP_NAME + " TEXT, "+
-            KEY_GROUP_CREATED_DATE + " TEXT" + " );";
+            KEY_GROUP_CREATED_DATE + " TEXT, " +
+            KEY_GROUP_MEMBER_NUMBER + " INTEGER " + " );";
 
-    public DatabaseHandler(Context context){
+    //initialise the group and people table elements
+    private static String CREATE_GROUP_AND_PEOPLE_TABLE = "CREATE TABLE " + TABLE_GROUP_PEOPLE + " ( " +
+            GP_ID + " INTEGER PRIMARY KEY," +
+            GROUP_FOREIGN_KEY + " INT, " +
+            PEOPLE_FOREIGN_KEY + " INT, " +
+            PEOPLE_NAME + " TEXT" +
+            //"FOREIGN KEY ( " + GROUP_FOREIGN_KEY + " ) REFERENCES "
+            //+ TABLE_BUSINESS_GROUP + " ( "+ KEY_ID + " ), " +
+            //"FOREIGN KEY ( " + PEOPLE_FOREIGN_KEY + " ) REFERENCES "
+            //+ TABLE_BUSINESS_CARD + "( " + KEY_GROUP_ID +" )" +
+            ");";
+
+    public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
@@ -74,26 +89,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db){
         db.execSQL(CREATE_BUSINESS_CARD_TABLE);
         db.execSQL(CREATE_BUSINESS_GROUP_TABLE);
-    }
-
-    //initialise the group and people table elements
-    public String onCreateGroupPoepleTable(){
-        String CREATE_GROUPS_PEOPLE_TABLE = "CREATE TABLE " + TABLE_GROUPS_PEOPLE + " ( " +
-                GROUP_PEOPLE_ID + " INTEGER PRIMARY KEY," +
-                GROUP_FOREIGN_KEY + " INT, " +
-                PEOPLE_FOREIGN_KEY + " INT, " +
-                "FOREIGN KEY ( " + GROUP_FOREIGN_KEY + " ) REFERENCES "
-                + TABLE_BUSINESS_GROUP + " ( "+ KEY_ID + " ), " +
-                "FOREIGN KEY ( " + PEOPLE_FOREIGN_KEY + " ) REFERENCES "
-                + TABLE_BUSINESS_CARD + "( " + KEY_GROUP_ID +" )" + ");";
-
-        return CREATE_GROUPS_PEOPLE_TABLE;
+        db.execSQL(CREATE_GROUP_AND_PEOPLE_TABLE);
     }
 
     //upgradde database table
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion){
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_BUSINESS_CARD );
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_BUSINESS_GROUP );
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_BUSINESS_CARD);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_BUSINESS_GROUP);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_GROUP_PEOPLE);
 
         onCreate(db);
     }
@@ -167,7 +170,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return cardList;
     }
 
-    //get ONE business card
+    //get ONE business card by id
     public BusinessCard getBusinessCard(int id){
 
         String query = "SELECT * FROM " + TABLE_BUSINESS_CARD +
@@ -221,6 +224,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return cursor.getCount();
     }
 
+    public List<BusinessCard> getAvailableBusinessCard(){
+
+
+        return;
+    }
+
 
     /* -------------------------------  Business Group Table  ----------------------------------- */
     //create and add new group
@@ -229,6 +238,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(KEY_GROUP_NAME, group.get_name());
         values.put(KEY_GROUP_CREATED_DATE, group.get_created_date());
+        values.put(KEY_GROUP_MEMBER_NUMBER,group.get_group_member());
 
         db.insert(TABLE_BUSINESS_GROUP, null, values);
         db.close();
@@ -237,7 +247,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     //get all the groups in the database
     public List<BusinessGroups> getAllGroup(){
         List<BusinessGroups> groupsList =  new ArrayList<BusinessGroups>();
-        String selectQuery = "SELECT * FROM "+ TABLE_BUSINESS_GROUP + " ORDER BY "+ KEY_GROUP_NAME ;
+        String selectQuery = "SELECT * FROM "+ TABLE_BUSINESS_GROUP + " ORDER BY "
+                + KEY_GROUP_NAME ;
 
         SQLiteDatabase db =this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -249,6 +260,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                     groups.set_id(Integer.parseInt(cursor.getString(0)));
                     groups.set_name(cursor.getString(1));
                     groups.set_created_date(cursor.getString(2));
+                    groups.set_group_member_number(Integer.parseInt(cursor.getString(3)));
 
                     groupsList.add(groups);
                 }while(cursor.moveToNext());
@@ -269,8 +281,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         if(cursor != null){
             cursor.moveToFirst();
 
+            groups.set_id(Integer.parseInt(cursor.getString(0)));
             groups.set_name(cursor.getString(1));
             groups.set_created_date(cursor.getString(2));
+            groups.set_group_member_number(Integer.parseInt(cursor.getString(3)));
         }
         return groups;
     }
@@ -282,6 +296,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(KEY_GROUP_ID, groups.get_id());
         values.put(KEY_GROUP_NAME, groups.get_name());
         values.put(KEY_GROUP_CREATED_DATE, groups.get_created_date());
+        values.put(KEY_GROUP_MEMBER_NUMBER, groups.get_group_member());
 
         return db.update(TABLE_BUSINESS_GROUP, values, KEY_GROUP_ID + " = ?",
                 new String[]{String.valueOf(groups.get_id())});
@@ -305,17 +320,77 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return cursor.getCount();
     }
 
+    public int updateGroupMember(int groupId){
+        BusinessGroups groups = getGroup(groupId);
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(KEY_GROUP_ID, groups.get_id());
+        values.put(KEY_GROUP_NAME, groups.get_name());
+        values.put(KEY_GROUP_CREATED_DATE, groups.get_created_date());
+        values.put(KEY_GROUP_MEMBER_NUMBER, groups.get_group_member() + 1);
+
+        return db.update(TABLE_BUSINESS_GROUP, values, KEY_GROUP_ID + " = ?",
+                new String[]{String.valueOf(groups.get_id())});
+    }
+
     /* -------------------------------------Group and People Table -------------------------------*/
 
     //add the group member
-    public void addGroupMember(int groupID, int cardID){
+    public void addMemberInGroup(int groupID, int cardID){
+
         SQLiteDatabase db = this.getWritableDatabase();
+        BusinessCard bc = getBusinessCard(cardID);
+        String name = bc.get_name();
+
         ContentValues values = new ContentValues();
         values.put(GROUP_FOREIGN_KEY, groupID);
         values.put(PEOPLE_FOREIGN_KEY, cardID);
+        values.put(PEOPLE_NAME, name);
 
-        db.insert(TABLE_GROUPS_PEOPLE, null, values);
+        db.insert(TABLE_GROUP_PEOPLE, null, values);
         db.close();
+
+        updateGroupMember(groupID);
+
+    }
+
+
+    //get all the member in the group
+    public List<BusinessCard> getAllMemberFromGroup(int groupID){
+        List<BusinessCard> cardList = new ArrayList<BusinessCard>();
+        String selectQuery = "SELECT * FROM "+ TABLE_GROUP_PEOPLE
+                + " WHERE " + GROUP_FOREIGN_KEY + " = " + groupID
+                + " ORDER BY " + PEOPLE_NAME;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        if(cursor != null){
+            if(cursor.moveToNext()){
+                do{
+                    //get the people foreign key from the table
+                    int temp = Integer.parseInt(cursor.getString(1));
+                    //use the id to get business card from business card db
+                    BusinessCard businessCard = getBusinessCard(temp);
+                    //add into a list
+                    cardList.add(businessCard);
+                }while (cursor.moveToNext());
+            }
+        }
+        db.close();
+
+        return cardList;
+    }
+
+
+    public int getCountMemberinGroup(int groupId){
+        String countQuery = "SELECT * FROM "+ TABLE_GROUP_PEOPLE + " WHERE " +
+                GROUP_FOREIGN_KEY + " = " + groupId;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(countQuery, null);
+        cursor.close();
+
+        return cursor.getCount();
     }
 
 }

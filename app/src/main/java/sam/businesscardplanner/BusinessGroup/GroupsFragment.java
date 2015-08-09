@@ -39,15 +39,17 @@ public class GroupsFragment extends Fragment {
         final GroupRowViewAdapter adapter = new GroupRowViewAdapter(getActivity().getApplication(), generateData());
         final ListView listView = (ListView) getActivity().findViewById(R.id.group_list);
         listView.setAdapter(adapter);
+
         //clicking on any business card in the list
         //start group profile activity
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                int itemID = adapter.getListItemId(position);
+                int itemId = adapter.getListItemId(position);
+
                 //pass the selected item id to new activity
                 Intent intent = new Intent(
                         GroupsFragment.this.getActivity(), GroupsProfile.class);
-                intent.putExtra("ITEM ID", itemID);
+                intent.putExtra("ITEM ID", itemId);
                 startActivity(intent);
             }
         });
