@@ -1,8 +1,11 @@
 package sam.businesscardplanner.BusinessCard;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
@@ -15,6 +18,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.Calendar;
 
 import sam.businesscardplanner.DatabaseHandler.DatabaseHandler;
@@ -40,6 +44,8 @@ public class AddNewCardActivity extends AppCompatActivity {
 
     BusinessCard businessCard = new BusinessCard();
 
+    private static final int CAMERA_REQUEST = 1;
+    private static final int GALLERY_REQUEST = 2;
     private Toolbar mToolbar;
 
     public void onCreate(Bundle savedInstanceState){
@@ -66,8 +72,7 @@ public class AddNewCardActivity extends AppCompatActivity {
         btnAddImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(intent, 0);
+                onCreateDialog();
             }
         });
     }
@@ -75,9 +80,76 @@ public class AddNewCardActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode,resultCode,data);
 
-        
-        Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-        imageView.setImageBitmap(bitmap);
+        if (resultCode != RESULT_OK)
+            return;
+
+        switch(requestCode) {
+            case CAMERA_REQUEST:
+
+                Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+                imageView.setImageBitmap(bitmap);
+                break;
+
+            case GALLERY_REQUEST:
+                Uri uri = data.getData();
+                try {
+                    Bitmap bmp = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+                    imageView.setImageBitmap(bmp);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                break;
+        }
+
+    }
+    public void callCamera() {
+        Intent cameraIntent = new Intent(
+                android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+        cameraIntent.putExtra("crop", true);
+        cameraIntent.putExtra("aspectX", 0);
+        cameraIntent.putExtra("aspectY", 0);
+        cameraIntent.putExtra("outputX", 200);
+        cameraIntent.putExtra("outputY", 150);
+
+        startActivityForResult(cameraIntent, CAMERA_REQUEST);
+
+    }
+
+    public void callGallery() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        intent.putExtra("crop", "true");
+        intent.putExtra("aspectX", 0);
+        intent.putExtra("aspectY", 0);
+        intent.putExtra("outputX", 200);
+        intent.putExtra("outputY", 150);
+        intent.putExtra("return-data", true);
+        startActivityForResult(Intent.createChooser(intent,
+                "Select Picture"), GALLERY_REQUEST);
+    }
+
+    protected void onCreateDialog() {
+
+        final CharSequence[] items = {"Take from Camera", "Take from Gallery"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Select Option");
+
+        builder.setItems(items, new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (which == 0) {
+                    callCamera();
+                }
+                if (which == 1) {
+                    callGallery();
+                }
+            }
+        });
+        AlertDialog alert = builder.create();
+        alert.show();
+
     }
 
     //setup the toolbar
