@@ -50,8 +50,6 @@
             android:resource="@xml/searchable" />
         </activity>
 
-        <activity android:name=".BusinessCard.AddImageActivity" />
-
     </application>
 
 </manifest>

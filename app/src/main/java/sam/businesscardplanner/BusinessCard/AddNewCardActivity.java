@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -175,7 +176,6 @@ public class AddNewCardActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_next:
                 saveInfo();
-                finish();
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -204,8 +204,51 @@ public class AddNewCardActivity extends AppCompatActivity {
         bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
         byte imageInByte[] = stream.toByteArray();
 
+        String name = nameEditText.getText().toString();
+        String job = jobEditText.getText().toString();
+        String company = companyEditText.getText().toString();
+        String phone = phoneEditText.getText().toString();
+        String address = addressEditText.getText().toString();
+        String phoneWork = workPhoneEditText.getText().toString();
+        String addressWork = workAddressEditText.getText().toString();
+        String email = emailEditText.getText().toString();
+        String website = workWebsiteEditText.getText().toString();
+        
+        if(TextUtils.isEmpty(name) ) {
+            nameEditText.setError("Please fill up the name.");
+            return;
+        }
+
+        if(TextUtils.isEmpty(job) ) {
+            jobEditText.setError("Please fill up the job.");
+            return;
+        }
+
+        if(TextUtils.isEmpty(company)) {
+            companyEditText.setError("Please fill up the company.");
+            return;
+        }
+
+        if(TextUtils.isEmpty(phone) ) {
+            phoneEditText.setError("Please fill up the name.");
+            return;
+        }
+
+        businessCard.set_name(name);
+        businessCard.set_job(job);
+        businessCard.set_company(company);
+        businessCard.set_phone(phone);
+        businessCard.set_workPhone(phoneWork);
+        businessCard.set_workAddress(addressWork);
+        businessCard.set_address(address);
+        businessCard.set_email(email);
+        businessCard.set_date(getDateTime());
+        businessCard.set_image(imageInByte);
+        businessCard.set_workWebsite(website);
+
         DatabaseHandler db = new DatabaseHandler(getBaseContext());
-        db.addBusinessCard(new BusinessCard("java", imageInByte));
+        db.addBusinessCard(businessCard);
+        finish();
     }
 
     private String getDateTime() {

@@ -78,6 +78,7 @@ public class BusinessCardProfile extends AppCompatActivity{
         ByteArrayInputStream imageStream = new ByteArrayInputStream(outImage);
         Bitmap theImage = BitmapFactory.decodeStream(imageStream);
         cardImage.setImageBitmap(theImage);
+
     }
 
     private void setUpToolbar() {

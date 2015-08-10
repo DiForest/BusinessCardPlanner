@@ -24,6 +24,9 @@ public class RowViewAdapter extends ArrayAdapter<BusinessCard> implements Filter
     private final Context context;
     private final List<BusinessCard> cardsList;
 
+    public static final int THUMBNAIL_HEIGHT = 48;
+    public static final int THUMBNAIL_WIDTH = 66;
+
     public RowViewAdapter(Context context, List<BusinessCard> cardsList){
         super(context, R.layout.business_cards_row_items, cardsList);
 
@@ -50,9 +53,23 @@ public class RowViewAdapter extends ArrayAdapter<BusinessCard> implements Filter
         valueView.setText(cardsList.get(position).get_company());
         date.setText(cardsList.get(position).get_date());
 
+        /*
         byte[] outImage = cardsList.get(position).get_image();
         ByteArrayInputStream imageStream = new ByteArrayInputStream(outImage);
         Bitmap theImage = BitmapFactory.decodeStream(imageStream);
+        bcImage.setImageBitmap(theImage);
+        */
+        byte[] outImage = cardsList.get(position).get_image();
+        ByteArrayInputStream imageStream = new ByteArrayInputStream(outImage);
+
+        Bitmap theImage = BitmapFactory.decodeStream(imageStream);
+        Float width  = new Float(theImage.getWidth());
+        Float height = new Float(theImage.getHeight());
+        Float ratio = width/height;
+        theImage = Bitmap.createScaledBitmap(theImage, (int)(THUMBNAIL_HEIGHT*ratio), THUMBNAIL_HEIGHT, false);
+
+        int padding = (THUMBNAIL_WIDTH - theImage.getWidth())/2;
+        bcImage.setPadding(padding, 0, padding, 0);
         bcImage.setImageBitmap(theImage);
 
         BusinessCard cards = cardsList.get(position);
