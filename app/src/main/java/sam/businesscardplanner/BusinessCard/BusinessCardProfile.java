@@ -1,12 +1,16 @@
 package sam.businesscardplanner.BusinessCard;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import java.io.ByteArrayInputStream;
 
 import sam.businesscardplanner.DatabaseHandler.DatabaseHandler;
 import sam.businesscardplanner.R;
@@ -69,6 +73,11 @@ public class BusinessCardProfile extends AppCompatActivity{
         cardJob.setText(businessCard.get_job());
         cardWorkWebsite.setText(businessCard.get_workWebsite());
         cardAddress.setText(businessCard.get_address());
+
+        byte[] outImage = businessCard.get_image();
+        ByteArrayInputStream imageStream = new ByteArrayInputStream(outImage);
+        Bitmap theImage = BitmapFactory.decodeStream(imageStream);
+        cardImage.setImageBitmap(theImage);
     }
 
     private void setUpToolbar() {
