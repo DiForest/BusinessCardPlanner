@@ -5,9 +5,9 @@
     tools:context=".NewCardActivity">
 
     <item
-        android:id="@+id/action_save"
-        android:title="Save"
-        android:icon="@drawable/ic_saved_file"
+        android:id="@+id/action_next"
+        android:title="NEXT"
+        android:icon="@drawable/ic_next"
         android:orderInCategory="100"
         app:showAsAction="always|withText"/>
 

@@ -20,9 +20,22 @@
             <ImageView
                 android:layout_width="fill_parent"
                 android:layout_height="200dip"
-                android:id="@+id/image"
+                android:id="@+id/business_card_image"
                 android:layout_margin="5dip"
                 android:background="@drawable/round_corner" />
+
+            <Button
+                android:id="@+id/btn_add_image"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dip"
+                android:layout_marginLeft="20dip"
+                android:layout_marginRight="20dip"
+                android:layout_marginBottom="2dip"
+                android:text="Add Image"
+                android:textColor="#fdfcfc"
+                android:clickable="true"
+                android:background="@drawable/round_corner_red"/>
 
                 <!-- name-->
                 <EditText

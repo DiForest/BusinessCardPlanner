@@ -16,6 +16,7 @@ public class  BusinessCard {
     String _workPhone;
     String _workAddress;
     String _workWebsite;
+    String _date;
 
 
 
@@ -27,7 +28,7 @@ public class  BusinessCard {
     //constructor
     public BusinessCard(int keyId, String name, byte[] image, String company,String job,
                         String address, String email,String phone,String workPhone,
-                        String workAddress, String workWebsite){
+                        String workAddress, String workWebsite ,String date){
         this._id = keyId;
         this._name = name;
         this._image = image;
@@ -39,6 +40,7 @@ public class  BusinessCard {
         this._workPhone = workPhone;
         this._workAddress = workAddress;
         this._workWebsite = workWebsite;
+        this._date = date;
     }
 
     //constructor tat have name and image
@@ -56,6 +58,11 @@ public class  BusinessCard {
     public BusinessCard(String name, String company){
         this._name = name;
         this._company = company;
+    }
+
+    public BusinessCard( byte[] image){
+        this._image = image;
+
     }
 
     //constructor
@@ -172,5 +179,11 @@ public class  BusinessCard {
         this._workWebsite =  workWebsite;
     }
 
+    public String get_date(){
+        return this._date;
+    }
 
+    public void set_date(String date){
+        this._date = date;
+    }
 }

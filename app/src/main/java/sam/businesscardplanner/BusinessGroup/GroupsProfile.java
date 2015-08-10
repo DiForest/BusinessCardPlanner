@@ -127,7 +127,7 @@ public class GroupsProfile extends AppCompatActivity{
     //setup the menu
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.edit_menu, menu);
+        getMenuInflater().inflate(R.menu.menu_edit, menu);
         return true;
     }
 

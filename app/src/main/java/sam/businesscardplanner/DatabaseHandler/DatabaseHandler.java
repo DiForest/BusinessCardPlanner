@@ -24,7 +24,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String TABLE_BUSINESS_CARD ="businessCard";
     private static final String KEY_ID = "id";
     private static final String KEY_NAME = "name";
-    private static final String KEY_IMAGE = "profileImage";
+    private static final String KEY_IMAGE_BITMAP = "profileImage";
     private static final String KEY_COMPANY = "company";
     private static final String KEY_JOB = "job";
     private static final String KEY_PHONE = "phone";
@@ -48,10 +48,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String PEOPLE_FOREIGN_KEY = "peopleForeignKey";
     private static final String PEOPLE_NAME = "peopleName";
 
+
     //create card statement
     private static String CREATE_BUSINESS_CARD_TABLE = "CREATE TABLE "+ TABLE_BUSINESS_CARD
             + " (" + KEY_ID + " INTEGER PRIMARY KEY, " +
-            //KEY_IMAGE + " BLOB," +
             KEY_NAME + " TEXT, " +
             KEY_COMPANY + " TEXT, " +
             KEY_JOB + " TEXT, " +
@@ -60,7 +60,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             KEY_EMAIL + " TEXT, " +
             KEY_WORK_PHONE + " TEXT, " +
             KEY_WORK_ADDRESS + " TEXT, " +
-            KEY_WORK_WEBSITE + " TEXT " +");";
+            KEY_WORK_WEBSITE + " TEXT, " +
+            KEY_IMAGE_BITMAP + " TEXT " +");";
 
     //create group statement
     private static String CREATE_BUSINESS_GROUP_TABLE = "CREATE TABLE "+ TABLE_BUSINESS_GROUP
@@ -105,8 +106,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     //add business card into database
     public void addBusinessCard(BusinessCard businessCard){
         SQLiteDatabase db =  this.getWritableDatabase();
-
         ContentValues values = new ContentValues();
+
         values.put(KEY_NAME , businessCard.get_name());
         values.put(KEY_JOB, businessCard.get_job());
         values.put(KEY_COMPANY, businessCard.get_company());
@@ -115,7 +116,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(KEY_EMAIL, businessCard.get_email());
         values.put(KEY_WORK_PHONE, businessCard.get_workPhone());
         values.put(KEY_WORK_ADDRESS, businessCard.get_workAddress());
-        //values.put(KEY_IMAGE, businessCard._image);
+        values.put(KEY_IMAGE_BITMAP, businessCard.get_image());
 
         db.insert(TABLE_BUSINESS_CARD, null, values);
         db.close();
@@ -135,7 +136,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                     BusinessCard businessCard = new BusinessCard();
                     businessCard.set_id(Integer.parseInt(cursor.getString(0)));
                     businessCard.set_name(cursor.getString(1));
-                    businessCard.set_image(cursor.getBlob(2));
+                    businessCard.set_image(cursor.getBlob(10));
 
                     //add into list
                     businessCardList.add(businessCard);
@@ -148,26 +149,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
         db.close();
         return businessCardList;
-    }
-
-    //get all the business card NAME only
-    public List<String> getAllBusinessCardName(){
-        List<String> cardList = new ArrayList<String>();
-        String selectQuery = "SELECT "+ KEY_NAME + " FROM " + TABLE_BUSINESS_CARD ;
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery(selectQuery, null);
-
-        if(cursor != null){
-            if(cursor.moveToFirst()){
-                do{
-                    BusinessCard businessCard = new BusinessCard();
-                    //get the business card name and add into list
-                    cardList.add(businessCard.get_name());
-                }while (cursor.moveToNext());
-            }
-            db.close();
-        }
-        return cardList;
     }
 
     //get ONE business card by id
@@ -191,6 +172,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             businessCard.set_workPhone(cursor.getString(7));
             businessCard.set_address(cursor.getString(8));
             businessCard.set_workWebsite(cursor.getString(9));
+            businessCard.set_image(cursor.getBlob(10));
         }
         return businessCard;
     }
@@ -200,7 +182,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(KEY_NAME, businessCard.get_name());
-        values.put(KEY_IMAGE, businessCard.get_image());
+        values.put(KEY_IMAGE_BITMAP, businessCard.get_image());
 
         return  db.update(TABLE_BUSINESS_CARD, values, KEY_ID + " = ?",
                 new String[]{ String.valueOf(businessCard.get_id()) });
@@ -224,11 +206,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return cursor.getCount();
     }
 
-    public List<BusinessCard> getAvailableBusinessCard(){
+    //public List<BusinessCard> getAvailableBusinessCard(){
 
 
-        return;
-    }
+       // return;
+    //}
+
+
 
 
     /* -------------------------------  Business Group Table  ----------------------------------- */
