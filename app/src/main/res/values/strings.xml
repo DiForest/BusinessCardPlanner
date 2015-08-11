@@ -24,4 +24,6 @@
 
     <string name="groupName">Group name</string>
     <string name="groupDescription">Description your group</string>
+
+    <string name="album_name">CameraSample</string>
 </resources>

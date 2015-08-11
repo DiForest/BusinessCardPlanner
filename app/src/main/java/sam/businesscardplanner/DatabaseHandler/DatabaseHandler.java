@@ -136,7 +136,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                     BusinessCard businessCard = new BusinessCard();
                     businessCard.set_id(Integer.parseInt(cursor.getString(0)));
                     businessCard.set_name(cursor.getString(1));
-                    businessCard.set_image(cursor.getBlob(10));
+                    businessCard.set_image(cursor.getString(10));
 
                     //add into list
                     businessCardList.add(businessCard);
@@ -172,7 +172,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             businessCard.set_workPhone(cursor.getString(7));
             businessCard.set_address(cursor.getString(8));
             businessCard.set_workWebsite(cursor.getString(9));
-            businessCard.set_image(cursor.getBlob(10));
+            businessCard.set_image(cursor.getString(10));
         }
         return businessCard;
     }

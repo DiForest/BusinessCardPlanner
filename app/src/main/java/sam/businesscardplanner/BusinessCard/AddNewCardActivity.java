@@ -1,16 +1,15 @@
 package sam.businesscardplanner.BusinessCard;
 
-import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,10 +18,11 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Calendar;
 
-import sam.businesscardplanner.DatabaseHandler.DatabaseHandler;
 import sam.businesscardplanner.R;
 
 /**
@@ -30,23 +30,23 @@ import sam.businesscardplanner.R;
  */
 public class AddNewCardActivity extends AppCompatActivity {
 
-    EditText nameEditText;
-    EditText jobEditText;
-    EditText companyEditText;
-    EditText emailEditText;
-    EditText phoneEditText;
-    EditText addressEditText;
-    EditText workPhoneEditText;
-    EditText workAddressEditText;
-    EditText workWebsiteEditText;
+    private EditText nameEditText;
+    private EditText jobEditText;
+    private EditText companyEditText;
+    private EditText emailEditText;
+    private EditText phoneEditText;
+    private EditText addressEditText;
+    private EditText workPhoneEditText;
+    private EditText workAddressEditText;
+    private EditText workWebsiteEditText;
 
-    ImageView imageView;
-    Button btnAddImage;
-
-    BusinessCard businessCard = new BusinessCard();
+    private ImageView imageView;
+    private Bitmap imageBitmap;
+    private Button btnAddImage;
 
     private static final int CAMERA_REQUEST = 1;
     private static final int GALLERY_REQUEST = 2;
+
     private Toolbar mToolbar;
 
     public void onCreate(Bundle savedInstanceState){
@@ -70,7 +70,9 @@ public class AddNewCardActivity extends AppCompatActivity {
         setUpToolbar();
         setUpNavDrawer();
 
-        btnAddImage.setOnClickListener(new View.OnClickListener() {
+        btnAddImage = (Button) findViewById(R.id.btn_add_image);
+        btnAddImage.setOnClickListener(new View.OnClickListener(){
+
             @Override
             public void onClick(View v) {
                 onCreateDialog();
@@ -79,19 +81,30 @@ public class AddNewCardActivity extends AppCompatActivity {
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
-        super.onActivityResult(requestCode,resultCode,data);
+        super.onActivityResult(requestCode, resultCode, data);
 
-        if (resultCode != RESULT_OK)
-            return;
+        if (resultCode == RESULT_OK){
+            if(requestCode == CAMERA_REQUEST){
+                imageBitmap = (Bitmap) data.getExtras().get("data");
+                ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+                imageBitmap.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
+                File destination = new File(Environment.getExternalStorageDirectory(),
+                        System.currentTimeMillis() + ".jpg");
+                FileOutputStream fo;
+                try {
+                    destination.createNewFile();
+                    fo = new FileOutputStream(destination);
+                    fo.write(bytes.toByteArray());
+                    fo.close();
+                } catch (FileNotFoundException e){
+                    e.printStackTrace();
+                } catch (IOException e){
+                    e.printStackTrace();
+                }
+                imageView.setImageBitmap(imageBitmap);
 
-        switch(requestCode) {
-            case CAMERA_REQUEST:
-
-                Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-                imageView.setImageBitmap(bitmap);
-                break;
-
-            case GALLERY_REQUEST:
+            } else
+            if (requestCode == GALLERY_REQUEST){
                 Uri uri = data.getData();
                 try {
                     Bitmap bmp = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
@@ -99,11 +112,31 @@ public class AddNewCardActivity extends AppCompatActivity {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                break;
+            }
         }
 
     }
-    public void callCamera() {
+
+    /*
+    protected void onSaveInstanceState(Bundle outsState){
+        outsState.putParcelable(BITMAP_STORAGE_KEY, imageBitmap);
+        super.onSaveInstanceState(outsState);
+    }
+
+    protected void onRestoreInstanceState(Bundle savedInstanceState){
+        super.onRestoreInstanceState(savedInstanceState);
+        imageBitmap = savedInstanceState.getParcelable(BITMAP_STORAGE_KEY);
+    }
+
+    private void setBtnListenerOrDisable(
+            Button btn, Button.OnClickListener onClickListener,
+            String intentName
+    ){
+        btn.setOnClickListener(onClickListener);
+    }
+
+    */
+    private void callCamera() {
         Intent cameraIntent = new Intent(
                 android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
         cameraIntent.putExtra("crop", true);
@@ -113,10 +146,9 @@ public class AddNewCardActivity extends AppCompatActivity {
         cameraIntent.putExtra("outputY", 150);
 
         startActivityForResult(cameraIntent, CAMERA_REQUEST);
-
     }
 
-    public void callGallery() {
+    private void callGallery() {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
@@ -129,28 +161,23 @@ public class AddNewCardActivity extends AppCompatActivity {
         startActivityForResult(Intent.createChooser(intent,
                 "Select Picture"), GALLERY_REQUEST);
     }
-
     protected void onCreateDialog() {
-
         final CharSequence[] items = {"Take from Camera", "Take from Gallery"};
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Select Option");
-
         builder.setItems(items, new DialogInterface.OnClickListener() {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if (which == 0) {
+                if (items[which].equals("Take from Camera")) {
                     callCamera();
-                }
-                if (which == 1) {
+                }else if (items[which].equals("Take from Gallery")) {
                     callGallery();
                 }
             }
         });
         AlertDialog alert = builder.create();
         alert.show();
-
     }
 
     //setup the toolbar
@@ -160,7 +187,6 @@ public class AddNewCardActivity extends AppCompatActivity {
             setSupportActionBar(mToolbar);
         }
     }
-
 
     //setup the menu
     @Override
@@ -175,7 +201,7 @@ public class AddNewCardActivity extends AppCompatActivity {
 
         switch (item.getItemId()) {
             case R.id.action_next:
-                saveInfo();
+                //saveInfo();
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -196,6 +222,7 @@ public class AddNewCardActivity extends AppCompatActivity {
         }
     }
 
+    /*
     public void saveInfo(){
         //get bitmap from image view
         Bitmap bmp = ((BitmapDrawable)imageView.getDrawable()).getBitmap();
@@ -213,7 +240,7 @@ public class AddNewCardActivity extends AppCompatActivity {
         String addressWork = workAddressEditText.getText().toString();
         String email = emailEditText.getText().toString();
         String website = workWebsiteEditText.getText().toString();
-        
+
         if(TextUtils.isEmpty(name) ) {
             nameEditText.setError("Please fill up the name.");
             return;
@@ -260,6 +287,7 @@ public class AddNewCardActivity extends AppCompatActivity {
         String date = ("" + day_+"/"+month_+"/"+year);
         return date;
     }
+    */
 }
 
 

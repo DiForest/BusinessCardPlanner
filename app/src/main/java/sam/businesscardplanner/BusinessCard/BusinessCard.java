@@ -9,7 +9,7 @@ public class  BusinessCard {
     String _name;
     String _company;
     String _job;
-    byte[] _image;
+    String _image;
     String _address;
     String _email;
     String _phone;
@@ -26,7 +26,7 @@ public class  BusinessCard {
     }
 
     //constructor
-    public BusinessCard(int keyId, String name, byte[] image, String company,String job,
+    public BusinessCard(int keyId, String name, String image, String company,String job,
                         String address, String email,String phone,String workPhone,
                         String workAddress, String workWebsite ,String date){
         this._id = keyId;
@@ -41,28 +41,6 @@ public class  BusinessCard {
         this._workAddress = workAddress;
         this._workWebsite = workWebsite;
         this._date = date;
-    }
-
-    //constructor tat have name and image
-    public BusinessCard(String name, byte[] image){
-        this._name = name;
-        this._image = image;
-
-    }
-
-    public BusinessCard(String name){
-        this._name = name;
-    }
-
-    //have name and company
-    public BusinessCard(String name, String company){
-        this._name = name;
-        this._company = company;
-    }
-
-    public BusinessCard( byte[] image){
-        this._image = image;
-
     }
 
     //constructor
@@ -90,12 +68,12 @@ public class  BusinessCard {
         this._name = name;
     }
 
-    public byte[] get_image()
+    public String get_image()
     {
         return this._image;
     }
 
-    public void set_image(byte[] image)
+    public void set_image(String image)
     {
         this._image = image;
     }
@@ -164,6 +142,7 @@ public class  BusinessCard {
     {
         return this._workAddress;
     }
+
     public void set_workAddress(String workAddress)
     {
         this._workAddress = workAddress;
