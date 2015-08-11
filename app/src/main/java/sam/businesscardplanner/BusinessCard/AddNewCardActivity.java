@@ -3,6 +3,7 @@ package sam.businesscardplanner.BusinessCard;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -10,6 +11,7 @@ import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,11 +19,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import sam.businesscardplanner.R;
 
@@ -46,9 +47,17 @@ public class AddNewCardActivity extends AppCompatActivity {
 
     private static final int CAMERA_REQUEST = 1;
     private static final int GALLERY_REQUEST = 2;
+    private static final String BITMAP_STORAGE_KEY = "viewbitmap";
+    private String mCurrentPhotoPath;
+
+    private static final String JPEG_FILE_PREFIX = "IMG_";
+    private static final String JPEG_FILE_SUFFIX = ".jpg";
+
+    private AlbumStorageDirFactory mAlbumStorageDirFactory = null;
 
     private Toolbar mToolbar;
 
+    /* ------------------------------------ activity ----------------------------------*/
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_card);
@@ -78,6 +87,97 @@ public class AddNewCardActivity extends AppCompatActivity {
                 onCreateDialog();
             }
         });
+
+        mAlbumStorageDirFactory = new BaseAlbumDirFactory(); 
+    }
+    //set the album name
+    private String getAlbumName() {
+        return getString(R.string.album_name);
+    }
+
+    //set the file path
+    private File getAlbumDir() {
+        File storageDir = null;
+
+        if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
+
+            storageDir = mAlbumStorageDirFactory.getAlbumStorageDir(getAlbumName());
+
+            if (storageDir != null) {
+                if (! storageDir.mkdirs()) {
+                    if (! storageDir.exists()){
+                        Log.d("PlannerImage", "failed to create directory");
+                        return null;
+                    }
+                }
+            }
+
+        } else {
+            Log.v(getString(R.string.app_name), "External storage is not mounted READ/WRITE.");
+        }
+
+        return storageDir;
+    }
+
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = JPEG_FILE_PREFIX + timeStamp + "_";
+        File albumF = getAlbumDir();
+        File imageF = File.createTempFile(imageFileName, JPEG_FILE_SUFFIX, albumF);
+        return imageF;
+    }
+
+    private File setUpPhotoFile() throws IOException {
+        File f = createImageFile();
+        mCurrentPhotoPath = f.getAbsolutePath();
+        return f;
+    }
+
+    private void setPic() {
+
+		/* Get the size of the ImageView */
+        int targetW = imageView.getWidth();
+        int targetH = imageView.getHeight();
+
+		/* Get the size of the image */
+        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+        bmOptions.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
+        int photoW = bmOptions.outWidth;
+        int photoH = bmOptions.outHeight;
+
+		/* Figure out which way needs to be reduced less */
+        int scaleFactor = 1;
+        if ((targetW > 0) || (targetH > 0)) {
+            scaleFactor = Math.min(photoW/targetW, photoH/targetH);
+        }
+
+		/* Set bitmap options to scale the image decode target */
+        bmOptions.inJustDecodeBounds = false;
+        bmOptions.inSampleSize = scaleFactor;
+
+		/* Decode the JPEG file into a Bitmap */
+        Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
+		/* Associate the Bitmap to the ImageView */
+        imageView.setImageBitmap(bitmap);
+
+    }
+
+    private void galleryAddPic() {
+        Intent mediaScanIntent = new Intent("android.intent.action.MEDIA_SCANNER_SCAN_FILE");
+        File f = new File(mCurrentPhotoPath);
+        Uri contentUri = Uri.fromFile(f);
+        mediaScanIntent.setData(contentUri);
+        this.sendBroadcast(mediaScanIntent);
+    }
+
+    private void handleBigCameraPhoto() {
+        if (mCurrentPhotoPath != null) {
+            setPic();
+            galleryAddPic();
+            mCurrentPhotoPath = null;
+        }
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
@@ -85,24 +185,7 @@ public class AddNewCardActivity extends AppCompatActivity {
 
         if (resultCode == RESULT_OK){
             if(requestCode == CAMERA_REQUEST){
-                imageBitmap = (Bitmap) data.getExtras().get("data");
-                ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-                imageBitmap.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
-                File destination = new File(Environment.getExternalStorageDirectory(),
-                        System.currentTimeMillis() + ".jpg");
-                FileOutputStream fo;
-                try {
-                    destination.createNewFile();
-                    fo = new FileOutputStream(destination);
-                    fo.write(bytes.toByteArray());
-                    fo.close();
-                } catch (FileNotFoundException e){
-                    e.printStackTrace();
-                } catch (IOException e){
-                    e.printStackTrace();
-                }
-                imageView.setImageBitmap(imageBitmap);
-
+                handleBigCameraPhoto();
             } else
             if (requestCode == GALLERY_REQUEST){
                 Uri uri = data.getData();
@@ -117,7 +200,6 @@ public class AddNewCardActivity extends AppCompatActivity {
 
     }
 
-    /*
     protected void onSaveInstanceState(Bundle outsState){
         outsState.putParcelable(BITMAP_STORAGE_KEY, imageBitmap);
         super.onSaveInstanceState(outsState);
@@ -128,28 +210,26 @@ public class AddNewCardActivity extends AppCompatActivity {
         imageBitmap = savedInstanceState.getParcelable(BITMAP_STORAGE_KEY);
     }
 
-    private void setBtnListenerOrDisable(
-            Button btn, Button.OnClickListener onClickListener,
-            String intentName
-    ){
-        btn.setOnClickListener(onClickListener);
-    }
-
-    */
     private void callCamera() {
-        Intent cameraIntent = new Intent(
-                android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-        cameraIntent.putExtra("crop", true);
-        cameraIntent.putExtra("aspectX", 0);
-        cameraIntent.putExtra("aspectY", 0);
-        cameraIntent.putExtra("outputX", 200);
-        cameraIntent.putExtra("outputY", 150);
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        File f = null;
 
-        startActivityForResult(cameraIntent, CAMERA_REQUEST);
+        try {
+            f = setUpPhotoFile();
+            mCurrentPhotoPath = f.getAbsolutePath();
+            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
+        } catch (IOException e) {
+            e.printStackTrace();
+            f = null;
+            mCurrentPhotoPath = null;
+        }
+
+        startActivityForResult(takePictureIntent, CAMERA_REQUEST);
     }
 
     private void callGallery() {
         Intent intent = new Intent();
+
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         intent.putExtra("crop", "true");
@@ -158,9 +238,11 @@ public class AddNewCardActivity extends AppCompatActivity {
         intent.putExtra("outputX", 200);
         intent.putExtra("outputY", 150);
         intent.putExtra("return-data", true);
+
         startActivityForResult(Intent.createChooser(intent,
                 "Select Picture"), GALLERY_REQUEST);
     }
+
     protected void onCreateDialog() {
         final CharSequence[] items = {"Take from Camera", "Take from Gallery"};
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
