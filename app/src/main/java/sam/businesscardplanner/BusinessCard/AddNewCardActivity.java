@@ -11,6 +11,7 @@ import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,12 +19,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
+import sam.businesscardplanner.DatabaseHandler.DatabaseHandler;
 import sam.businesscardplanner.R;
 
 /**
@@ -88,7 +92,7 @@ public class AddNewCardActivity extends AppCompatActivity {
             }
         });
 
-        mAlbumStorageDirFactory = new BaseAlbumDirFactory(); 
+        mAlbumStorageDirFactory = new BaseAlbumDirFactory();
     }
     //set the album name
     private String getAlbumName() {
@@ -192,6 +196,8 @@ public class AddNewCardActivity extends AppCompatActivity {
                 try {
                     Bitmap bmp = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
                     imageView.setImageBitmap(bmp);
+                    String imagePath = uri.getPath();
+                    mCurrentPhotoPath = imagePath.toString();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -253,7 +259,7 @@ public class AddNewCardActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 if (items[which].equals("Take from Camera")) {
                     callCamera();
-                }else if (items[which].equals("Take from Gallery")) {
+                } else if (items[which].equals("Take from Gallery")) {
                     callGallery();
                 }
             }
@@ -283,7 +289,7 @@ public class AddNewCardActivity extends AppCompatActivity {
 
         switch (item.getItemId()) {
             case R.id.action_next:
-                //saveInfo();
+                saveInfo();
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -304,14 +310,9 @@ public class AddNewCardActivity extends AppCompatActivity {
         }
     }
 
-    /*
-    public void saveInfo(){
-        //get bitmap from image view
-        Bitmap bmp = ((BitmapDrawable)imageView.getDrawable()).getBitmap();
-        //convert to byte
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
-        byte imageInByte[] = stream.toByteArray();
+
+    private void saveInfo(){
+        BusinessCard businessCard = new BusinessCard();
 
         String name = nameEditText.getText().toString();
         String job = jobEditText.getText().toString();
@@ -322,42 +323,61 @@ public class AddNewCardActivity extends AppCompatActivity {
         String addressWork = workAddressEditText.getText().toString();
         String email = emailEditText.getText().toString();
         String website = workWebsiteEditText.getText().toString();
+        String image = mCurrentPhotoPath;
 
-        if(TextUtils.isEmpty(name) ) {
+
+        if (mCurrentPhotoPath == null){
+            Toast.makeText(this.getApplicationContext(),
+                    "Must have add an business card image", Toast.LENGTH_LONG)
+                    .show();
+            return;
+        }
+        else if(TextUtils.isEmpty(name) ) {
             nameEditText.setError("Please fill up the name.");
-            return;
+            Toast.makeText(this.getApplicationContext(),
+                    "Must have a name", Toast.LENGTH_LONG).show();
         }
-
-        if(TextUtils.isEmpty(job) ) {
-            jobEditText.setError("Please fill up the job.");
-            return;
+        else if (TextUtils.isEmpty(job)){
+            jobEditText.getText().toString();
+            Toast.makeText(this.getApplicationContext(),
+                    "Must have a job", Toast.LENGTH_LONG).show();
         }
-
-        if(TextUtils.isEmpty(company)) {
-            companyEditText.setError("Please fill up the company.");
-            return;
+        else if (TextUtils.isEmpty(company)){
+            companyEditText.getText().toString();
+            Toast.makeText(this.getApplicationContext(),
+                    "Must have a company", Toast.LENGTH_LONG).show();
         }
-
-        if(TextUtils.isEmpty(phone) ) {
-            phoneEditText.setError("Please fill up the name.");
-            return;
+        else if (TextUtils.isEmpty(phone)){
+            phoneEditText.getText().toString();
+            Toast.makeText(this.getApplicationContext(),
+                    "Must have a phone", Toast.LENGTH_LONG).show();
         }
+        else if (TextUtils.isEmpty(address)){
+            addressEditText.getText().toString();
+            Toast.makeText(this.getApplicationContext(),
+                    "Must have an address", Toast.LENGTH_LONG).show();
+        }
+        else {
+            businessCard.set_name(name);
+            businessCard.set_job(job);
+            businessCard.set_company(company);
+            businessCard.set_phone(phone);
+            businessCard.set_workPhone(phoneWork);
+            businessCard.set_workAddress(addressWork);
+            businessCard.set_address(address);
+            businessCard.set_email(email);
+            businessCard.set_date(getDateTime());
+            businessCard.set_image(mCurrentPhotoPath);
+            businessCard.set_workWebsite(website);
 
-        businessCard.set_name(name);
-        businessCard.set_job(job);
-        businessCard.set_company(company);
-        businessCard.set_phone(phone);
-        businessCard.set_workPhone(phoneWork);
-        businessCard.set_workAddress(addressWork);
-        businessCard.set_address(address);
-        businessCard.set_email(email);
-        businessCard.set_date(getDateTime());
-        businessCard.set_image(imageInByte);
-        businessCard.set_workWebsite(website);
+            DatabaseHandler db = new DatabaseHandler(getBaseContext());
+            db.addBusinessCard(businessCard);
 
-        DatabaseHandler db = new DatabaseHandler(getBaseContext());
-        db.addBusinessCard(businessCard);
-        finish();
+            Toast.makeText(this.getApplicationContext(),
+                    "Image " + mCurrentPhotoPath + " Saved Successfully", Toast.LENGTH_LONG)
+                    .show();
+            finish();
+        }
     }
 
     private String getDateTime() {
@@ -369,7 +389,6 @@ public class AddNewCardActivity extends AppCompatActivity {
         String date = ("" + day_+"/"+month_+"/"+year);
         return date;
     }
-    */
 }
 
 

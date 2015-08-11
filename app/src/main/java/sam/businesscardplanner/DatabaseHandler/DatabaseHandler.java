@@ -142,10 +142,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                     businessCardList.add(businessCard);
                 } while (cursor.moveToNext());
             }
-        }else{
-            BusinessCard businessCard = new BusinessCard();
-            businessCard.set_name(" Current does not a card");
-            businessCard.set_company(" ");
         }
         db.close();
         return businessCardList;

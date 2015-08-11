@@ -1,6 +1,7 @@
 package sam.businesscardplanner.BusinessCard;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -70,12 +71,11 @@ public class BusinessCardProfile extends AppCompatActivity{
         cardWorkWebsite.setText(businessCard.get_workWebsite());
         cardAddress.setText(businessCard.get_address());
 
-        /*
-        byte[] outImage = businessCard.get_image();
-        ByteArrayInputStream imageStream = new ByteArrayInputStream(outImage);
-        Bitmap theImage = BitmapFactory.decodeStream(imageStream);
-        cardImage.setImageBitmap(theImage);
-        */
+        String imagePath = businessCard.get_image();
+        if(imagePath!= null) {
+            Uri uri = Uri.parse(imagePath);
+            cardImage.setImageURI(uri);
+        }
 
     }
 

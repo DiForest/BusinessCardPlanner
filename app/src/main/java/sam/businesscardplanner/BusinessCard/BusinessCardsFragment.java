@@ -49,7 +49,6 @@ public class BusinessCardsFragment extends Fragment {
                 Toast.makeText(getActivity().getApplicationContext(),
                         "Click ListItem Number " + itemID, Toast.LENGTH_LONG)
                         .show();
-
                 Intent intent = new Intent(BusinessCardsFragment.this.getActivity(),
                         BusinessCardProfile.class);
                 intent.putExtra("ITEM ID", itemID);
