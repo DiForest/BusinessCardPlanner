@@ -23,9 +23,8 @@ import sam.businesscardplanner.DatabaseHandler.DatabaseHandler;
  */
 public class AddMemberActivity extends AppCompatActivity {
 
-    List list = null;
-    Toolbar mToolbar;
-
+    private List list = null;
+    private Toolbar mToolbar;
     private int GROUP_ID;
 
     public void onCreate(Bundle savedInstance){
@@ -46,7 +45,7 @@ public class AddMemberActivity extends AppCompatActivity {
         listView.setAdapter(adapter);
 
         //on click any card to add the member
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 int itemID = adapter.getListItemId(position);
@@ -60,14 +59,14 @@ public class AddMemberActivity extends AppCompatActivity {
                 String groupName = bg.get_name();
 
                 //add the member into database
-                db.addMemberInGroup(GROUP_ID,itemID);
+                db.addMemberInGroup(GROUP_ID, itemID);
                 Toast.makeText(getApplicationContext(),
                         "Added " + cardName + " into " + groupName, Toast.LENGTH_LONG)
                         .show();
 
                 Intent intent = new Intent();
-                intent.putExtra("Member",cardName);
-                setResult(RESULT_OK,intent);
+                intent.putExtra("Member", cardName);
+                setResult(RESULT_OK, intent);
                 AddMemberActivity.this.finish();
             }
         });

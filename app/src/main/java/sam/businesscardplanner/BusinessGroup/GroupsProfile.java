@@ -27,16 +27,16 @@ public class GroupsProfile extends AppCompatActivity{
 
     private Toolbar mToolbar;
 
-    TextView groupName;
-    TextView groupMemberNumber;
-    TextView groupCreateDate;
-    Button btnAddMember;
-    Button btnDeteleGroup;
+    private TextView groupName;
+    private TextView groupMemberNumber;
+    private TextView groupCreateDate;
+    private Button btnAddMember;
+    private Button btnDeteleGroup;
 
-    List list = null;
-    ListView memberList;
+    private List list = null;
+    private ListView memberList;
 
-    Context context;
+    private Context context;
 
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -92,23 +92,9 @@ public class GroupsProfile extends AppCompatActivity{
                 Intent addMemberIntent = new Intent(GroupsProfile.this,AddMemberActivity.class);
                 addMemberIntent.putExtra("groupID", groupId);
                 startActivity(addMemberIntent);
-
             }
         });
     }
-
-    /*
-    protected void onActivityResult(int requestCode, int resultCode, Intent data){
-        super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode==2){
-            int cardID = data.getIntExtra("itemID",-1);
-            final DatabaseHandler cardDB = new DatabaseHandler(this);
-            final BusinessCard businessCard = cardDB.getBusinessCard(cardID);
-            //memberList.add
-        }
-    }
-    */
-
 
     private List<BusinessCard> generateData(int groupId){
         DatabaseHandler db1 = new DatabaseHandler(this);
