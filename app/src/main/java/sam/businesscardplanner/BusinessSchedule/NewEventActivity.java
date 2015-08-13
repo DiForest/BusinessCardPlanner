@@ -38,6 +38,7 @@ public class NewEventActivity extends AppCompatActivity {
     private TextView mPeople;
     private EditText mPeopleInput;
     private ImageView mPeopleImage;
+    private ImageView mPeopleInputCancel;
 
     private TextView mNote;
     private TextView mTag;
@@ -90,6 +91,7 @@ public class NewEventActivity extends AppCompatActivity {
         mPeople = (TextView) findViewById(R.id.txt_people);
         mPeopleInput = (EditText)  findViewById(R.id.input_people);
         mPeopleImage = (ImageView) findViewById(R.id.people_image);
+        mPeopleInputCancel = (ImageView) findViewById(R.id.invite_people_cancel);
 
         mNote = (TextView) findViewById(R.id.txt_note);
         mLocation = (EditText) findViewById(R.id.txt_location);
@@ -162,6 +164,16 @@ public class NewEventActivity extends AppCompatActivity {
                 invitePeople(peopleList);
                 for(String peopleInvited : peopleList)
                 mPeople.setText(peopleInvited + " ");
+            }
+        });
+
+        mPeopleInputCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mPeopleInput.setText("");
+                mPeopleInput.setVisibility(View.GONE);
+                mPeopleImage.setVisibility(View.GONE);
+                mPeopleInputCancel.setVisibility(View.GONE);
             }
         });
 
@@ -265,6 +277,7 @@ public class NewEventActivity extends AppCompatActivity {
                 } else if (items[which].equals("Custom")) {
                     mPeopleInput.setVisibility(View.VISIBLE);
                     mPeopleImage.setVisibility(View.VISIBLE);
+                    mPeopleInputCancel.setVisibility(View.VISIBLE);
                 }
             }
         });
