@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import sam.businesscardplanner.BusinessCard.BusinessCardsFragment;
+import sam.businesscardplanner.BusinessSchedule.ScheduleFragment;
 import sam.businesscardplanner.BusinessGroup.GroupsFragment;
 
 /**
@@ -122,12 +123,6 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.navigation_item_5:
                 fragmentClass = TagsFragment.class;
-                break;
-            case R.id.navigation_sub_item_1:
-                fragmentClass = YourProfileFragment.class;
-                break;
-            case R.id.navigation_sub_item_2:
-                fragmentClass = SettingFragment.class;
                 break;
             default:
                 fragmentClass = BusinessCardsFragment.class;

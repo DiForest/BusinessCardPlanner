@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    android:padding="5dip">
+
+    <LinearLayout android:id="@+id/thumbnail_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="15dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:text="18"
+            android:textSize="30dp"
+            android:id="@+id/label_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/label_month"
+            android:textSize="26dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sept" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="64dp"
+        android:layout_toRightOf="@+id/thumbnail_date"
+        android:layout_marginLeft="20dp"
+        android:layout_alignBaseline="@+id/label_month"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="10dp"
+        android:background="#87CEFA"
+        android:padding="10dp">
+
+    <TextView
+        android:id="@+id/label_content"
+        android:text="My birthday siis adhuw dkwaudwiuye wuequue"
+        android:textSize="20dp"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_alignTop="@+id/thumbnail_date"
+        android:layout_toRightOf="@+id/thumbnail_date" />
+
+    </LinearLayout>
+</RelativeLayout>

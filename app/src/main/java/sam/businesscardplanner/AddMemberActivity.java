@@ -1,4 +1,4 @@
-package sam.businesscardplanner.BusinessGroup;
+package sam.businesscardplanner;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,8 +15,8 @@ import java.util.List;
 
 import sam.businesscardplanner.BusinessCard.BusinessCard;
 import sam.businesscardplanner.BusinessCard.RowViewAdapter;
+import sam.businesscardplanner.BusinessGroup.BusinessGroups;
 import sam.businesscardplanner.DatabaseHandler.DatabaseHandler;
-import sam.businesscardplanner.R;
 
 /**
  * Created by Administrator on 8/7/2015.
@@ -65,6 +65,9 @@ public class AddMemberActivity extends AppCompatActivity {
                         "Added " + cardName + " into " + groupName, Toast.LENGTH_LONG)
                         .show();
 
+                Intent intent = new Intent();
+                intent.putExtra("Member",cardName);
+                setResult(RESULT_OK,intent);
                 AddMemberActivity.this.finish();
             }
         });

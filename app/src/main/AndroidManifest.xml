@@ -26,7 +26,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".NewEventActivity"
+        <activity android:name=".BusinessSchedule.NewEventActivity"
             android:label="Create new Event"/>
 
         <activity android:name=".BusinessCard.AddNewCardActivity"
@@ -39,7 +39,7 @@
 
         <activity android:name=".BusinessGroup.GroupsProfile" />
 
-        <activity android:name=".BusinessGroup.AddMemberActivity"
+        <activity android:name=".AddMemberActivity"
             android:launchMode="singleTop">
         <intent-filter>
             <action android:name="android.intent.action.SEARCH" />

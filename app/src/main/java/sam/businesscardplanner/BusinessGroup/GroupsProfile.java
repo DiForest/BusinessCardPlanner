@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import sam.businesscardplanner.AddMemberActivity;
 import sam.businesscardplanner.BusinessCard.BusinessCard;
 import sam.businesscardplanner.BusinessCard.RowViewAdapter;
 import sam.businesscardplanner.DatabaseHandler.DatabaseHandler;
