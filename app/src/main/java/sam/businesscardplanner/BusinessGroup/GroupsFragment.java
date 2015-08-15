@@ -9,7 +9,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.util.List;
@@ -40,6 +39,7 @@ public class GroupsFragment extends Fragment {
         final ListView listView = (ListView) getActivity().findViewById(R.id.group_list);
         listView.setAdapter(adapter);
 
+        /*
         //clicking on any business card in the list
         //start group profile activity
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -53,6 +53,7 @@ public class GroupsFragment extends Fragment {
                 startActivity(intent);
             }
         });
+        */
     }
 
     //get all the group list and pass to list adapter

@@ -9,19 +9,44 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 
+import java.util.List;
+
+import sam.businesscardplanner.DatabaseHandler.DatabaseHandler;
 import sam.businesscardplanner.R;
 
 /**
  * Created by Administrator on 7/16/2015.
  */
+
 public class ScheduleFragment extends Fragment{
+    List list = null;
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         setHasOptionsMenu(true);
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_schedule, container, false);
+        View view = inflater.inflate(R.layout.fragment_schedule, container, false);
+        return view;
     }
+
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        final EventRowViewAdapter adapter =
+                new EventRowViewAdapter(getActivity().getApplicationContext(), generateData());
+        final ListView listView = (ListView) getActivity().findViewById(R.id.event_list);
+        listView.setAdapter(adapter);
+
+
+    }
+
+    private List<BusinessEvent> generateData(){
+        DatabaseHandler db1 = new DatabaseHandler(getActivity().getApplicationContext());
+        list = db1.getAllEvent();
+        return list;
+    }
+
 
     /* -------------------Menu bar ---------------------*/
     @Override

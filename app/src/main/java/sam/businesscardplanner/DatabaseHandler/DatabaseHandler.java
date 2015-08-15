@@ -11,6 +11,7 @@ import java.util.List;
 
 import sam.businesscardplanner.BusinessCard.BusinessCard;
 import sam.businesscardplanner.BusinessGroup.BusinessGroups;
+import sam.businesscardplanner.BusinessSchedule.BusinessEvent;
 
 /**
  * Created by Administrator on 7/19/2015.
@@ -48,6 +49,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String PEOPLE_FOREIGN_KEY = "peopleForeignKey";
     private static final String PEOPLE_NAME = "peopleName";
 
+    //schedule table
+    private static final String TABLE_EVENT = "businessEvent";
+    private static final String KEY_EVENT_ID = "id";
+    private static final String KEY_EVENT_TITLE = "businessEventName";
+    private static final String KEY_START_TIME = "startTime";
+    private static final String KEY_END_TIME ="endTime";
+    private static final String KEY_ALL_DAY_STATUS = "allDayStatus";
+    private static final String KEY_INVITED_PEOPLE ="invitedPeople";
+    private static final String KEY_INVITED_PEOPLE_FROM_ID = "invitedPeopleFromId";
 
     //create card statement
     private static String CREATE_BUSINESS_CARD_TABLE = "CREATE TABLE "+ TABLE_BUSINESS_CARD
@@ -82,6 +92,18 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             //+ TABLE_BUSINESS_CARD + "( " + KEY_GROUP_ID +" )" +
             ");";
 
+    private static String CREATE_EVENT_TABLE = "CREATE TABLE "+ TABLE_EVENT + " ( " +
+            KEY_EVENT_ID + " INTEGER PRIMARY KEY, " +
+            KEY_EVENT_TITLE + " TEXT " + ");";
+            /*
+            +
+            KEY_ALL_DAY_STATUS + " INTEGER, " +
+            KEY_START_TIME + " TEXT, "+
+            KEY_END_TIME + " TEXT, " +
+            KEY_INVITED_PEOPLE + " TEXT, " +
+            KEY_INVITED_PEOPLE_FROM_ID + " TEXT " + " )";
+            */
+
     public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -90,6 +112,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db){
         db.execSQL(CREATE_BUSINESS_CARD_TABLE);
         db.execSQL(CREATE_BUSINESS_GROUP_TABLE);
+        db.execSQL(CREATE_EVENT_TABLE);
         db.execSQL(CREATE_GROUP_AND_PEOPLE_TABLE);
     }
 
@@ -98,6 +121,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_BUSINESS_CARD);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_BUSINESS_GROUP);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_GROUP_PEOPLE);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_EVENT);
 
         onCreate(db);
     }
@@ -321,7 +345,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         BusinessCard bc = getBusinessCard(cardID);
         String name = bc.get_name();
-
         ContentValues values = new ContentValues();
         values.put(GROUP_FOREIGN_KEY, groupID);
         values.put(PEOPLE_FOREIGN_KEY, cardID);
@@ -362,7 +385,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return cardList;
     }
 
-
     public int getCountMemberinGroup(int groupId){
         String countQuery = "SELECT * FROM "+ TABLE_GROUP_PEOPLE + " WHERE " +
                 GROUP_FOREIGN_KEY + " = " + groupId;
@@ -373,4 +395,38 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return cursor.getCount();
     }
 
+    /* ----------------- event ------------------------*/
+
+    public void addEvent(BusinessEvent be){
+        SQLiteDatabase db =  this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put(KEY_EVENT_TITLE , be.get_calendar_tile());
+
+        db.insert(TABLE_EVENT, null, values);
+        db.close();
+    }
+
+    //get all the business card in the database
+    public List<BusinessEvent> getAllEvent() {
+        List<BusinessEvent> businessEventsList = new ArrayList<BusinessEvent>();
+        String selectQuery = "SELECT * FROM businessEvent";
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        if (cursor != null ){
+            if (cursor.moveToFirst()) {
+                do {
+                    BusinessEvent be = new BusinessEvent();
+                    be.set_calendar_id(Integer.parseInt(cursor.getString(0)));
+                    be.set_calendar_tile(cursor.getString(1));
+                    //add into list
+                    businessEventsList.add(be);
+                } while (cursor.moveToNext());
+            }
+        }
+        db.close();
+        return businessEventsList;
+    }
 }

@@ -67,11 +67,13 @@ public class AddNewGroupActivity extends AppCompatActivity {
         String date = ("" + day_+"/"+month_+"/"+year);
 
         DatabaseHandler db = new DatabaseHandler(getBaseContext());
+
         BusinessGroups businessGroups= new BusinessGroups();
         businessGroups.set_name(groupName);
         businessGroups.set_created_date(date);
         businessGroups.set_group_member_number(0);
         db.addGroup(businessGroups);
+
 
         //Intent intent = new Intent(this, AddNewGroupActivity.class);
         //intent.putExtra("groupName", groupName);

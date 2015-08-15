@@ -42,7 +42,7 @@
         android:padding="10dp">
 
     <TextView
-        android:id="@+id/label_content"
+        android:id="@+id/event_title"
         android:text="My birthday siis adhuw dkwaudwiuye wuequue"
         android:textSize="20dp"
         android:layout_height="wrap_content"

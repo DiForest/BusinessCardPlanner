@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -22,8 +23,10 @@ import android.widget.TimePicker;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
-import sam.businesscardplanner.AddMemberActivity;
+import sam.businesscardplanner.BusinessCard.BusinessCard;
+import sam.businesscardplanner.DatabaseHandler.DatabaseHandler;
 import sam.businesscardplanner.R;
 
 /**
@@ -49,6 +52,9 @@ public class NewEventActivity extends AppCompatActivity {
     private EditText mTitle;
     private EditText mLocation;
 
+    private int ALL_DAY_STATUS = 0;
+    private boolean NOTIFICATION_STATUS = true;
+    private int PEOPLE_INVITED = 0;
     private static final int END_TIME_OR_DATE = 1;
     private static final int START_TIME_OR_DATE = 2;
     private static final int NOTIFICATION = 3;
@@ -68,6 +74,7 @@ public class NewEventActivity extends AppCompatActivity {
     private int minute;
 
     private final ArrayList<String> peopleList = new ArrayList<String>();
+    private ArrayList<String> invitedPeople = new ArrayList<String>();
 
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -104,6 +111,7 @@ public class NewEventActivity extends AppCompatActivity {
         mStartTime.setText(getTimeString());
         mEndTime.setText(getTimeString());
 
+        /**** -------------- Button listener -------------------*/
         mStartDate.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 showDatePicker(START_TIME_OR_DATE);
@@ -186,15 +194,17 @@ public class NewEventActivity extends AppCompatActivity {
                                          boolean isChecked) {
                 if (isChecked) {
                     mEndDateTimeSector.setVisibility(View.GONE);
+                    ALL_DAY_STATUS = 0;
                 } else {
                     mEndDateTimeSector.setVisibility(View.VISIBLE);
+                    ALL_DAY_STATUS = 1;
 
                 }
             }
         });
     }
 
-    /* -----------------date time picker method -------------- */
+    /* -----------------date time picker method ------------------------ */
 
     private String getDateString(){
         final Calendar c = Calendar.getInstance();
@@ -272,8 +282,7 @@ public class NewEventActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if (items[which].equals("Choose from business card")) {
-                    Intent intent = new Intent(NewEventActivity.this, AddMemberActivity.class);
-                    startActivityForResult(intent, 1);
+                    choosePeople();
                 } else if (items[which].equals("Custom")) {
                     mPeopleInput.setVisibility(View.VISIBLE);
                     mPeopleImage.setVisibility(View.VISIBLE);
@@ -283,6 +292,46 @@ public class NewEventActivity extends AppCompatActivity {
         });
         AlertDialog alert = builder.create();
         alert.show();
+    }
+
+    private void choosePeople(){
+        AlertDialog.Builder builderSingle = new AlertDialog.Builder(this);
+        builderSingle.setIcon(R.drawable.ic_launcher);
+        builderSingle.setTitle("Select One Name:-");
+        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,
+                android.R.layout.select_dialog_singlechoice);
+        DatabaseHandler db = new DatabaseHandler(getBaseContext());
+        List<BusinessCard> list = db.getAllBusinessCard();
+        for(int i = 0 ; i<list.size(); i++) {
+            arrayAdapter.add(list.get(i).get_name());
+        }
+        builderSingle.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+        builderSingle.setAdapter(arrayAdapter,
+                new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String peopleName = arrayAdapter.getItem(which);
+                        LinearLayout linearLayout =  (LinearLayout)findViewById(R.id.add_people_layout);
+
+                        TextView valueTV = new TextView(getApplicationContext());
+                        valueTV.setText(peopleName);
+                        invitedPeople.add(peopleName);
+                        valueTV.setLayoutParams(new LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.WRAP_CONTENT,
+                                LinearLayout.LayoutParams.WRAP_CONTENT));
+                        valueTV.setPadding(36, 16, 16, 16);
+                        valueTV.setTextSize(16);
+                        linearLayout.addView(valueTV);
+                    }
+                });
+        builderSingle.show();
     }
 
     @Override
@@ -295,6 +344,56 @@ public class NewEventActivity extends AppCompatActivity {
                 peopleList.add(people);
             }
         }
+    }
+
+    /* ------------------- Save Info ----------------*/
+
+    private void saveInfo(){
+        BusinessEvent calendar = new BusinessEvent();
+        String title = mTitle.getText().toString();
+
+        /*
+        String startDate = mStartDate.getText().toString();
+        String startTime = mStartTime.getText().toString();
+        String startDateTime = dateTimeFormat(startDate, startTime);
+        String pplList = "";
+        if(invitedPeople.size()>0){
+            pplList = invitedPeople.get(0);
+            if(invitedPeople.size()>1){
+                for(int i =1 ; i<invitedPeople.size() ; i++){
+                    pplList = ","+ invitedPeople.get(i);
+                }
+                calendar.set_invitedPeopleInput(pplList);
+            }else
+                calendar.set_invitedPeopleInput(pplList);
+        }
+*/
+        calendar.set_calendar_tile(title);
+        //calendar.set_All_day_status(ALL_DAY_STATUS);
+        //calendar.set_startDateTime(startDateTime);
+
+        DatabaseHandler db = new DatabaseHandler(getBaseContext());
+        db.addEvent(calendar);
+        /*
+        Toast.makeText(this.getApplicationContext(),
+                "Click title" + title + "all day " + ALL_DAY_STATUS
+                + " ppl :" + pplList , Toast.LENGTH_LONG)
+                .show();
+
+        Calendar cal = Calendar.getInstance();
+        Intent intent = new Intent(Intent.ACTION_EDIT);
+        intent.setType("vnd.android.cursor.item/event");
+        intent.putExtra("beginTime", cal.getTimeInMillis());
+        intent.putExtra("allDay", true);
+        intent.putExtra("rrule", "FREQ=YEARLY");
+        intent.putExtra("endTime", cal.getTimeInMillis()+60*60*1000);
+        intent.putExtra("title","testing testing");
+        startActivity(intent);
+        */
+    }
+
+    private String dateTimeFormat(String date, String time){
+        return date + " " + time;
     }
 
     /* -------------------MENU --------------------*/
@@ -319,6 +418,8 @@ public class NewEventActivity extends AppCompatActivity {
 
         switch (item.getItemId()) {
             case R.id.action_save:
+                saveInfo();
+                NewEventActivity.this.finish();
                 return true;
         }
         return super.onOptionsItemSelected(item);
