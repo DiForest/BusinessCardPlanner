@@ -352,10 +352,10 @@ public class NewEventActivity extends AppCompatActivity {
         BusinessEvent calendar = new BusinessEvent();
         String title = mTitle.getText().toString();
 
-        /*
         String startDate = mStartDate.getText().toString();
         String startTime = mStartTime.getText().toString();
         String startDateTime = dateTimeFormat(startDate, startTime);
+        /*
         String pplList = "";
         if(invitedPeople.size()>0){
             pplList = invitedPeople.get(0);
@@ -370,7 +370,7 @@ public class NewEventActivity extends AppCompatActivity {
 */
         calendar.set_calendar_tile(title);
         //calendar.set_All_day_status(ALL_DAY_STATUS);
-        //calendar.set_startDateTime(startDateTime);
+        calendar.set_startDateTime(startDateTime);
 
         DatabaseHandler db = new DatabaseHandler(getBaseContext());
         db.addEvent(calendar);

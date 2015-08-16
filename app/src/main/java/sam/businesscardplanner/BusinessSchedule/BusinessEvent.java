@@ -8,7 +8,7 @@ public class BusinessEvent {
     int _calendar_id;
     String _calendar_tile;
     String _startDateTime;
-    String _endStartTime;
+    String _endDateTime;
     String _invitedPeople;
     String _invitedPeopleInput;
     int _all_day_status;
@@ -17,9 +17,21 @@ public class BusinessEvent {
 
     }
 
-    public BusinessEvent(int calendar_id, String calendar_title){
+    public BusinessEvent(int calendar_id,
+                         String calendar_title,
+                         String startDateTime,
+                         String endDateTime,
+                         String invitedPeople,
+                         String invitedPeopleInput,
+                         int all_day_status){
+
         this._calendar_id = calendar_id;
         this._calendar_tile = calendar_title;
+        this._endDateTime = endDateTime;
+        this._startDateTime = startDateTime;
+        this._all_day_status = all_day_status;
+        this._invitedPeople = invitedPeople;
+        this._invitedPeopleInput = invitedPeopleInput;
     }
 
     public void set_calendar_id(int calendar_id ){
@@ -38,7 +50,7 @@ public class BusinessEvent {
         return this._calendar_tile;
     }
 
-    /*
+
     public void set_startDateTime(String startDateTime){
         this._startDateTime = startDateTime;
     }
@@ -47,12 +59,12 @@ public class BusinessEvent {
         return this._startDateTime;
     }
 
-    public void set_endDateTime (String endStartTime){
-        this._endStartTime = endStartTime;
+    public void set_endDateTime (String endDateTime){
+        this._endDateTime = endDateTime;
     }
 
     public String get_endDateTime(){
-        return this._endStartTime;
+        return this._endDateTime;
     }
 
     public void set_All_day_status(int all_day_status){
@@ -78,5 +90,5 @@ public class BusinessEvent {
     public String get_invitedPeopleInput(){
         return this._invitedPeopleInput;
     }
-    */
+
 }

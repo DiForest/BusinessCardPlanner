@@ -9,6 +9,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.util.List;
@@ -38,6 +39,16 @@ public class ScheduleFragment extends Fragment{
         final ListView listView = (ListView) getActivity().findViewById(R.id.event_list);
         listView.setAdapter(adapter);
 
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                int itemId =adapter.getListItemId(position);
+                Intent intent = new Intent(ScheduleFragment.this.getActivity(),
+                        BusinessEventProfile.class);
+                intent.putExtra("ITEM ID", itemId);
+                startActivity(intent);
+            }
+        });
 
     }
 

@@ -94,15 +94,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     private static String CREATE_EVENT_TABLE = "CREATE TABLE "+ TABLE_EVENT + " ( " +
             KEY_EVENT_ID + " INTEGER PRIMARY KEY, " +
-            KEY_EVENT_TITLE + " TEXT " + ");";
-            /*
-            +
+            KEY_EVENT_TITLE + " TEXT, " +
             KEY_ALL_DAY_STATUS + " INTEGER, " +
             KEY_START_TIME + " TEXT, "+
             KEY_END_TIME + " TEXT, " +
             KEY_INVITED_PEOPLE + " TEXT, " +
-            KEY_INVITED_PEOPLE_FROM_ID + " TEXT " + " )";
-            */
+            KEY_INVITED_PEOPLE_FROM_ID + " TEXT " + " );";
 
     public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -231,9 +228,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
        // return;
     //}
-
-
-
 
     /* -------------------------------  Business Group Table  ----------------------------------- */
     //create and add new group
@@ -402,7 +396,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
 
         values.put(KEY_EVENT_TITLE , be.get_calendar_tile());
-
+        values.put(KEY_START_TIME, be.get_startDateTime());
+        values.put(KEY_END_TIME,be.get_endDateTime());
+        values.put(KEY_ALL_DAY_STATUS, be.get_all_day_status());
+        values.put(KEY_INVITED_PEOPLE, be.get_invitedPeople());
+        values.put(KEY_INVITED_PEOPLE_FROM_ID, be.get_invitedPeopleInput());
         db.insert(TABLE_EVENT, null, values);
         db.close();
     }
@@ -421,6 +419,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                     BusinessEvent be = new BusinessEvent();
                     be.set_calendar_id(Integer.parseInt(cursor.getString(0)));
                     be.set_calendar_tile(cursor.getString(1));
+                    be.set_All_day_status(Integer.parseInt(cursor.getString(2)));
+                    be.set_startDateTime(cursor.getString(3));
+                    be.set_endDateTime(cursor.getString(4));
+                    be.set_invitedPeople(cursor.getString(5));
+                    be.set_invitedPeopleInput(cursor.getString(6));
                     //add into list
                     businessEventsList.add(be);
                 } while (cursor.moveToNext());
