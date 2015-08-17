@@ -2,9 +2,12 @@ package sam.businesscardplanner.BusinessSchedule;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.CalendarContract;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -23,7 +26,9 @@ import android.widget.TimePicker;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.TimeZone;
 
 import sam.businesscardplanner.BusinessCard.BusinessCard;
 import sam.businesscardplanner.DatabaseHandler.DatabaseHandler;
@@ -354,6 +359,8 @@ public class NewEventActivity extends AppCompatActivity {
 
         String startDate = mStartDate.getText().toString();
         String startTime = mStartTime.getText().toString();
+        String endDate = mEndDate.getText().toString();
+        String endTime = mEndTime.getText().toString();
         String startDateTime = dateTimeFormat(startDate, startTime);
         /*
         String pplList = "";
@@ -379,21 +386,90 @@ public class NewEventActivity extends AppCompatActivity {
                 "Click title" + title + "all day " + ALL_DAY_STATUS
                 + " ppl :" + pplList , Toast.LENGTH_LONG)
                 .show();
-
-        Calendar cal = Calendar.getInstance();
-        Intent intent = new Intent(Intent.ACTION_EDIT);
-        intent.setType("vnd.android.cursor.item/event");
-        intent.putExtra("beginTime", cal.getTimeInMillis());
-        intent.putExtra("allDay", true);
-        intent.putExtra("rrule", "FREQ=YEARLY");
-        intent.putExtra("endTime", cal.getTimeInMillis()+60*60*1000);
-        intent.putExtra("title","testing testing");
-        startActivity(intent);
         */
+        long calID = 3;
+        long startMillis = 0;
+        long endMillis = 0;
+        Calendar beginTime = Calendar.getInstance();
+        beginTime.set(2015, 11, 14, 7, 30);
+        startMillis = beginTime.getTimeInMillis();
+        Calendar end = Calendar.getInstance();
+        end.set(2015, 11, 14, 8, 45);
+        endMillis = end.getTimeInMillis();
+
+        String eventUriStr = "content://com.android.calendar/events";
+        ContentValues cal = new ContentValues();
+        cal.put(CalendarContract.Events.CALENDAR_ID, 3);
+        cal.put(CalendarContract.Events.TITLE, title);
+        cal.put(CalendarContract.Events.DTSTART,startMillis);
+        cal.put(CalendarContract.Events.DTEND,endMillis);
+        cal.put(CalendarContract.Events.EVENT_TIMEZONE, TimeZone.getDefault().toString());
+        Uri uri = getContentResolver().insert(Uri.parse(eventUriStr),cal);
+
+        int eventId = Integer.parseInt(uri.getLastPathSegment());
     }
 
+    /* --------------------------save in local event  -----------------
+
+    private void saveInLocalEvent(long start, long end){
+        Calendar calendar = Calendar.getInstance();
+        Intent intent = new Intent(Intent.ACTION_INSERT)
+                .setData(CalendarContract.Events.CONTENT_URI)
+                .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, start)
+                .putExtra(CalendarContract.EXTRA_EVENT_END_TIME, end)
+                .putExtra(CalendarContract.Events.ALL_DAY, true)
+                .putExtra(CalendarContract.Events.EVENT_LOCATION, mLocation)
+                .putExtra(CalendarContract.Events.CALENDAR_TIME_ZONE,
+                        TimeZone.getDefault().toString())
+                .putExtra(CalendarContract.Events.TITLE, "testing testing");
+        Uri uri = getContentResolver().insert(CalendarContract.Events.CONTENT_URI,calendar);
+        startActivity(intent);
+    }
+
+    */
+    /* --------------------- format method -------------------*/
     private String dateTimeFormat(String date, String time){
         return date + " " + time;
+    }
+
+    private long calendarFormat(String date, String time){
+        /*
+        String[] dateELement = date.split("/");
+        int day = Integer.parseInt(dateELement[0]);
+        int month = Integer.parseInt(dateELement[1]);
+        int year =  Integer.parseInt(dateELement[2]);
+        */
+        Calendar calendar1 = new GregorianCalendar(2015,11,18);
+
+        /*
+        String[] timeElement = time.split(":");
+        int hour = Integer.parseInt(timeElement[0]);
+        int minute = Integer.parseInt(timeElement[1]);
+        */
+        calendar1.set(Calendar.HOUR, 4);
+        calendar1.set(Calendar.MINUTE, 0);
+        calendar1.set(Calendar.SECOND, 0);
+        calendar1.set(Calendar.MILLISECOND, 0);
+        long format = calendar1.getTimeInMillis();
+
+        return format;
+    }
+
+    private long calendarFomat2(){
+        Calendar calendar1 = new GregorianCalendar(2015,11,19);
+
+        /*
+        String[] timeElement = time.split(":");
+        int hour = Integer.parseInt(timeElement[0]);
+        int minute = Integer.parseInt(timeElement[1]);
+        */
+        calendar1.set(Calendar.HOUR, 5);
+        calendar1.set(Calendar.MINUTE, 0);
+        calendar1.set(Calendar.SECOND, 0);
+        calendar1.set(Calendar.MILLISECOND, 0);
+        long format = calendar1.getTimeInMillis();
+
+        return format;
     }
 
     /* -------------------MENU --------------------*/

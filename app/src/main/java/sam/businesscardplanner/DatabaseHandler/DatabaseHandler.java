@@ -432,4 +432,26 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.close();
         return businessEventsList;
     }
+
+    public BusinessEvent getEvent(int eventId){
+        String query = "SELECT * FROM " + TABLE_EVENT +
+                " WHERE " + KEY_EVENT_ID + " = " + eventId;
+        BusinessEvent be = new BusinessEvent();
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+
+        if(cursor != null){
+            cursor.moveToFirst();
+
+            be.set_calendar_id(Integer.parseInt(cursor.getString(0)));
+            be.set_calendar_tile(cursor.getString(1));
+            be.set_startDateTime(cursor.getString(3));
+            be.set_All_day_status(Integer.parseInt(cursor.getString(2)));
+            be.set_endDateTime(cursor.getString(3));
+            be.set_invitedPeople(cursor.getString(4));
+            be.set_invitedPeopleInput(cursor.getString(5));
+        }
+
+        return be;
+    }
 }
