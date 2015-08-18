@@ -18,8 +18,6 @@ public class  BusinessCard {
     String _workWebsite;
     String _date;
 
-
-
     //constructor
     public BusinessCard(){
 
@@ -34,7 +32,7 @@ public class  BusinessCard {
         this._image = image;
         this._company = company;
         this._job = job;
-        this._address= address;
+        this._address = address;
         this._email = email;
         this._phone = phone;
         this._workPhone = workPhone;

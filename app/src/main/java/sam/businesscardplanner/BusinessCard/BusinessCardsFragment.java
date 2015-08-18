@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import java.util.List;
 
@@ -24,12 +23,11 @@ import sam.businesscardplanner.R;
 public class BusinessCardsFragment extends Fragment {
     List list = null;
 
+    private final int ADD = 1;
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         View view = inflater.inflate(R.layout.fragment_business_cards, container, false);
-
-        // Inflate the layout for this fragment
         setHasOptionsMenu(true);
         return view;
     }
@@ -38,7 +36,8 @@ public class BusinessCardsFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState){
         super.onActivityCreated(savedInstanceState);
 
-        final RowViewAdapter adapter =  new RowViewAdapter(getActivity().getApplicationContext(), generateData());
+        final RowViewAdapter adapter =  new RowViewAdapter(getActivity().getApplicationContext(),
+                generateData());
         final ListView listView = (ListView) getActivity().findViewById(R.id.business_card_list);
         listView.setAdapter(adapter);
 
@@ -46,16 +45,20 @@ public class BusinessCardsFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 int itemID = adapter.getListItemId(position);
-                Toast.makeText(getActivity().getApplicationContext(),
-                        "Click ListItem Number " + itemID, Toast.LENGTH_LONG)
-                        .show();
                 Intent intent = new Intent(BusinessCardsFragment.this.getActivity(),
                         BusinessCardProfile.class);
                 intent.putExtra("ITEM ID", itemID);
                 startActivity(intent);
-
             }
         });
+    }
+
+    public void onResume(){
+        super.onResume();
+        final RowViewAdapter adapter = new RowViewAdapter(getActivity().getApplicationContext(),
+                generateData());
+        final ListView listView = (ListView) getActivity().findViewById(R.id.business_card_list);
+        listView.setAdapter(adapter);
     }
 
     private List<BusinessCard> generateData(){
@@ -77,6 +80,7 @@ public class BusinessCardsFragment extends Fragment {
         switch (item.getItemId()) {
             case R.id.action_add:
                 Intent intent = new Intent(this.getActivity(),AddNewCardActivity.class);
+                intent.putExtra("ADD OR EDIT", ADD);
                 this.startActivity(intent);
                 return true;
         }

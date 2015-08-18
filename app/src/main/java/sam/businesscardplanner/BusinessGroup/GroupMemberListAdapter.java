@@ -1,6 +1,7 @@
 package sam.businesscardplanner.BusinessGroup;
 
 import android.content.Context;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,8 +43,16 @@ public class GroupMemberListAdapter extends ArrayAdapter<BusinessCard> {
         memberImage = (ImageView) rowView.findViewById(R.id.bc_image);
 
         memberName.setText(memberList.get(position).get_name());
-
+        String imagePath = memberList.get(position).get_image();
+        if(imagePath!= null) {
+            memberImage.setImageBitmap(BitmapFactory.decodeFile(imagePath));
+        }
         return rowView;
+    }
+
+    public int getListItemId(int position){
+        int itemId = memberList.get(position).get_id();
+        return itemId;
     }
 
 }

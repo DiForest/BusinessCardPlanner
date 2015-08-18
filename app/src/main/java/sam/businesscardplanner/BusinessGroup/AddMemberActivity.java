@@ -1,4 +1,4 @@
-package sam.businesscardplanner;
+package sam.businesscardplanner.BusinessGroup;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,17 +15,20 @@ import java.util.List;
 
 import sam.businesscardplanner.BusinessCard.BusinessCard;
 import sam.businesscardplanner.BusinessCard.RowViewAdapter;
-import sam.businesscardplanner.BusinessGroup.BusinessGroups;
 import sam.businesscardplanner.DatabaseHandler.DatabaseHandler;
+import sam.businesscardplanner.R;
 
 /**
  * Created by Administrator on 8/7/2015.
  */
 public class AddMemberActivity extends AppCompatActivity {
 
-    private List list = null;
     private Toolbar mToolbar;
     private int GROUP_ID;
+    private int ITEM_ID ;
+
+    private List<BusinessCard> allMemberInGroupList = null;
+    private List<BusinessCard> allData = null;
 
     public void onCreate(Bundle savedInstance){
         super.onCreate(savedInstance);
@@ -37,46 +40,71 @@ public class AddMemberActivity extends AppCompatActivity {
 
         //get the group id
         Intent intent = getIntent();
-        GROUP_ID = intent.getExtras().getInt("groupID", -1);
+        GROUP_ID = intent.getExtras().getInt("GROUP ID", -1);
+        displayData();
+    }
 
-        //set up the list
-        final RowViewAdapter adapter =  new RowViewAdapter(this.getApplicationContext(), generateData());
+    private void displayData(){
+        final RowViewAdapter adapter =  new RowViewAdapter(this.getApplicationContext(),
+                generateData());
         final ListView listView = (ListView) this.findViewById(R.id.business_card_list);
         listView.setAdapter(adapter);
-
-        //on click any card to add the member
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                int itemID = adapter.getListItemId(position);
-                DatabaseHandler db = new DatabaseHandler(getBaseContext());
-
-                BusinessGroups bg = new BusinessGroups();
-                BusinessCard bc = new BusinessCard();
-                bc = db.getBusinessCard(itemID);
-                bg = db.getGroup(GROUP_ID);
-                String cardName = bc.get_name();
-                String groupName = bg.get_name();
-
-                //add the member into database
-                db.addMemberInGroup(GROUP_ID, itemID);
-                Toast.makeText(getApplicationContext(),
-                        "Added " + cardName + " into " + groupName, Toast.LENGTH_LONG)
-                        .show();
-
-                Intent intent = new Intent();
-                intent.putExtra("Member", cardName);
-                setResult(RESULT_OK, intent);
-                AddMemberActivity.this.finish();
+                ITEM_ID = adapter.getListItemId(position);
+                checkDataDuplicate();
             }
         });
     }
 
     private List<BusinessCard> generateData(){
-        DatabaseHandler db1 = new DatabaseHandler(this.getApplicationContext());
-        list = db1.getAllBusinessCard();
-        return list;
+        DatabaseHandler db = new DatabaseHandler(getBaseContext());
+        List<BusinessCard> businessCardList = db.getAllBusinessCard();
+        return businessCardList;
     }
+
+    private void checkDataDuplicate(){
+        DatabaseHandler db = new DatabaseHandler(getBaseContext());
+        BusinessCard cardWanted = db.getBusinessCard(ITEM_ID);
+        String cardName = cardWanted.get_name();
+        allMemberInGroupList = db.getAllMemberFromGroup(GROUP_ID);
+        if(allMemberInGroupList.size()>0) {
+            if (db.checkDuplicateMember(ITEM_ID, GROUP_ID)) {
+                Toast.makeText(getApplicationContext(),
+                        "Card " + cardName + " already exist in the group ", Toast.LENGTH_LONG)
+                        .show();
+                finish();
+            } else {
+                addMember();
+            }
+        }else{
+            addMember();
+        }
+    }
+
+    private void addMember(){
+        DatabaseHandler db = new DatabaseHandler(getBaseContext());
+
+        BusinessGroups bg = new BusinessGroups();
+        BusinessCard bc = new BusinessCard();
+        bc = db.getBusinessCard(ITEM_ID);
+        bg = db.getGroup(GROUP_ID);
+        String cardName = bc.get_name();
+        String groupName = bg.get_name();
+
+        //add the member into database
+        db.addMemberInGroup(GROUP_ID, ITEM_ID);
+        Toast.makeText(getApplicationContext(),
+                "Added " + cardName + " into " + groupName, Toast.LENGTH_LONG)
+                .show();
+
+        Intent intent = new Intent();
+        intent.putExtra("Member", cardName);
+        setResult(RESULT_OK, intent);
+        AddMemberActivity.this.finish();
+    }
+
 
     private void setUpNavDrawer() {
         if (mToolbar != null) {

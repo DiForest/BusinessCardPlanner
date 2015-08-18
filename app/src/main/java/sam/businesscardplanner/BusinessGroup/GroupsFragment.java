@@ -36,7 +36,7 @@ public class GroupsFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         //intialise the groups list
-        final GroupRowViewAdapter adapter = new GroupRowViewAdapter(getActivity().getApplication(), generateData());
+        final GroupRowViewActivity adapter = new GroupRowViewActivity(getActivity().getApplication(), generateData());
         final ListView listView = (ListView) getActivity().findViewById(R.id.group_list);
         listView.setAdapter(adapter);
 
@@ -53,7 +53,13 @@ public class GroupsFragment extends Fragment {
                 startActivity(intent);
             }
         });
+    }
 
+    public void onResume(){
+        super.onResume();
+        final GroupRowViewActivity adapter = new GroupRowViewActivity(getActivity().getApplication(), generateData());
+        final ListView listView = (ListView) getActivity().findViewById(R.id.group_list);
+        listView.setAdapter(adapter);
     }
 
     //get all the group list and pass to list adapter
@@ -77,6 +83,7 @@ public class GroupsFragment extends Fragment {
             case R.id.action_add:
                 //add a new group
                 Intent intent = new Intent(this.getActivity(), AddNewGroupActivity.class);
+                intent.putExtra("ADD OR EDIT", 1);
                 this.startActivity(intent);
                 return true;
         }

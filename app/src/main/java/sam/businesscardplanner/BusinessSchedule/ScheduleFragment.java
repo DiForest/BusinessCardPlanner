@@ -26,7 +26,6 @@ public class ScheduleFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         setHasOptionsMenu(true);
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_schedule, container, false);
         return view;
     }
@@ -49,7 +48,14 @@ public class ScheduleFragment extends Fragment{
                 startActivity(intent);
             }
         });
+    }
 
+    public void onResume(){
+        super.onResume();
+        final EventRowViewAdapter adapter =
+                new EventRowViewAdapter(getActivity().getApplicationContext(), generateData());
+        final ListView listView = (ListView) getActivity().findViewById(R.id.event_list);
+        listView.setAdapter(adapter);
     }
 
     private List<BusinessEvent> generateData(){
@@ -67,7 +73,6 @@ public class ScheduleFragment extends Fragment{
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         switch (item.getItemId()) {
             case R.id.action_add:
                 Intent intent = new Intent(this.getActivity(),NewEventActivity.class);

@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="10dip">
-    
 
     <TextView
         android:id="@+id/name"
@@ -13,10 +12,20 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:textStyle="bold"
-        android:textSize="20sp"
+        android:textSize="24sp"
         android:paddingLeft="5dp"
         android:textColor="#000000">
     </TextView>
+
+    <TextView
+        android:id="@+id/description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/name"
+        android:layout_alignParentLeft="true"
+        android:textColor="#808080"
+        android:textSize="16dp"
+        android:paddingBottom="5dp" />
 
     <TextView
         android:id="@+id/create_date"
@@ -27,12 +36,10 @@
         android:gravity="right"
         android:layout_marginRight="5dip"
         android:textSize="10dip"
-        android:textColor="#10bcc9"
-        android:textStyle="bold"/>
+        android:textColor="#808080"/>
     
     <TextView
         android:id="@+id/member_number"
-        android:text="eee"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/create_date"
@@ -41,7 +48,6 @@
         android:textSize="10dip"
         android:layout_marginRight="5dip"
         android:gravity="right"
-        android:textColor="#10bcc9"
-        android:textStyle="bold"/>
+        android:textColor="#808080"/>
 
 </RelativeLayout>

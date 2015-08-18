@@ -1,5 +1,6 @@
 package sam.businesscardplanner.BusinessGroup;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -7,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import java.util.Calendar;
 
@@ -16,7 +18,11 @@ import sam.businesscardplanner.R;
 public class AddNewGroupActivity extends AppCompatActivity {
 
     EditText editGroupName;
+    EditText editGroupDescription;
     Toolbar mToolbar;
+
+    private int ADD_OR_EDIT_STATUS;
+    private int GROUP_ID;
 
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -25,6 +31,29 @@ public class AddNewGroupActivity extends AppCompatActivity {
         setUpToolbar();
 
         editGroupName = (EditText) findViewById(R.id.edit_group_name);
+        editGroupDescription = (EditText) findViewById(R.id.edit_group_description);
+
+        Intent intent = getIntent();
+        int addOrEdit = intent.getExtras().getInt("ADD OR EDIT", -1);
+
+        if(addOrEdit == 2){
+            ADD_OR_EDIT_STATUS = 2;
+            setTitle("Edit group");
+            GROUP_ID = intent.getExtras().getInt("groupId", -1);
+            setInformation();
+        }else{
+            ADD_OR_EDIT_STATUS = 1;
+            setTitle("Create new group");
+        }
+
+    }
+
+    private void setInformation(){
+        DatabaseHandler db = new DatabaseHandler(this);
+        BusinessGroups businessGroups = db.getGroup(GROUP_ID);
+
+        editGroupName.setText(businessGroups.get_name());
+        editGroupDescription.setText(businessGroups.get_description());
     }
 
     //setup the toolbar
@@ -58,6 +87,7 @@ public class AddNewGroupActivity extends AppCompatActivity {
 
     public void saveInfo(){
         String groupName = editGroupName.getText().toString();
+        String description = editGroupDescription.getText().toString();
 
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
@@ -70,11 +100,22 @@ public class AddNewGroupActivity extends AppCompatActivity {
 
         BusinessGroups businessGroups= new BusinessGroups();
         businessGroups.set_name(groupName);
-        businessGroups.set_created_date(date);
-        businessGroups.set_group_member_number(0);
-        db.addGroup(businessGroups);
+        businessGroups.set_description(description);
 
+        if(ADD_OR_EDIT_STATUS ==1){
+            db.addGroup(businessGroups);
+            businessGroups.set_member_count(0);
 
+            businessGroups.set_created_date(date);
+            Toast.makeText(this.getApplicationContext(),
+                    "Created Successfully", Toast.LENGTH_LONG)
+                    .show();
+        }else if(ADD_OR_EDIT_STATUS == 2){
+            db.updateGroups(businessGroups,GROUP_ID);
+            Toast.makeText(this.getApplicationContext(),
+                    "Updated Successfully", Toast.LENGTH_LONG)
+                    .show();
+        }
         //Intent intent = new Intent(this, AddNewGroupActivity.class);
         //intent.putExtra("groupName", groupName);
         //startActivity(intent);

@@ -41,14 +41,16 @@ public class RowViewAdapter extends ArrayAdapter<BusinessCard> implements Filter
         View rowView = inflater.inflate(R.layout.business_cards_row_items, parent, false);
 
         // 3. Get the two text view from the rowView
-        TextView labelView = (TextView) rowView.findViewById(R.id.label);
-        TextView valueView = (TextView) rowView.findViewById(R.id.value);
+        TextView nameView = (TextView) rowView.findViewById(R.id.name);
+        TextView companyView = (TextView) rowView.findViewById(R.id.company);
+        TextView jobView = (TextView) rowView.findViewById(R.id.job);
         ImageView bcImage = (ImageView) rowView.findViewById(R.id.bc_image);
         TextView date = (TextView) rowView.findViewById(R.id.create_date);
 
         // 4. Set the text for textView
-        labelView.setText(cardsList.get(position).get_name());
-        valueView.setText(cardsList.get(position).get_company());
+        nameView.setText(cardsList.get(position).get_name());
+        jobView.setText(cardsList.get(position).get_job());
+        companyView.setText(cardsList.get(position).get_company());
         date.setText(cardsList.get(position).get_date());
 
         String imagePath = cardsList.get(position).get_image();

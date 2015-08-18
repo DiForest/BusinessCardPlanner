@@ -42,7 +42,7 @@
 
         <activity android:name=".BusinessGroup.GroupsProfile" />
 
-        <activity android:name=".AddMemberActivity"
+        <activity android:name=".BusinessGroup.AddMemberActivity"
             android:launchMode="singleTop">
         <intent-filter>
             <action android:name="android.intent.action.SEARCH" />

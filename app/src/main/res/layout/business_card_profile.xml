@@ -17,97 +17,110 @@
             android:orientation="vertical">
 
         <LinearLayout
-            android:layout_height="fill_parent"
+            android:layout_height="200dp"
             android:layout_width="fill_parent"
             android:orientation="vertical"
-            android:layout_marginTop="2dip"
-            android:layout_marginBottom="2dip"
-            android:padding="10dip"
+            android:layout_marginTop="5dip"
+            android:layout_marginBottom="5dip"
+            android:layout_gravity="center"
             android:background="@drawable/round_corner">
 
             <ImageView
-                android:layout_height="200dip"
+                android:layout_height="200dp"
                 android:layout_width="fill_parent"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/placeholder"
                 android:id="@+id/card_image"/>
-
-            <TextView
-                android:id="@+id/card_title_name"
-                android:textStyle="bold"
-                android:textSize="20sp"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:id="@+id/card_title_job"
-                android:textStyle="bold"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:id="@+id/card_title_company"
-                android:textStyle="bold"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:id="@+id/card_created_date"
-                android:textStyle="bold"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content" />
 
             </LinearLayout>
 
-        <LinearLayout
-            android:layout_height="fill_parent"
-            android:layout_width="fill_parent"
-            android:orientation="vertical"
-            android:layout_marginTop="2dip"
-            android:layout_marginBottom="2dip"
-            android:padding="10dip"
-            android:background="@drawable/round_corner">
+            <LinearLayout
+                android:layout_height="fill_parent"
+                android:layout_width="fill_parent"
+                android:orientation="vertical"
+                android:layout_marginTop="2dip"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="2dip"
+                android:padding="10dip"
+                android:background="@drawable/round_corner">
+
+                <TextView
+                    android:id="@+id/card_title_name"
+                    android:textStyle="bold"
+                    android:textSize="32dp"
+                    android:textColor="@color/colorPrimary"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/card_title_job"
+                    android:layout_marginLeft="20dp"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/card_title_company"
+                    android:layout_marginLeft="20dp"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/card_created_date"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content" />
 
             <TextView
                 android:text="Contact Information"
                 android:textStyle="bold"
                 android:textSize="20sp"
+                android:layout_marginBottom="10dp"
+                android:textColor="@color/colorPrimary"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content" />
 
-            <TextView
-                android:text="@string/phone"
-                android:textStyle="bold"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/card_phone"
+                    android:layout_marginLeft="20dp"
+                    android:textSize="20dp"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content" />
 
-            <TextView
-                android:id="@+id/card_phone"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:drawableRight="@drawable/ic_edit_grey"/>
+                <TextView
+                    android:text="@string/phone"
+                    android:layout_marginLeft="20dp"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content" />
 
-            <TextView
-                android:text="@string/address"
-                android:textStyle="bold"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/card_address"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:textSize="20dp" />
 
-            <TextView
-                android:id="@+id/card_address"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:drawableRight="@drawable/ic_edit_grey"/>
+                <TextView
+                    android:text="@string/address"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"/>
 
-            <TextView
-                android:text="@string/email"
-                android:textStyle="bold"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/card_email"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:textSize="20dp"/>
 
-            <TextView
-                android:id="@+id/card_email"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:drawableRight="@drawable/ic_edit_grey"/>
+                <TextView
+                    android:text="@string/email"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"/>
             </LinearLayout>
 
         <LinearLayout
@@ -116,51 +129,57 @@
             android:orientation="vertical"
             android:layout_marginTop="2dip"
             android:layout_marginBottom="2dip"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:padding="10dip"
             android:background="@drawable/round_corner">
 
             <TextView
                 android:text="@string/work"
                 android:textStyle="bold"
+                android:textColor="@color/colorPrimary"
                 android:textSize="20sp"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:text="@string/phone"
-                android:textStyle="bold"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"/>
 
             <TextView
                 android:id="@+id/card_work_phone"
+                android:textSize="20dp"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:drawableRight="@drawable/ic_edit_grey"/>
+                android:layout_marginLeft="20dp"/>
 
             <TextView
-                android:text="@string/address"
-                android:textStyle="bold"
+                android:text="@string/phone"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"/>
 
             <TextView
                 android:id="@+id/card_work_address"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:drawableRight="@drawable/ic_edit_grey"/>
+                android:layout_marginLeft="20dp"
+                android:textSize="20dp"/>
 
             <TextView
-                android:text="@string/website"
-                android:textStyle="bold"
+                android:text="@string/address"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"/>
 
             <TextView
                 android:id="@+id/card_work_website"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:drawableRight="@drawable/ic_edit_grey"/>
+                android:layout_marginLeft="20dp"
+                android:textSize="20dp"/>
+
+            <TextView
+                android:text="@string/website"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"/>
 
             </LinearLayout>
 
@@ -170,22 +189,26 @@
             android:orientation="vertical"
             android:layout_marginTop="2dip"
             android:layout_marginBottom="2dip"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:padding="10dip"
             android:background="@drawable/round_corner">
 
             <TextView
                 android:text="@string/group"
                 android:textStyle="bold"
+                android:textSize="20dp"
+                android:textColor="@color/colorPrimary"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="4dip"/>
+                android:layout_marginBottom="4dip" />
 
             <TextView
                 android:id="@+id/card_group"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:drawableRight="@drawable/ic_edit_grey"
-                android:layout_marginBottom="10dip"/>
+                android:layout_marginBottom="10dip"
+                android:layout_marginLeft="20dp"/>
             </LinearLayout>
 
             </LinearLayout>

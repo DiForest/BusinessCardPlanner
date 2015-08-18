@@ -17,7 +17,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -48,7 +47,6 @@ public class AddNewCardActivity extends AppCompatActivity {
 
     private ImageView imageView;
     private Bitmap imageBitmap;
-    private Button btnAddImage;
 
     private static final int CAMERA_REQUEST = 1;
     private static final int GALLERY_REQUEST = 2;
@@ -62,14 +60,18 @@ public class AddNewCardActivity extends AppCompatActivity {
 
     private Toolbar mToolbar;
 
+    private int ADD_OR_EDIT_STATUS ;
+    private int ITEM_ID ;
+
     /* ------------------------------------ activity ----------------------------------*/
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_card);
+        setUpToolbar();
+        setUpNavDrawer();
 
         //setup all the elements tag
         imageView = (ImageView) findViewById(R.id.business_card_image);
-        btnAddImage = (Button) findViewById(R.id.btn_add_image);
         nameEditText = (EditText)findViewById(R.id.name_label);
         jobEditText = (EditText) findViewById(R.id.job_label);
         companyEditText = (EditText) findViewById(R.id.company_label);
@@ -80,13 +82,20 @@ public class AddNewCardActivity extends AppCompatActivity {
         workPhoneEditText = (EditText) findViewById(R.id.phone_company_label);
         workWebsiteEditText = (EditText) findViewById(R.id.web_company_label);
 
-        //setup the menu
-        setUpToolbar();
-        setUpNavDrawer();
+        Intent intent = getIntent();
+        int addOrEdit = intent.getExtras().getInt("ADD OR EDIT", -1);
 
-        btnAddImage = (Button) findViewById(R.id.btn_add_image);
-        btnAddImage.setOnClickListener(new View.OnClickListener(){
+        if(addOrEdit == 2){
+            ADD_OR_EDIT_STATUS = 2;
+            setTitle("Edit card");
+            ITEM_ID = intent.getExtras().getInt("itemID", -1);
+            setInformation(ITEM_ID);
+        }else{
+            ADD_OR_EDIT_STATUS = 1;
+            setTitle("Create new Card");
+        }
 
+        imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onCreateDialog();
@@ -95,19 +104,40 @@ public class AddNewCardActivity extends AppCompatActivity {
 
         mAlbumStorageDirFactory = new BaseAlbumDirFactory();
     }
-    //set the album name
+
+    private void setInformation(int itemId){
+        DatabaseHandler db = new DatabaseHandler(this);
+        BusinessCard businessCard = db.getBusinessCard(itemId);
+
+        nameEditText.setText(businessCard.get_name());
+        jobEditText.setText(businessCard.get_job());
+        companyEditText.setText(businessCard.get_company());
+        emailEditText.setText(businessCard.get_email());
+        phoneEditText.setText(businessCard.get_phone());
+        addressEditText.setText(businessCard.get_address());
+        workAddressEditText.setText(businessCard.get_workAddress());
+        workPhoneEditText.setText(businessCard.get_workPhone());
+        workWebsiteEditText.setText(businessCard.get_workWebsite());
+
+
+        String imagePath = businessCard.get_image();
+        if(imagePath!= null) {
+            Uri uri = Uri.parse(imagePath);
+            imageView.setImageURI(uri);
+        }
+        mCurrentPhotoPath = imagePath;
+    }
+
     private String getAlbumName() {
         return getString(R.string.album_name);
     }
 
-    //set the file path
+
     private File getAlbumDir() {
         File storageDir = null;
 
         if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
-
             storageDir = mAlbumStorageDirFactory.getAlbumStorageDir(getAlbumName());
-
             if (storageDir != null) {
                 if (! storageDir.mkdirs()) {
                     if (! storageDir.exists()){
@@ -120,7 +150,6 @@ public class AddNewCardActivity extends AppCompatActivity {
         } else {
             Log.v(getString(R.string.app_name), "External storage is not mounted READ/WRITE.");
         }
-
         return storageDir;
     }
 
@@ -140,7 +169,6 @@ public class AddNewCardActivity extends AppCompatActivity {
     }
 
     private void setPic() {
-
 		/* Get the size of the ImageView */
         int targetW = imageView.getWidth();
         int targetH = imageView.getHeight();
@@ -169,6 +197,7 @@ public class AddNewCardActivity extends AppCompatActivity {
 
     }
 
+    /* --------------------- Camera and gallery ----------------------------*/
     private void galleryAddPic() {
         Intent mediaScanIntent = new Intent("android.intent.action.MEDIA_SCANNER_SCAN_FILE");
         File f = new File(mCurrentPhotoPath);
@@ -206,11 +235,11 @@ public class AddNewCardActivity extends AppCompatActivity {
                             imageColumns,MediaStore.Images.Media._ID + "=" + id, null,
                             imageOrderBy);
                     if(imageCursor.moveToFirst()){
-                        mCurrentPhotoPath = imageCursor.getString(imageCursor.getColumnIndex(MediaStore.Images.Media.DATA));
+                        mCurrentPhotoPath =
+                                imageCursor.getString(imageCursor.
+                                        getColumnIndex(MediaStore.Images.Media.DATA));
                     }
                     Log.e("path", selectedImagePath);
-
-
                 }catch(IOException e){
                     e.printStackTrace();
                 }
@@ -297,6 +326,7 @@ public class AddNewCardActivity extends AppCompatActivity {
         }
     }
 
+    /* ------------------------ MENU --------------------------------------------------*/
     //setup the menu
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -320,7 +350,7 @@ public class AddNewCardActivity extends AppCompatActivity {
     private void setUpNavDrawer() {
         if (mToolbar != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            mToolbar.setNavigationIcon(R.drawable.ic_back);
+            mToolbar.setNavigationIcon(R.drawable.ic_cross);
             mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -330,7 +360,6 @@ public class AddNewCardActivity extends AppCompatActivity {
             });
         }
     }
-
 
     private void saveInfo(){
         BusinessCard businessCard = new BusinessCard();
@@ -344,8 +373,6 @@ public class AddNewCardActivity extends AppCompatActivity {
         String addressWork = workAddressEditText.getText().toString();
         String email = emailEditText.getText().toString();
         String website = workWebsiteEditText.getText().toString();
-        String image = mCurrentPhotoPath;
-
 
         if (mCurrentPhotoPath == null){
             Toast.makeText(this.getApplicationContext(),
@@ -377,8 +404,7 @@ public class AddNewCardActivity extends AppCompatActivity {
             addressEditText.getText().toString();
             Toast.makeText(this.getApplicationContext(),
                     "Must have an address", Toast.LENGTH_LONG).show();
-        }
-        else {
+        } else {
             businessCard.set_name(name);
             businessCard.set_job(job);
             businessCard.set_company(company);
@@ -387,16 +413,24 @@ public class AddNewCardActivity extends AppCompatActivity {
             businessCard.set_workAddress(addressWork);
             businessCard.set_address(address);
             businessCard.set_email(email);
-            businessCard.set_date(getDateTime());
+            String date = getDateTime();
+            businessCard.set_date(date);
             businessCard.set_image(mCurrentPhotoPath);
             businessCard.set_workWebsite(website);
 
             DatabaseHandler db = new DatabaseHandler(getBaseContext());
-            db.addBusinessCard(businessCard);
-
-            Toast.makeText(this.getApplicationContext(),
-                    "Image " + mCurrentPhotoPath + " Saved Successfully", Toast.LENGTH_LONG)
-                    .show();
+            if(ADD_OR_EDIT_STATUS ==1) {
+                db.addBusinessCard(businessCard);
+                Toast.makeText(this.getApplicationContext(),
+                        "Saved Successfully", Toast.LENGTH_LONG)
+                        .show();
+            }else if(ADD_OR_EDIT_STATUS == 2){
+                businessCard.set_id(ITEM_ID);
+                db.updateBusinessCard(businessCard);
+                Toast.makeText(this.getApplicationContext(),
+                        "Updated Successfully", Toast.LENGTH_LONG)
+                        .show();
+            }
             finish();
         }
     }
@@ -407,7 +441,7 @@ public class AddNewCardActivity extends AppCompatActivity {
         int month_ = calendar.get(Calendar.MONTH) +1;
         int day_ = calendar.get(Calendar.DATE);
 
-        String date = ("" + day_+"/"+month_+"/"+year);
+        String date = (day_+"/"+month_+"/"+year);
         return date;
     }
 }
