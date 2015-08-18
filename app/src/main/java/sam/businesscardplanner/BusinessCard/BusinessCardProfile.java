@@ -104,7 +104,14 @@ public class BusinessCardProfile extends AppCompatActivity{
     }
 
     public void getInvolvedGroup(int itemId){
-        
+        DatabaseHandler db = new DatabaseHandler(getBaseContext());
+        String groupName = db.getAllGroupOfMember(itemId);
+        if(groupName.length()>1) {
+            cardGroup.setText(groupName);
+        }
+        else{
+            cardGroup.setText("none");
+        }
     }
 
     private void setUpToolbar() {

@@ -486,6 +486,32 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return gap;
     }
 
+    public String getAllGroupOfMember(int itemId){
+        String selectQuery = "SELECT * FROM " + TABLE_GROUP_PEOPLE + " WHERE "
+                + PEOPLE_FOREIGN_KEY + " = " + itemId ;
+        GroupAndPeople gap = new GroupAndPeople();
+        BusinessGroups groups = new BusinessGroups();
+        String groupNameList = "";
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if(cursor!=null){
+            if(cursor.moveToFirst()){
+                do{
+                    gap.set_gp_ID(Integer.parseInt(cursor.getString(0)));
+                    gap.set_group_FK(Integer.parseInt(cursor.getString(1)));
+                    gap.set_people_FK(Integer.parseInt(cursor.getString(2)));
+                    gap.set_people_name(cursor.getString(3));
+                    groups = getGroup(gap.get_group_FK());
+                    String name = groups.get_name();
+                    groupNameList = groupNameList + name + "  ";
+                }
+                while (cursor.moveToNext());
+            }
+        }
+        db.close();
+        return groupNameList;
+    }
+
     public List<Integer> getAllMemberId(int groupID){
         List<Integer> list = new ArrayList<Integer>();
         String selectQuery = "SELECT " + PEOPLE_FOREIGN_KEY + " FROM "+ TABLE_GROUP_PEOPLE

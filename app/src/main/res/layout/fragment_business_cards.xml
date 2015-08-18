@@ -3,6 +3,14 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <SearchView
+        android:id="@+id/search_view"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:iconifiedByDefault="false"
+        android:focusable="false"
+        android:background="@drawable/round_corner"/>
+
     <ListView
         android:id="@+id/business_card_list"
         android:layout_width="fill_parent"

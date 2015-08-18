@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.SearchView;
 
 import java.util.List;
 
@@ -20,9 +21,9 @@ import sam.businesscardplanner.R;
 /**
  * Created by Administrator on 7/16/2015.
  */
-public class BusinessCardsFragment extends Fragment {
+public class BusinessCardsFragment extends Fragment implements SearchView.OnQueryTextListener {
     List list = null;
-
+    RowViewAdapter adapter;
     private final int ADD = 1;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -38,7 +39,7 @@ public class BusinessCardsFragment extends Fragment {
 
         final RowViewAdapter adapter =  new RowViewAdapter(getActivity().getApplicationContext(),
                 generateData());
-        final ListView listView = (ListView) getActivity().findViewById(R.id.business_card_list);
+        ListView listView = (ListView) getActivity().findViewById(R.id.business_card_list);
         listView.setAdapter(adapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -51,6 +52,9 @@ public class BusinessCardsFragment extends Fragment {
                 startActivity(intent);
             }
         });
+
+        ((SearchView) getActivity().findViewById(R.id.search_view)).setOnQueryTextListener(this);
+
     }
 
     public void onResume(){
@@ -85,5 +89,19 @@ public class BusinessCardsFragment extends Fragment {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        onQueryTextChange(query);
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        if(adapter!=null) {
+            adapter.getFilter().filter(newText.toString());
+        }
+        return false;
     }
 }
