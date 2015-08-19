@@ -27,10 +27,12 @@ public class BusinessEventProfile extends AppCompatActivity{
 
     String title;
     String description ;
-    String startDateTime;
-    String endDateTime;
     int status = 0;
     String people;
+    int startDate;
+    int startTime;
+    int endDate;
+    int endTime;
 
     private Context context;
 
@@ -56,16 +58,18 @@ public class BusinessEventProfile extends AppCompatActivity{
 
         title = be.get_calendar_tile();
         description = be.get_description();
-        startDateTime = be.get_startDateTime();
-        endDateTime = be.get_endDateTime();
+        startDate = be.get_startDate();
+        startTime = be.get_startTime();
+        endDate = be.get_endDate();
+        endTime = be.get_endTime();
         status = be.get_all_day_status();
         people = be.get_invitedPeople();
 
         mTitle.setText(title);
         mDescription.setText(be.get_description());
-        mStartDateTime.setText("Start at " + startDateTime);
+        mStartDateTime.setText("Start at " + startDate + " " + startTime);
         if (status == 0) {
-            mEndDateTime.setText("End at " + endDateTime);
+            mEndDateTime.setText("End at " + endDate + " " + endTime);
         } else {
             mEndDateTime.setVisibility(View.GONE);
             mBlank.setVisibility(View.GONE);

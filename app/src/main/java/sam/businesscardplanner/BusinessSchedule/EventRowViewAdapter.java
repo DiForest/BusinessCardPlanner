@@ -34,61 +34,55 @@ public class EventRowViewAdapter extends ArrayAdapter<BusinessEvent> {
         TextView eventDay = (TextView) rowView.findViewById(R.id.label_date);
         TextView eventMonth = (TextView) rowView.findViewById(R.id.label_month);
 
-        String dateTime = eventList.get(position).get_startDateTime();
-        String[] dateTimeString = dateTime.split(" ");
-        String date = dateTimeString[0];
-        String[] dateString = date.split("/");
-        String day = dateString[2];
-        String month = dateString[1];
+        int startdate = eventList.get(position).get_startDate();
+        int day = startdate%100;
+        int temp = startdate/100;
+        int month = temp%100;
 
         eventTitle.setText(eventList.get(position).get_calendar_tile());
-        eventDay.setText(day);
+        eventDay.setText("" + day);
         eventMonth.setText(defineMonth(month));
 
         return rowView;
     }
 
-   // public int getListItemId(int position){
-        //return eventList.get(position).get_calendar_id();
-    //}
-
-    private String defineMonth(String monthValue){
+    private String defineMonth(int monthValue){
         String monthString = "";
         switch(monthValue) {
-            case "1":
+            case 1:
                 monthString = "Jan";
                 break;
-            case "2" :
+            case 2 :
                 monthString = "Feb";
                 break;
-            case "3" :
+            case 3 :
                 monthString = "Mar";
                 break;
-            case "4" :
+            case 4 :
                 monthString = "Apr";
                 break;
-            case "5" :
+            case 5 :
                 monthString = "May";
                 break;
-            case "6" :
+            case 6 :
                 monthString = "Jun";
                 break;
-            case "7" :
+            case 7 :
                 monthString = "Jul";
                 break;
-            case "8" :
+            case 8 :
                 monthString = "Aug";
                 break;
-            case "9":
+            case 9:
                 monthString = "Sep";
                 break;
-            case "10" :
+            case 10 :
                 monthString = "Oct";
                 break;
-            case "11":
+            case 11:
                 monthString = "Nov";
                 break;
-            case "12":
+            case 12:
                 monthString = "Dec";
                 break;
         }

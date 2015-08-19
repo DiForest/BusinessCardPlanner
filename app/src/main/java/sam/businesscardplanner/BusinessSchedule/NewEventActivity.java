@@ -256,7 +256,7 @@ public class NewEventActivity extends AppCompatActivity {
                                     + dayOfMonth);
                         }
                     }
-                }, yy, mm +1 , dd);
+                }, yy, mm -1 , dd);
         dpd.setTitle("Select Date");
         dpd.show();
     }
@@ -352,26 +352,32 @@ public class NewEventActivity extends AppCompatActivity {
 
         String startDate = mStartDate.getText().toString();
         String startTime = mStartTime.getText().toString();
+
+        //20150403 format int
+        int startDateInt = convertToInt(startDate);
+        int startTimeInt = convertTimeInt(startTime);
+
         String endDate;
+        int endDateInt;
+        int endTimeInt;
         String endTime;
-        String endValid;
-        String startValid;
         boolean status ;
         String location = mLocation.getText().toString();
         String description = mDescription.getText().toString();
 
         if(ALL_DAY_STATUS == 0){
             endDate = startDate;
-            endTime = "23:00";
+            endTime = "23:59";
+            endDateInt = startDateInt;
+            endTimeInt = 2359;
             status = true;
         }else{
             endDate = mEndDate.getText().toString();
+            endDateInt = convertToInt(endDate);
             endTime = mEndTime.getText().toString();
+            endTimeInt = convertTimeInt(endTime);
             status = false;
         }
-
-        String startDateTime = dateTimeFormat(startDate, checkTimeFormat(startTime));
-        String endDateTime = dateTimeFormat(endDate, checkTimeFormat(endTime));
 
         String people= "";
         for(String temp : invitedPeople){
@@ -380,8 +386,10 @@ public class NewEventActivity extends AppCompatActivity {
 
         calendar.set_calendar_tile(title);
         calendar.set_All_day_status(ALL_DAY_STATUS);
-        calendar.set_startDateTime(startDateTime);
-        calendar.set_endDateTime(endDateTime);
+        calendar.set_startDate(startDateInt);
+        calendar.set_startTime(startTimeInt);
+        calendar.set_endDate(endDateInt);
+        calendar.set_endTime(endTimeInt);
         calendar.set_invitedPeople(people);
         calendar.set_description(description);
 
@@ -421,6 +429,25 @@ public class NewEventActivity extends AppCompatActivity {
 
         DatabaseHandler db = new DatabaseHandler(getBaseContext());
         db.addEvent(calendar);
+    }
+
+    public int convertToInt(String dateTime){
+        String[] date = dateTime.split("/");
+
+        int yy = Integer.parseInt(date[0]);
+        int mm = Integer.parseInt(date[1]);
+        int dd = Integer.parseInt(date[2]);
+        int d = yy *10000 + mm * 100 + dd;
+        return d;
+    }
+
+    public int convertTimeInt(String time){
+        String[] date = time.split(":");
+
+        int hh = Integer.parseInt(date[0]);
+        int mm = Integer.parseInt(date[1]);
+        int d = hh *100 + mm;
+        return d;
     }
 
     public String checkTimeFormat(String time){

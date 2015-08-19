@@ -49,33 +49,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String TABLE_EVENT = "businessEvent";
     private static final String KEY_EVENT_ID = "id";
     private static final String KEY_EVENT_TITLE = "businessEventName";
+    private static final String KEY_START_DATE = "startDate";
     private static final String KEY_START_TIME = "startTime";
-    private static final String KEY_END_TIME ="endTime";
+    private static final String KEY_END_DATE = "endDate";
+    private static final String KEY_END_TIME = "endTime";
     private static final String KEY_ALL_DAY_STATUS = "allDayStatus";
     private static final String KEY_INVITED_PEOPLE ="invitedPeople";
-    private static final String KEY_INVITED_PEOPLE_FROM_ID = "invitedPeopleFromId";
     private static final String KEY_EVENT_DESCRIPTION = "eventDescription";
-
-    private static final String TABLE_EVENT_PEOPLE= "eventPeople";
-    private static final String EP_ID = "id";
-    private static final String EP_EVENT_ID = "epEventId";
-    private static final String EP_PEOPLE_ID = "epPeopleId";
-
-    private static final String TABLE_NOTE_GROUP = "noteGroup";
-    private static final String NG_ID = "id";
-    private static final String NG_GROUP_ID = "noteGroupId";
-
-    private static final String TABLE_NOTE = "noteTable";
-    private static final String NOTE_ID = "noteId";
-    private static final String NOTE_CONTENT = "noteContent";
-
-    private static final String TABLE_NOTE_EVENT = "noteEvent";
-    private static final String NE_ID = "id";
-    private static final String NE_EVENT_ID = "noteEventId";
-
-    private static final String TABLE_NOTE_PEOPLE ="notePeople";
-    private static final String NP_ID ="id";
-    private static final String NP_PEOPLE_ID = "notePeopleId";
 
     private static String CREATE_BUSINESS_CARD_TABLE = "CREATE TABLE "+ TABLE_BUSINESS_CARD
             + " (" + KEY_ID + " INTEGER PRIMARY KEY, " +
@@ -115,22 +95,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             KEY_EVENT_ID + " INTEGER PRIMARY KEY, " +
             KEY_EVENT_TITLE + " TEXT, " +
             KEY_ALL_DAY_STATUS + " INTEGER, " +
-            KEY_START_TIME + " TEXT, "+
-            KEY_END_TIME + " TEXT, " +
             KEY_INVITED_PEOPLE + " TEXT, " +
-            KEY_INVITED_PEOPLE_FROM_ID + " TEXT, " +
-            KEY_EVENT_DESCRIPTION + " TEXT " + " );";
-
-    //initialise the group and people table elements
-    private static String CREATE_EVENT_PEOPLE_TABLE = "CREATE TABLE " + TABLE_EVENT_PEOPLE + " ( " +
-            EP_ID + " INTEGER PRIMARY KEY," +
-            EP_EVENT_ID + " INT, " +
-            EP_PEOPLE_ID + " INT " +
-            "FOREIGN KEY ( " + EP_EVENT_ID + " ) REFERENCES "
-            + TABLE_EVENT + " ( "+ KEY_EVENT_ID + " ), " +
-            "FOREIGN KEY ( " + EP_PEOPLE_ID + " ) REFERENCES "
-            + TABLE_BUSINESS_CARD + "( " + KEY_ID +" )" +
-            ");";
+            KEY_EVENT_DESCRIPTION + " TEXT, " +
+            KEY_START_DATE + " INTEGER, " +
+            KEY_START_TIME + " INTEGER, " +
+            KEY_END_DATE + " INTEGER, " +
+            KEY_END_TIME + " INTEGER " +
+            " );";
 
     public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -142,7 +113,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.execSQL(CREATE_BUSINESS_GROUP_TABLE);
         db.execSQL(CREATE_EVENT_TABLE);
         db.execSQL(CREATE_GROUP_AND_PEOPLE_TABLE);
-        db.execSQL(CREATE_EVENT_PEOPLE_TABLE);
+        //db.execSQL(CREATE_EVENT_PEOPLE_TABLE);
     }
 
     //upgradde database table
@@ -576,8 +547,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
 
         values.put(KEY_EVENT_TITLE , be.get_calendar_tile());
-        values.put(KEY_START_TIME, be.get_startDateTime());
-        values.put(KEY_END_TIME,be.get_endDateTime());
+        values.put(KEY_START_DATE, be.get_startDate());
+        values.put(KEY_START_TIME, be.get_startTime());
+        values.put(KEY_END_DATE, be.get_startDate());
+        values.put(KEY_END_TIME, be.get_startTime());
         values.put(KEY_ALL_DAY_STATUS, be.get_all_day_status());
         values.put(KEY_INVITED_PEOPLE, be.get_invitedPeople());
         values.put(KEY_EVENT_DESCRIPTION, be.get_description());
@@ -586,11 +559,18 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
     //get all the business card in the database
-    public List<BusinessEvent> getAllEvent() {
+    public List<BusinessEvent> getAllEvent(String currrentDate) {
+
+        String[] temp2 = currrentDate.split("/");
+        int YY = Integer.parseInt(temp2[0]);
+        int MM = Integer.parseInt(temp2[1]);
+        int DD = Integer.parseInt(temp2[2]);
+
+        int compareDate = YY * 10000 + MM *100 + DD;
+
         List<BusinessEvent> businessEventsList = new ArrayList<BusinessEvent>();
         String selectQuery = "SELECT * FROM businessEvent ORDER BY "
-                + KEY_START_TIME ;
-
+                + KEY_START_DATE;
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
 
@@ -601,12 +581,18 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                     be.set_calendar_id(Integer.parseInt(cursor.getString(0)));
                     be.set_calendar_tile(cursor.getString(1));
                     be.set_All_day_status(Integer.parseInt(cursor.getString(2)));
-                    be.set_startDateTime(cursor.getString(3));
-                    be.set_endDateTime(cursor.getString(4));
-                    be.set_invitedPeople(cursor.getString(5));
-                    be.set_description(cursor.getString(7));
+                    be.set_invitedPeople(cursor.getString(3));
+                    be.set_description(cursor.getString(4));
+                    be.set_startDate(Integer.parseInt(cursor.getString(5)));
+                    int start = Integer.parseInt(cursor.getString(5));
+                    be.set_startTime(Integer.parseInt(cursor.getString(6)));
+                    be.set_endDate(Integer.parseInt(cursor.getString(7)));
+                    be.set_endTime(Integer.parseInt(cursor.getString(8)));
+
                     //add into list
-                    businessEventsList.add(be);
+                    if(start>=compareDate) {
+                        businessEventsList.add(be);
+                    }
                 } while (cursor.moveToNext());
             }
         }
@@ -626,11 +612,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
             be.set_calendar_id(Integer.parseInt(cursor.getString(0)));
             be.set_calendar_tile(cursor.getString(1));
-            be.set_startDateTime(cursor.getString(3));
             be.set_All_day_status(Integer.parseInt(cursor.getString(2)));
-            be.set_endDateTime(cursor.getString(4));
-            be.set_invitedPeople(cursor.getString(5));
-            be.set_description(cursor.getString(7));
+            be.set_invitedPeople(cursor.getString(3));
+            be.set_description(cursor.getString(4));
+            be.set_startDate(Integer.parseInt(cursor.getString(5)));
+            be.set_startTime(Integer.parseInt(cursor.getString(6)));
+            be.set_endDate(Integer.parseInt(cursor.getString(7)));
+            be.set_endTime(Integer.parseInt(cursor.getString(8)));
         }
         db.close();
         return be;

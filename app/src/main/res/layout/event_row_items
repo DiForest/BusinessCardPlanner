@@ -52,5 +52,7 @@
         android:layout_toRightOf="@+id/thumbnail_date"
         android:autoText="false" />
 
+
+
     </LinearLayout>
 </RelativeLayout>

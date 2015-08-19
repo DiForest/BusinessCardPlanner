@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import java.util.Calendar;
 import java.util.List;
 
 import sam.businesscardplanner.DatabaseHandler.DatabaseHandler;
@@ -33,8 +34,10 @@ public class ScheduleFragment extends Fragment{
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        final String currentDate = getCurrentDate();
+
         final EventRowViewAdapter adapter =
-                new EventRowViewAdapter(getActivity().getApplicationContext(), generateData());
+                new EventRowViewAdapter(getActivity().getApplicationContext(), generateData(currentDate));
         final ListView listView = (ListView) getActivity().findViewById(R.id.event_list);
         listView.setAdapter(adapter);
 
@@ -52,8 +55,10 @@ public class ScheduleFragment extends Fragment{
 
     public void onResume(){
         super.onResume();
+        final String currentDate = getCurrentDate();
         final EventRowViewAdapter adapter =
-                new EventRowViewAdapter(getActivity().getApplicationContext(), generateData());
+                new EventRowViewAdapter(getActivity().getApplicationContext(),
+                        generateData(currentDate));
         final ListView listView = (ListView) getActivity().findViewById(R.id.event_list);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -68,10 +73,31 @@ public class ScheduleFragment extends Fragment{
         });
     }
 
-    private List<BusinessEvent> generateData(){
+    private List<BusinessEvent> generateData(String date){
         DatabaseHandler db1 = new DatabaseHandler(getActivity().getApplicationContext());
-        list = db1.getAllEvent();
+        list = db1.getAllEvent(date);
         return list;
+    }
+
+    private String getCurrentDate(){
+        final Calendar c = Calendar.getInstance();
+        int yy = c.get(Calendar.YEAR);
+        int mm = c.get(Calendar.MONTH) +1;
+        int dd = c.get(Calendar.DAY_OF_MONTH);
+
+        String mmFormat = "";
+        if(mm<10)
+            mmFormat = "0"+mm;
+        else
+            mmFormat = ""+mm;
+
+        String ddFormat = "";
+        if(dd<10)
+            ddFormat = "0"+dd;
+        else
+            ddFormat=""+dd;
+
+        return yy + "/" + mmFormat + "/" + ddFormat  ;
     }
 
 
