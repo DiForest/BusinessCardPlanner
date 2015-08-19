@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -25,55 +24,65 @@ public class BusinessEventProfile extends AppCompatActivity{
     private TextView mInvitedPeople;
     private TextView mReminder;
     private TextView mNote;
-    private Button mBtnEdit;
     private ImageView mBlank;
+    private TextView mDescription;
+
+    String title;
+    String description ;
+    String startDateTime;
+    String endDateTime;
+    int status = 0;
+    String people;
+    String peopleFromId;
 
     private Context context;
 
-    public void onCreate (Bundle savedInstanceState){
+    public void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.event_profile);
-
         setUpToolbar();
         setUpNavDrawer();
+        setTitle("");
 
         mTitle = (TextView) findViewById(R.id.event_title);
-        mStartDateTime = (TextView) findViewById(R.id.txt_start_time);
-        mEndDateTime = (TextView) findViewById(R.id.txt_end_time);
+        mDescription = (TextView) findViewById(R.id.event_description);
+        mStartDateTime = (TextView) findViewById(R.id.txt_start_date);
+        mEndDateTime = (TextView) findViewById(R.id.txt_end_date);
         mInvitedPeople = (TextView) findViewById(R.id.invited_people);
         mReminder = (TextView) findViewById(R.id.reminder);
         mNote = (TextView) findViewById(R.id.note);
-        mBtnEdit = (Button) findViewById(R.id.btn_edit_event);
         mBlank = (ImageView) findViewById(R.id.blank_end_date_image);
 
         Intent intent = getIntent();
-        final int eventId = intent.getExtras().getInt("ITEM ID", -1);
-        final DatabaseHandler db = new DatabaseHandler(this);
-        final BusinessEvent be = db.getEvent(eventId);
+        int eventId = intent.getExtras().getInt("ITEM ID", -1);
 
-        mTitle.setText(be.get_calendar_tile());
-        mStartDateTime.setText(be.get_startDateTime());
-        if(be.get_all_day_status() == 0){
-            mEndDateTime.setText(be.get_endDateTime());
-        }else {
+        DatabaseHandler db = new DatabaseHandler(this);
+        BusinessEvent be = db.getEvent(eventId);
+
+        title = be.get_calendar_tile();
+        description = be.get_description();
+        startDateTime = be.get_startDateTime();
+        endDateTime = be.get_endDateTime();
+        status = be.get_all_day_status();
+        people = be.get_invitedPeopleInput();
+        peopleFromId = be.get_invitedPeople();
+
+        mTitle.setText(title);
+        mDescription.setText(be.get_description());
+        mStartDateTime.setText("Start at " + startDateTime);
+        if (status == 0) {
+            mEndDateTime.setText("End at " + endDateTime);
+        } else {
             mEndDateTime.setVisibility(View.GONE);
             mBlank.setVisibility(View.GONE);
         }
 
-        String people = be.get_invitedPeople();
-        String peopleInput = be.get_invitedPeopleInput();
-        if(people.length()>0 || peopleInput.length()>0){
-            mInvitedPeople.setText(people);
+        if(people.length()>1){
+            mInvitedPeople.setText(be.get_invitedPeople());
         }else
-            mInvitedPeople.setText("None");
-
-        mBtnEdit.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
+            mInvitedPeople.setText("none");
     }
+
 
     private void setUpToolbar() {
         mToolbar = (Toolbar) findViewById(R.id.toolbar);

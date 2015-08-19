@@ -14,15 +14,11 @@ import sam.businesscardplanner.BusinessGroup.BusinessGroups;
 import sam.businesscardplanner.BusinessGroup.GroupAndPeople;
 import sam.businesscardplanner.BusinessSchedule.BusinessEvent;
 
-/**
- * Created by Administrator on 7/19/2015.
- */
 public class DatabaseHandler extends SQLiteOpenHelper {
 
     private static final int DATABASE_VERSION = 1;
     private static final String  DATABASE_NAME = "BusinessCardPlanner";
 
-    //business card table elements
     private static final String TABLE_BUSINESS_CARD ="businessCard";
     private static final String KEY_ID = "id";
     private static final String KEY_NAME = "name";
@@ -37,7 +33,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String KEY_WORK_WEBSITE = "workWebsite";
     private static final String KEY_CARD_CREATED_DATE = "cardCreateDate";
 
-    //business group table elements
     private static final String TABLE_BUSINESS_GROUP ="businessGroup";
     private static final String KEY_GROUP_ID = "id";
     private static final String KEY_GROUP_NAME = "groupName";
@@ -45,14 +40,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String KEY_GROUP_MEMBER_NUMBER = "groupMemberNumber";
     private static final String KEY_GROUP_DESCRIPTION = "groupDescription";
 
-    //group and people table elements
     private static final String TABLE_GROUP_PEOPLE = "groupPeople";
     private static final String GP_ID = "id";
     private static final String GROUP_FOREIGN_KEY = "groupForeignKey";
     private static final String PEOPLE_FOREIGN_KEY = "peopleForeignKey";
     private static final String PEOPLE_NAME = "peopleName";
 
-    //schedule table
     private static final String TABLE_EVENT = "businessEvent";
     private static final String KEY_EVENT_ID = "id";
     private static final String KEY_EVENT_TITLE = "businessEventName";
@@ -61,8 +54,21 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String KEY_ALL_DAY_STATUS = "allDayStatus";
     private static final String KEY_INVITED_PEOPLE ="invitedPeople";
     private static final String KEY_INVITED_PEOPLE_FROM_ID = "invitedPeopleFromId";
+    private static final String KEY_EVENT_DESCRIPTION = "eventDescription";
 
-    //create card statement
+    private static final String TABLE_EVENT_PEOPLE= "eventPeople";
+    private static final String EP_ID = "id";
+    private static final String EP_EVENT_ID = "epEventId";
+    private static final String EP_PEOPLE_ID = "epPeopleId";
+
+    private static final String TABLE_NOTE = "noteTable";
+    private static final String NOTE_ID = "noteId";
+    private static final String NOTE_CONTENT = "noteContent";
+
+    private static final String TABLE_NOTE_EVENT = "noteEvent";
+    private static final String NE_ID = "id";
+    private static final String NE_EVENT_ID = "noteEventId";
+    ,
     private static String CREATE_BUSINESS_CARD_TABLE = "CREATE TABLE "+ TABLE_BUSINESS_CARD
             + " (" + KEY_ID + " INTEGER PRIMARY KEY, " +
             KEY_NAME + " TEXT, " +
@@ -104,7 +110,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             KEY_START_TIME + " TEXT, "+
             KEY_END_TIME + " TEXT, " +
             KEY_INVITED_PEOPLE + " TEXT, " +
-            KEY_INVITED_PEOPLE_FROM_ID + " TEXT " + " );";
+            KEY_INVITED_PEOPLE_FROM_ID + " TEXT, " +
+            KEY_EVENT_DESCRIPTION + " TEXT " + " );";
 
     public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -554,6 +561,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(KEY_ALL_DAY_STATUS, be.get_all_day_status());
         values.put(KEY_INVITED_PEOPLE, be.get_invitedPeople());
         values.put(KEY_INVITED_PEOPLE_FROM_ID, be.get_invitedPeopleInput());
+        values.put(KEY_EVENT_DESCRIPTION, be.get_description());
         db.insert(TABLE_EVENT, null, values);
         db.close();
     }
@@ -561,7 +569,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     //get all the business card in the database
     public List<BusinessEvent> getAllEvent() {
         List<BusinessEvent> businessEventsList = new ArrayList<BusinessEvent>();
-        String selectQuery = "SELECT * FROM businessEvent";
+        String selectQuery = "SELECT * FROM businessEvent ORDER BY "
+                + KEY_START_TIME ;
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -577,6 +586,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                     be.set_endDateTime(cursor.getString(4));
                     be.set_invitedPeople(cursor.getString(5));
                     be.set_invitedPeopleInput(cursor.getString(6));
+                    be.set_description(cursor.getString(7));
                     //add into list
                     businessEventsList.add(be);
                 } while (cursor.moveToNext());
@@ -600,11 +610,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             be.set_calendar_tile(cursor.getString(1));
             be.set_startDateTime(cursor.getString(3));
             be.set_All_day_status(Integer.parseInt(cursor.getString(2)));
-            be.set_endDateTime(cursor.getString(3));
-            be.set_invitedPeople(cursor.getString(4));
-            be.set_invitedPeopleInput(cursor.getString(5));
+            be.set_endDateTime(cursor.getString(4));
+            be.set_invitedPeople(cursor.getString(5));
+            be.set_invitedPeopleInput(cursor.getString(6));
+            be.set_description(cursor.getString(7));
         }
-
+        db.close();
         return be;
     }
 }

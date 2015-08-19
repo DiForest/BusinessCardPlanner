@@ -56,6 +56,16 @@ public class ScheduleFragment extends Fragment{
                 new EventRowViewAdapter(getActivity().getApplicationContext(), generateData());
         final ListView listView = (ListView) getActivity().findViewById(R.id.event_list);
         listView.setAdapter(adapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                int itemId = adapter.getListItemId(position);
+                Intent intent = new Intent(ScheduleFragment.this.getActivity(),
+                        BusinessEventProfile.class);
+                intent.putExtra("ITEM ID", itemId);
+                startActivity(intent);
+            }
+        });
     }
 
     private List<BusinessEvent> generateData(){

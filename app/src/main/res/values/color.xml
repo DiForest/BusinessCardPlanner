@@ -2,6 +2,10 @@
 <resources>
     <color name="colorPrimary">#008EB2</color>
     <color name="colorPrimaryDark">#008EB2</color>
+    <color name="colorPrimaryRed">#7F171F</color>
+    <color name="colorLightRed">#B6212D</color>
+    <color name="colorPink">#FF99</color>
+    <color name="colorOrange">#FF9900</color>
 
 
 </resources>

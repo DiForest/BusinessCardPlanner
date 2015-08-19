@@ -35,9 +35,11 @@ public class EventRowViewAdapter extends ArrayAdapter<BusinessEvent> {
         TextView eventMonth = (TextView) rowView.findViewById(R.id.label_month);
 
         String dateTime = eventList.get(position).get_startDateTime();
-        String[] dateTimeString = dateTime.split("/");
-        String day = dateTimeString[0];
-        String month = dateTimeString[1];
+        String[] dateTimeString = dateTime.split(" ");
+        String date = dateTimeString[0];
+        String[] dateString = date.split("/");
+        String day = dateString[2];
+        String month = dateString[1];
 
         eventTitle.setText(eventList.get(position).get_calendar_tile());
         eventDay.setText(day);
@@ -57,7 +59,7 @@ public class EventRowViewAdapter extends ArrayAdapter<BusinessEvent> {
                 monthString = "Jan";
                 break;
             case "2" :
-                monthString = "Feby";
+                monthString = "Feb";
                 break;
             case "3" :
                 monthString = "Mar";

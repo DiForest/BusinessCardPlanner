@@ -2,10 +2,8 @@ package sam.businesscardplanner.BusinessSchedule;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
-import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.provider.CalendarContract;
 import android.support.v7.app.AlertDialog;
@@ -23,10 +21,10 @@ import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.TimeZone;
 
@@ -56,6 +54,7 @@ public class NewEventActivity extends AppCompatActivity {
     private TextView mEndTime;
     private EditText mTitle;
     private EditText mLocation;
+    private EditText mDescription;
 
     private int ALL_DAY_STATUS = 0;
     private boolean NOTIFICATION_STATUS = true;
@@ -90,6 +89,7 @@ public class NewEventActivity extends AppCompatActivity {
 
         mEndDateTimeSector = (LinearLayout) findViewById(R.id.end_date_time_sector);
 
+        //set up elements
         switchAllDay = (Switch) findViewById(R.id.switch_all_day);
         mStartDate = (TextView) findViewById(R.id.txt_start_date);
         mEndDate = (TextView) findViewById(R.id.txt_end_date);
@@ -104,6 +104,8 @@ public class NewEventActivity extends AppCompatActivity {
         mPeopleInput = (EditText)  findViewById(R.id.input_people);
         mPeopleImage = (ImageView) findViewById(R.id.people_image);
         mPeopleInputCancel = (ImageView) findViewById(R.id.invite_people_cancel);
+
+        mDescription = (EditText) findViewById(R.id.edit_description);
 
         mNote = (TextView) findViewById(R.id.txt_note);
         mLocation = (EditText) findViewById(R.id.txt_location);
@@ -217,7 +219,19 @@ public class NewEventActivity extends AppCompatActivity {
         mm = c.get(Calendar.MONTH) +1;
         dd = c.get(Calendar.DAY_OF_MONTH);
 
-        currentDateString = dd + "/" + mm + "/" + yy + " " ;
+        String mmFormat = "";
+        if(mm<10)
+            mmFormat = "0"+mm;
+        else
+            mmFormat = ""+mm;
+
+        String ddFormat = "";
+        if(dd<10)
+            ddFormat = "0"+dd;
+        else
+            ddFormat=""+dd;
+
+        currentDateString = yy + "/" + mmFormat + "/" + ddFormat  ;
         return currentDateString;
     }
 
@@ -226,7 +240,19 @@ public class NewEventActivity extends AppCompatActivity {
         hour = c.get(Calendar.HOUR_OF_DAY);
         minute = c.get(Calendar.MINUTE);
 
-        currentTimeString = hour+ ":" + minute;
+        String hour24 = "";
+        if(hour>=0 && hour< 10)
+            hour24 = "0" + hour;
+        else
+            hour24 = "" + hour;
+
+
+        String minute24 = "";
+        if(minute<10)
+            minute24 = "0" + minute;
+        else
+            minute24 = ""+minute;
+        currentTimeString = hour24 + ":" + minute24;
         return currentTimeString;
     }
 
@@ -238,21 +264,19 @@ public class NewEventActivity extends AppCompatActivity {
                     @Override
                     public void onDateSet(DatePicker view, int year,
                                           int monthOfYear, int dayOfMonth) {
-                        if(status == 3){
-                            mReminderDate.setText(dayOfMonth + "/"
-                                    + (monthOfYear + 1) + "/" + year + " ");
-                        }
-                        else if(status == 2)
+                        if(status == 2)
                         {
-                            mStartDate.setText(dayOfMonth + "/"
-                                    + (monthOfYear + 1) + "/" + year + " ");
+                            mStartDate.setText(year + "/"
+                                    + (monthOfYear +1) + "/"
+                                    + dayOfMonth);
                         } else if (status == 1)
                         {
-                            mEndDate.setText(dayOfMonth + "/"
-                                    + (monthOfYear + 1) + "/" + year + " ");
+                            mEndDate.setText(year + "/"
+                                    + (monthOfYear +1) + "/"
+                                    + dayOfMonth);
                         }
                     }
-                }, yy, mm, dd);
+                }, yy, mm +1 , dd);
         dpd.setTitle("Select Date");
         dpd.show();
     }
@@ -323,7 +347,7 @@ public class NewEventActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         String peopleName = arrayAdapter.getItem(which);
-                        LinearLayout linearLayout =  (LinearLayout)findViewById(R.id.add_people_layout);
+                        LinearLayout linearLayout = (LinearLayout) findViewById(R.id.add_people_layout);
 
                         TextView valueTV = new TextView(getApplicationContext());
                         valueTV.setText(peopleName);
@@ -359,117 +383,107 @@ public class NewEventActivity extends AppCompatActivity {
 
         String startDate = mStartDate.getText().toString();
         String startTime = mStartTime.getText().toString();
-        String endDate = mEndDate.getText().toString();
-        String endTime = mEndTime.getText().toString();
-        String startDateTime = dateTimeFormat(startDate, startTime);
-        /*
-        String pplList = "";
-        if(invitedPeople.size()>0){
-            pplList = invitedPeople.get(0);
-            if(invitedPeople.size()>1){
-                for(int i =1 ; i<invitedPeople.size() ; i++){
-                    pplList = ","+ invitedPeople.get(i);
-                }
-                calendar.set_invitedPeopleInput(pplList);
-            }else
-                calendar.set_invitedPeopleInput(pplList);
+        String endDate;
+        String endTime;
+        String endValid;
+        String startValid;
+        boolean status ;
+        String pplInput = mPeopleInput.getText().toString();
+        String location = mLocation.getText().toString();
+        String description = mDescription.getText().toString();
+
+        if(ALL_DAY_STATUS == 0){
+            endDate = startDate;
+            endTime = "23:00";
+            status = true;
+        }else{
+            endDate = mEndDate.getText().toString();
+            endTime = mEndTime.getText().toString();
+            status = false;
         }
-*/
+
+        String startDateTime = dateTimeFormat(startDate, checkTimeFormat(startTime));
+        String endDateTime = dateTimeFormat(endDate, checkTimeFormat(endTime));
+
         calendar.set_calendar_tile(title);
-        //calendar.set_All_day_status(ALL_DAY_STATUS);
+        calendar.set_All_day_status(ALL_DAY_STATUS);
         calendar.set_startDateTime(startDateTime);
+        calendar.set_endDateTime(endDateTime);
+        calendar.set_invitedPeopleInput(pplInput);
+        calendar.set_description(description);
+
+        int startDay = breakDateFormat(2,startDate);
+        int startMonth = breakDateFormat(1,startDate) -1;
+        int startYear = breakDateFormat(0,startDate);
+        int startHH = breakTimeFormat(0, startTime);
+        int startMM = breakTimeFormat(1, startTime);
+
+        Calendar beginT = Calendar.getInstance();
+        beginT.set(startYear, startMonth, startDay, startHH, startMM);
+
+        Intent intent = new Intent(Intent.ACTION_INSERT)
+                .setData(CalendarContract.Events.CONTENT_URI)
+                .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, beginT.getTimeInMillis() )
+                .putExtra(CalendarContract.Events.ALL_DAY, status)
+                .putExtra(CalendarContract.Events.EVENT_LOCATION, location)
+                .putExtra(CalendarContract.Events.DESCRIPTION,description)
+                .putExtra(CalendarContract.Events.EVENT_TIMEZONE,
+                        TimeZone.getDefault().toString())
+                .putExtra(CalendarContract.Events.TITLE, title);
+
+
+        int endYear, endMonth,endDay,endHH,endMM;
+        Calendar endT;
+        if(!status) {
+            endDay = breakDateFormat(2, endDate);
+            endMonth = breakDateFormat(1, endDate)-1;
+            endYear = breakDateFormat(0, endDate);
+            endHH = breakTimeFormat(0, endTime);
+            endMM = breakTimeFormat(1, endTime);
+            endT = Calendar.getInstance();
+            endT.set(endYear, endMonth, endDay, endHH, endMM);
+            intent.putExtra(CalendarContract.EXTRA_EVENT_END_TIME, endT.getTimeInMillis());
+        }
+
+        startActivity(intent);
 
         DatabaseHandler db = new DatabaseHandler(getBaseContext());
         db.addEvent(calendar);
-        /*
-        Toast.makeText(this.getApplicationContext(),
-                "Click title" + title + "all day " + ALL_DAY_STATUS
-                + " ppl :" + pplList , Toast.LENGTH_LONG)
-                .show();
-        */
-        long calID = 3;
-        long startMillis = 0;
-        long endMillis = 0;
-        Calendar beginTime = Calendar.getInstance();
-        beginTime.set(2015, 11, 14, 7, 30);
-        startMillis = beginTime.getTimeInMillis();
-        Calendar end = Calendar.getInstance();
-        end.set(2015, 11, 14, 8, 45);
-        endMillis = end.getTimeInMillis();
-
-        String eventUriStr = "content://com.android.calendar/events";
-        ContentValues cal = new ContentValues();
-        cal.put(CalendarContract.Events.CALENDAR_ID, 3);
-        cal.put(CalendarContract.Events.TITLE, title);
-        cal.put(CalendarContract.Events.DTSTART,startMillis);
-        cal.put(CalendarContract.Events.DTEND,endMillis);
-        cal.put(CalendarContract.Events.EVENT_TIMEZONE, TimeZone.getDefault().toString());
-        Uri uri = getContentResolver().insert(Uri.parse(eventUriStr),cal);
-
-        int eventId = Integer.parseInt(uri.getLastPathSegment());
     }
 
-    /* --------------------------save in local event  -----------------
+    public String checkTimeFormat(String time){
+        String[] temp = time.split(":");
+        String hh = temp[0];
+        String mm = temp[1];
 
-    private void saveInLocalEvent(long start, long end){
-        Calendar calendar = Calendar.getInstance();
-        Intent intent = new Intent(Intent.ACTION_INSERT)
-                .setData(CalendarContract.Events.CONTENT_URI)
-                .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, start)
-                .putExtra(CalendarContract.EXTRA_EVENT_END_TIME, end)
-                .putExtra(CalendarContract.Events.ALL_DAY, true)
-                .putExtra(CalendarContract.Events.EVENT_LOCATION, mLocation)
-                .putExtra(CalendarContract.Events.CALENDAR_TIME_ZONE,
-                        TimeZone.getDefault().toString())
-                .putExtra(CalendarContract.Events.TITLE, "testing testing");
-        Uri uri = getContentResolver().insert(CalendarContract.Events.CONTENT_URI,calendar);
-        startActivity(intent);
+        int HH = Integer.parseInt(hh);
+        int MM = Integer.parseInt(mm);
+
+        if( HH >= 0 && HH < 10 ){
+            hh = "0"+hh;
+        }
+
+        if( MM >0 && MM <10 ){
+            mm = "0"+mm;
+        }
+
+        return hh + ":" +mm;
     }
 
-    */
+
+    public int breakDateFormat(int part,String date ){
+        String[] dateSplit = date.split("/");
+        return Integer.parseInt(dateSplit[part]);
+    }
+
+    public int breakTimeFormat(int part, String time){
+        String[] timeSplit = time.split(":");
+        return Integer.parseInt(timeSplit[part]);
+    }
+
     /* --------------------- format method -------------------*/
     private String dateTimeFormat(String date, String time){
         return date + " " + time;
-    }
-
-    private long calendarFormat(String date, String time){
-        /*
-        String[] dateELement = date.split("/");
-        int day = Integer.parseInt(dateELement[0]);
-        int month = Integer.parseInt(dateELement[1]);
-        int year =  Integer.parseInt(dateELement[2]);
-        */
-        Calendar calendar1 = new GregorianCalendar(2015,11,18);
-
-        /*
-        String[] timeElement = time.split(":");
-        int hour = Integer.parseInt(timeElement[0]);
-        int minute = Integer.parseInt(timeElement[1]);
-        */
-        calendar1.set(Calendar.HOUR, 4);
-        calendar1.set(Calendar.MINUTE, 0);
-        calendar1.set(Calendar.SECOND, 0);
-        calendar1.set(Calendar.MILLISECOND, 0);
-        long format = calendar1.getTimeInMillis();
-
-        return format;
-    }
-
-    private long calendarFomat2(){
-        Calendar calendar1 = new GregorianCalendar(2015,11,19);
-
-        /*
-        String[] timeElement = time.split(":");
-        int hour = Integer.parseInt(timeElement[0]);
-        int minute = Integer.parseInt(timeElement[1]);
-        */
-        calendar1.set(Calendar.HOUR, 5);
-        calendar1.set(Calendar.MINUTE, 0);
-        calendar1.set(Calendar.SECOND, 0);
-        calendar1.set(Calendar.MILLISECOND, 0);
-        long format = calendar1.getTimeInMillis();
-
-        return format;
     }
 
     /* -------------------MENU --------------------*/
@@ -495,6 +509,9 @@ public class NewEventActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_save:
                 saveInfo();
+                Toast.makeText(this.getApplicationContext(),
+                        "Create new event successfully",
+                        Toast.LENGTH_LONG).show();
                 NewEventActivity.this.finish();
                 return true;
         }

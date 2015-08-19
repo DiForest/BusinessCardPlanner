@@ -18,6 +18,15 @@
         android:textSize="24dp"
         android:padding="10dp"/>
 
+    <EditText
+        android:id="@+id/edit_description"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:inputType="textMultiLine"
+        android:lines="2"
+        android:padding="5dp"
+        android:hint="Description" />
+
     <GridLayout
         android:layout_height="wrap_content"
         android:layout_width="fill_parent"
@@ -252,19 +261,6 @@
             android:text="Add some Note"
             android:textSize="16dp"/>
 
-        <ImageView
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:src="@drawable/ic_tag_purple"
-            android:padding="8dp"/>
-
-        <TextView
-            android:id="@+id/txt_tag"
-            android:layout_height="52dp"
-            android:layout_width="fill_parent"
-            android:padding="16dp"
-            android:text="Add a Tag"
-            android:textSize="16dp"/>
 
         </GridLayout>
 </LinearLayout>

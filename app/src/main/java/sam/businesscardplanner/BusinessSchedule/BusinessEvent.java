@@ -12,6 +12,7 @@ public class BusinessEvent {
     String _invitedPeople;
     String _invitedPeopleInput;
     int _all_day_status;
+    String _description;
 
     public BusinessEvent(){
 
@@ -23,7 +24,8 @@ public class BusinessEvent {
                          String endDateTime,
                          String invitedPeople,
                          String invitedPeopleInput,
-                         int all_day_status){
+                         int all_day_status,
+                         String description){
 
         this._calendar_id = calendar_id;
         this._calendar_tile = calendar_title;
@@ -32,6 +34,7 @@ public class BusinessEvent {
         this._all_day_status = all_day_status;
         this._invitedPeople = invitedPeople;
         this._invitedPeopleInput = invitedPeopleInput;
+        this._description = description;
     }
 
     public void set_calendar_id(int calendar_id ){
@@ -86,9 +89,16 @@ public class BusinessEvent {
     public void set_invitedPeopleInput (String invitedPeopleInput){
         this._invitedPeopleInput = invitedPeopleInput;
     }
-
     public String get_invitedPeopleInput(){
         return this._invitedPeopleInput;
     }
 
+    public void set_description (String description){
+        this._description = description;
+    }
+
+    public String get_description(){
+        return this._description;
+    }
 }
+
