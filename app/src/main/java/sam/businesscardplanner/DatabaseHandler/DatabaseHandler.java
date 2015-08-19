@@ -75,7 +75,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static String CREATE_BUSINESS_GROUP_TABLE = "CREATE TABLE "+ TABLE_BUSINESS_GROUP
             + " (" + KEY_GROUP_ID + " INTEGER PRIMARY KEY, " +
             KEY_GROUP_NAME + " TEXT, "+
-            KEY_GROUP_CREATED_DATE + " TEXT, " +
+            KEY_GROUP_CREATED_DATE + " INTEGER, " +
             KEY_GROUP_MEMBER_NUMBER + " INTEGER, " +
             KEY_GROUP_DESCRIPTION + " TEXT " + " );";
 
@@ -323,7 +323,33 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                     BusinessGroups groups = new BusinessGroups();
                     groups.set_id(Integer.parseInt(cursor.getString(0)));
                     groups.set_name(cursor.getString(1));
-                    groups.set_created_date(cursor.getString(2));
+                    groups.set_created_date(Integer.parseInt(cursor.getString(2)));
+                    groups.set_member_count(Integer.parseInt(cursor.getString(3)));
+                    groups.set_description(cursor.getString(4));
+
+                    groupsList.add(groups);
+                }while(cursor.moveToNext());
+            }
+        }
+        db.close();
+        return groupsList;
+    }
+
+    public List<BusinessGroups> getAllGroupInOrderDate(){
+        List<BusinessGroups> groupsList =  new ArrayList<BusinessGroups>();
+        String selectQuery = "SELECT * FROM "+ TABLE_BUSINESS_GROUP + " ORDER BY "
+                + KEY_GROUP_CREATED_DATE ;
+
+        SQLiteDatabase db =this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        if(cursor != null){
+            if(cursor.moveToFirst()){
+                do{
+                    BusinessGroups groups = new BusinessGroups();
+                    groups.set_id(Integer.parseInt(cursor.getString(0)));
+                    groups.set_name(cursor.getString(1));
+                    groups.set_created_date(Integer.parseInt(cursor.getString(2)));
                     groups.set_member_count(Integer.parseInt(cursor.getString(3)));
                     groups.set_description(cursor.getString(4));
 
@@ -348,7 +374,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
             groups.set_id(Integer.parseInt(cursor.getString(0)));
             groups.set_name(cursor.getString(1));
-            groups.set_created_date(cursor.getString(2));
+            groups.set_created_date(Integer.parseInt(cursor.getString(2)));
             groups.set_member_count(Integer.parseInt(cursor.getString(3)));
             groups.set_description(cursor.getString(4));
         }

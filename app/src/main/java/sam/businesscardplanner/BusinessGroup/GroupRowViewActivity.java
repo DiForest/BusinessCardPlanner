@@ -39,7 +39,7 @@ public class GroupRowViewActivity extends ArrayAdapter<BusinessGroups> {
 
         groupName.setText(groupsList.get(position).get_name());
         groupDescription.setText(groupsList.get(position).get_description());
-        groupCreatedDate.setText("created by "+groupsList.get(position).get_created_date());
+        groupCreatedDate.setText("created by "+ groupsList.get(position).get_created_date());
 
         //display the number of member
         int group_member_number = groupsList.get(position).get_member_count();

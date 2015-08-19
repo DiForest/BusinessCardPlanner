@@ -112,7 +112,6 @@ public class BusinessCardsFragment extends Fragment implements SearchView.OnQuer
     }
 
     private void triggerSortByName(){
-        DatabaseHandler db = new DatabaseHandler(getActivity().getApplicationContext());
         list.clear();
         final RowViewAdapter adapter = new RowViewAdapter(getActivity().getApplicationContext(),
                 generateData());

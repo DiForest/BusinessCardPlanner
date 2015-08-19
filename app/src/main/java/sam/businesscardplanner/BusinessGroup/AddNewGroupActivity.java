@@ -94,7 +94,7 @@ public class AddNewGroupActivity extends AppCompatActivity {
         int month_ = calendar.get(Calendar.MONTH) +1;
         int day_ = calendar.get(Calendar.DATE);
 
-        String date = ("" + day_+"/"+month_+"/"+year);
+        int date = year * 10000 + month_ * 100 + day_;
 
         DatabaseHandler db = new DatabaseHandler(getBaseContext());
 
@@ -103,10 +103,9 @@ public class AddNewGroupActivity extends AppCompatActivity {
         businessGroups.set_description(description);
 
         if(ADD_OR_EDIT_STATUS ==1){
-            db.addGroup(businessGroups);
             businessGroups.set_member_count(0);
-
             businessGroups.set_created_date(date);
+            db.addGroup(businessGroups);
             Toast.makeText(this.getApplicationContext(),
                     "Created Successfully", Toast.LENGTH_LONG)
                     .show();
@@ -116,9 +115,6 @@ public class AddNewGroupActivity extends AppCompatActivity {
                     "Updated Successfully", Toast.LENGTH_LONG)
                     .show();
         }
-        //Intent intent = new Intent(this, AddNewGroupActivity.class);
-        //intent.putExtra("groupName", groupName);
-        //startActivity(intent);
     }
 
     //setup the toolbar home title can be clicked and open the drawer

@@ -86,8 +86,32 @@ public class GroupsFragment extends Fragment {
                 intent.putExtra("ADD OR EDIT", 1);
                 this.startActivity(intent);
                 return true;
+            case R.id.action_sort_by_date:
+                triggerSortByDate();
+                return true;
+            case R.id.action_sort_by_name:
+                triggerSortByName();
+                return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void triggerSortByDate(){
+        DatabaseHandler db = new DatabaseHandler(getActivity().getApplicationContext());
+        list.clear();
+        list = db.getAllGroupInOrderDate();
+        final GroupRowViewActivity adapter = new GroupRowViewActivity(getActivity().getApplicationContext(),
+                list);
+        final ListView listView = (ListView) getActivity().findViewById(R.id.group_list);
+        listView.setAdapter(adapter);
+    }
+
+    private void triggerSortByName(){
+        list.clear();
+        final GroupRowViewActivity adapter = new GroupRowViewActivity(getActivity().getApplicationContext(),
+                generateData());
+        final ListView listView = (ListView) getActivity().findViewById(R.id.group_list);
+        listView.setAdapter(adapter);
     }
 
 }
