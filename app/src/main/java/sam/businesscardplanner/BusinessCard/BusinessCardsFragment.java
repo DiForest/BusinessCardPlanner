@@ -25,6 +25,9 @@ public class BusinessCardsFragment extends Fragment implements SearchView.OnQuer
     List list = null;
     RowViewAdapter adapter;
     private final int ADD = 1;
+    private int SORTING_STATUS = 1;
+    private final int SORT_BY_NAME = 1;
+    private final int SORT_BY_DATE = 2;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -37,8 +40,8 @@ public class BusinessCardsFragment extends Fragment implements SearchView.OnQuer
     public void onActivityCreated(Bundle savedInstanceState){
         super.onActivityCreated(savedInstanceState);
 
-        final RowViewAdapter adapter =  new RowViewAdapter(getActivity().getApplicationContext(),
-                generateData());
+        list = generateData();
+        final RowViewAdapter adapter =  new RowViewAdapter(getActivity().getApplicationContext(), list);
         ListView listView = (ListView) getActivity().findViewById(R.id.business_card_list);
         listView.setAdapter(adapter);
 
@@ -87,8 +90,34 @@ public class BusinessCardsFragment extends Fragment implements SearchView.OnQuer
                 intent.putExtra("ADD OR EDIT", ADD);
                 this.startActivity(intent);
                 return true;
+
+            case R.id.action_sort_by_date:
+                triggerSortByDate();
+                return true;
+            case R.id.action_sort_by_name:
+                triggerSortByName();
+                return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void triggerSortByDate(){
+        DatabaseHandler db = new DatabaseHandler(getActivity().getApplicationContext());
+        list.clear();
+        list = db.getAllBusinessCardInOrderDate();
+        final RowViewAdapter adapter = new RowViewAdapter(getActivity().getApplicationContext(),
+                list);
+        final ListView listView = (ListView) getActivity().findViewById(R.id.business_card_list);
+        listView.setAdapter(adapter);
+    }
+
+    private void triggerSortByName(){
+        DatabaseHandler db = new DatabaseHandler(getActivity().getApplicationContext());
+        list.clear();
+        final RowViewAdapter adapter = new RowViewAdapter(getActivity().getApplicationContext(),
+                generateData());
+        final ListView listView = (ListView) getActivity().findViewById(R.id.business_card_list);
+        listView.setAdapter(adapter);
     }
 
     @Override
@@ -104,4 +133,5 @@ public class BusinessCardsFragment extends Fragment implements SearchView.OnQuer
         }
         return false;
     }
+
 }

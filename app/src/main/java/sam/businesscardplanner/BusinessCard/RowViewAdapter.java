@@ -63,6 +63,7 @@ public class RowViewAdapter extends ArrayAdapter<BusinessCard> implements Filter
         return cardsList.get(position).get_id();
     }
 
+
     @Override
     public Filter getFilter(){
         if(valueFilter == null){
@@ -99,5 +100,6 @@ public class RowViewAdapter extends ArrayAdapter<BusinessCard> implements Filter
             cardsList = (List<BusinessCard>) results.values;
             notifyDataSetChanged();
         }
+
     }
 }
