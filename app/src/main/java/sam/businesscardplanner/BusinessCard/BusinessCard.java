@@ -16,7 +16,7 @@ public class  BusinessCard {
     String _workPhone;
     String _workAddress;
     String _workWebsite;
-    String _date;
+    int _date;
 
     //constructor
     public BusinessCard(){
@@ -26,7 +26,7 @@ public class  BusinessCard {
     //constructor
     public BusinessCard(int keyId, String name, String image, String company,String job,
                         String address, String email,String phone,String workPhone,
-                        String workAddress, String workWebsite ,String date){
+                        String workAddress, String workWebsite ,int date){
         this._id = keyId;
         this._name = name;
         this._image = image;
@@ -156,11 +156,11 @@ public class  BusinessCard {
         this._workWebsite =  workWebsite;
     }
 
-    public String get_date(){
+    public int get_date(){
         return this._date;
     }
 
-    public void set_date(String date){
+    public void set_date(int date){
         this._date = date;
     }
 }

@@ -49,7 +49,7 @@ public class RowViewAdapter extends ArrayAdapter<BusinessCard> implements Filter
         nameView.setText(cardsList.get(position).get_name());
         jobView.setText(cardsList.get(position).get_job());
         companyView.setText(cardsList.get(position).get_company());
-        date.setText(cardsList.get(position).get_date());
+        date.setText("" + cardsList.get(position).get_date());
 
         String imagePath = cardsList.get(position).get_image();
         if(imagePath!= null) {

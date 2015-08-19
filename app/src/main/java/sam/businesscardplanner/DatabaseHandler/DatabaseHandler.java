@@ -69,7 +69,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             KEY_WORK_ADDRESS + " TEXT, " +
             KEY_WORK_WEBSITE + " TEXT, " +
             KEY_IMAGE_BITMAP + " TEXT, " +
-            KEY_CARD_CREATED_DATE + " TEXT " + " );";
+            KEY_CARD_CREATED_DATE + " INTEGER " + " );";
 
     //create group statement
     private static String CREATE_BUSINESS_GROUP_TABLE = "CREATE TABLE "+ TABLE_BUSINESS_GROUP
@@ -125,13 +125,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         onCreate(db);
     }
-
     /* -------
     **************
     Business card table method
     **************************************************
     ------------------------------------------------------------------------------- */
-    //add business card into database
     public void addBusinessCard(BusinessCard businessCard){
         SQLiteDatabase db =  this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -151,7 +149,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.close();
     }
 
-    //get all the business card in the database
     public List<BusinessCard> getAllBusinessCard() {
         List<BusinessCard> businessCardList = new ArrayList<BusinessCard>();
         String selectQuery = "SELECT * FROM businessCard ORDER BY name";
@@ -167,7 +164,34 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                     businessCard.set_name(cursor.getString(1));
                     businessCard.set_job(cursor.getString(3));
                     businessCard.set_company(cursor.getString(2));
-                    businessCard.set_date(cursor.getString(11));
+                    businessCard.set_date(Integer.parseInt(cursor.getString(11)));
+                    businessCard.set_image(cursor.getString(10));
+
+                    businessCardList.add(businessCard);
+                } while (cursor.moveToNext());
+            }
+        }
+        db.close();
+        return businessCardList;
+    }
+
+    public List<BusinessCard> getAllBusinessCardInOrderDate() {
+        List<BusinessCard> businessCardList = new ArrayList<BusinessCard>();
+        String selectQuery = "SELECT * FROM businessCard ORDER BY "
+                + KEY_CARD_CREATED_DATE;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        if (cursor != null ){
+            if (cursor.moveToFirst()) {
+                do {
+                    BusinessCard businessCard = new BusinessCard();
+                    businessCard.set_id(Integer.parseInt(cursor.getString(0)));
+                    businessCard.set_name(cursor.getString(1));
+                    businessCard.set_job(cursor.getString(3));
+                    businessCard.set_company(cursor.getString(2));
+                    businessCard.set_date(Integer.parseInt(cursor.getString(11)));
                     businessCard.set_image(cursor.getString(10));
 
                     //add into list
@@ -202,7 +226,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             businessCard.set_address(cursor.getString(8));
             businessCard.set_workWebsite(cursor.getString(9));
             businessCard.set_image(cursor.getString(10));
-            businessCard.set_date(cursor.getString(11));
+            businessCard.set_date(Integer.parseInt(cursor.getString(11)));
         }
         return businessCard;
 

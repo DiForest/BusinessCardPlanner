@@ -119,7 +119,6 @@ public class AddNewCardActivity extends AppCompatActivity {
         workPhoneEditText.setText(businessCard.get_workPhone());
         workWebsiteEditText.setText(businessCard.get_workWebsite());
 
-
         String imagePath = businessCard.get_image();
         if(imagePath!= null) {
             Uri uri = Uri.parse(imagePath);
@@ -413,7 +412,7 @@ public class AddNewCardActivity extends AppCompatActivity {
             businessCard.set_workAddress(addressWork);
             businessCard.set_address(address);
             businessCard.set_email(email);
-            String date = getDateTime();
+            int date = getDateTime();
             businessCard.set_date(date);
             businessCard.set_image(mCurrentPhotoPath);
             businessCard.set_workWebsite(website);
@@ -435,13 +434,13 @@ public class AddNewCardActivity extends AppCompatActivity {
         }
     }
 
-    private String getDateTime() {
+    private int getDateTime() {
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
         int month_ = calendar.get(Calendar.MONTH) +1;
         int day_ = calendar.get(Calendar.DATE);
 
-        String date = (day_+"/"+month_+"/"+year);
+        int date = year * 10000 + month_ * 100 + day_;
         return date;
     }
 }
