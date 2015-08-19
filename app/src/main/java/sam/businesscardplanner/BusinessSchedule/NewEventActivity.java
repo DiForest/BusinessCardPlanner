@@ -98,7 +98,6 @@ public class NewEventActivity extends AppCompatActivity {
         mPeople = (TextView) findViewById(R.id.txt_people);
         mDescription = (EditText) findViewById(R.id.edit_description);
 
-        mNote = (TextView) findViewById(R.id.txt_note);
         mLocation = (EditText) findViewById(R.id.txt_location);
         mTitle = (EditText) findViewById(R.id.edit_title);
         iconBlank = (ImageView) findViewById(R.id.icon_blank);

@@ -22,8 +22,6 @@ public class BusinessEventProfile extends AppCompatActivity{
     private TextView mStartDateTime;
     private TextView mEndDateTime;
     private TextView mInvitedPeople;
-    private TextView mReminder;
-    private TextView mNote;
     private ImageView mBlank;
     private TextView mDescription;
 
@@ -48,7 +46,6 @@ public class BusinessEventProfile extends AppCompatActivity{
         mStartDateTime = (TextView) findViewById(R.id.txt_start_date);
         mEndDateTime = (TextView) findViewById(R.id.txt_end_date);
         mInvitedPeople = (TextView) findViewById(R.id.invited_people_card);
-        mNote = (TextView) findViewById(R.id.note);
         mBlank = (ImageView) findViewById(R.id.blank_end_date_image);
 
         Intent intent = getIntent();
