@@ -61,6 +61,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String EP_EVENT_ID = "epEventId";
     private static final String EP_PEOPLE_ID = "epPeopleId";
 
+    private static final String TABLE_NOTE_GROUP = "noteGroup";
+    private static final String NG_ID = "id";
+    private static final String NG_GROUP_ID = "noteGroupId";
+
     private static final String TABLE_NOTE = "noteTable";
     private static final String NOTE_ID = "noteId";
     private static final String NOTE_CONTENT = "noteContent";
@@ -68,7 +72,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String TABLE_NOTE_EVENT = "noteEvent";
     private static final String NE_ID = "id";
     private static final String NE_EVENT_ID = "noteEventId";
-    ,
+
+    private static final String TABLE_NOTE_PEOPLE ="notePeople";
+    private static final String NP_ID ="id";
+    private static final String NP_PEOPLE_ID = "notePeopleId";
+
     private static String CREATE_BUSINESS_CARD_TABLE = "CREATE TABLE "+ TABLE_BUSINESS_CARD
             + " (" + KEY_ID + " INTEGER PRIMARY KEY, " +
             KEY_NAME + " TEXT, " +
@@ -113,6 +121,17 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             KEY_INVITED_PEOPLE_FROM_ID + " TEXT, " +
             KEY_EVENT_DESCRIPTION + " TEXT " + " );";
 
+    //initialise the group and people table elements
+    private static String CREATE_EVENT_PEOPLE_TABLE = "CREATE TABLE " + TABLE_EVENT_PEOPLE + " ( " +
+            EP_ID + " INTEGER PRIMARY KEY," +
+            EP_EVENT_ID + " INT, " +
+            EP_PEOPLE_ID + " INT " +
+            "FOREIGN KEY ( " + EP_EVENT_ID + " ) REFERENCES "
+            + TABLE_EVENT + " ( "+ KEY_EVENT_ID + " ), " +
+            "FOREIGN KEY ( " + EP_PEOPLE_ID + " ) REFERENCES "
+            + TABLE_BUSINESS_CARD + "( " + KEY_ID +" )" +
+            ");";
+
     public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -123,6 +142,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.execSQL(CREATE_BUSINESS_GROUP_TABLE);
         db.execSQL(CREATE_EVENT_TABLE);
         db.execSQL(CREATE_GROUP_AND_PEOPLE_TABLE);
+        db.execSQL(CREATE_EVENT_PEOPLE_TABLE);
     }
 
     //upgradde database table
@@ -560,7 +580,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(KEY_END_TIME,be.get_endDateTime());
         values.put(KEY_ALL_DAY_STATUS, be.get_all_day_status());
         values.put(KEY_INVITED_PEOPLE, be.get_invitedPeople());
-        values.put(KEY_INVITED_PEOPLE_FROM_ID, be.get_invitedPeopleInput());
         values.put(KEY_EVENT_DESCRIPTION, be.get_description());
         db.insert(TABLE_EVENT, null, values);
         db.close();
@@ -585,7 +604,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                     be.set_startDateTime(cursor.getString(3));
                     be.set_endDateTime(cursor.getString(4));
                     be.set_invitedPeople(cursor.getString(5));
-                    be.set_invitedPeopleInput(cursor.getString(6));
                     be.set_description(cursor.getString(7));
                     //add into list
                     businessEventsList.add(be);
@@ -612,7 +630,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             be.set_All_day_status(Integer.parseInt(cursor.getString(2)));
             be.set_endDateTime(cursor.getString(4));
             be.set_invitedPeople(cursor.getString(5));
-            be.set_invitedPeopleInput(cursor.getString(6));
             be.set_description(cursor.getString(7));
         }
         db.close();

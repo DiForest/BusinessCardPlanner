@@ -33,7 +33,6 @@ public class BusinessEventProfile extends AppCompatActivity{
     String endDateTime;
     int status = 0;
     String people;
-    String peopleFromId;
 
     private Context context;
 
@@ -48,8 +47,7 @@ public class BusinessEventProfile extends AppCompatActivity{
         mDescription = (TextView) findViewById(R.id.event_description);
         mStartDateTime = (TextView) findViewById(R.id.txt_start_date);
         mEndDateTime = (TextView) findViewById(R.id.txt_end_date);
-        mInvitedPeople = (TextView) findViewById(R.id.invited_people);
-        mReminder = (TextView) findViewById(R.id.reminder);
+        mInvitedPeople = (TextView) findViewById(R.id.invited_people_card);
         mNote = (TextView) findViewById(R.id.note);
         mBlank = (ImageView) findViewById(R.id.blank_end_date_image);
 
@@ -64,8 +62,7 @@ public class BusinessEventProfile extends AppCompatActivity{
         startDateTime = be.get_startDateTime();
         endDateTime = be.get_endDateTime();
         status = be.get_all_day_status();
-        people = be.get_invitedPeopleInput();
-        peopleFromId = be.get_invitedPeople();
+        people = be.get_invitedPeople();
 
         mTitle.setText(title);
         mDescription.setText(be.get_description());

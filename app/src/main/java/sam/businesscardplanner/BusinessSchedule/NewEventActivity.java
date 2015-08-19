@@ -42,12 +42,7 @@ public class NewEventActivity extends AppCompatActivity {
     private ImageView mReminderCancel;
 
     private TextView mPeople;
-    private EditText mPeopleInput;
-    private ImageView mPeopleImage;
-    private ImageView mPeopleInputCancel;
-
     private TextView mNote;
-    private TextView mTag;
     private TextView mStartDate;
     private TextView mEndDate;
     private TextView mStartTime;
@@ -101,10 +96,6 @@ public class NewEventActivity extends AppCompatActivity {
         mReminderCancel = (ImageView) findViewById(R.id.notification_cancel);
 
         mPeople = (TextView) findViewById(R.id.txt_people);
-        mPeopleInput = (EditText)  findViewById(R.id.input_people);
-        mPeopleImage = (ImageView) findViewById(R.id.people_image);
-        mPeopleInputCancel = (ImageView) findViewById(R.id.invite_people_cancel);
-
         mDescription = (EditText) findViewById(R.id.edit_description);
 
         mNote = (TextView) findViewById(R.id.txt_note);
@@ -176,19 +167,9 @@ public class NewEventActivity extends AppCompatActivity {
         mPeople.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                invitePeople(peopleList);
+                choosePeople();
                 for(String peopleInvited : peopleList)
-                mPeople.setText(peopleInvited + " ");
-            }
-        });
-
-        mPeopleInputCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mPeopleInput.setText("");
-                mPeopleInput.setVisibility(View.GONE);
-                mPeopleImage.setVisibility(View.GONE);
-                mPeopleInputCancel.setVisibility(View.GONE);
+                    mPeople.setText(peopleInvited + " ");
             }
         });
 
@@ -295,51 +276,34 @@ public class NewEventActivity extends AppCompatActivity {
                             mEndTime.setText(hourOfDay + ":" + minute);
                         }
                     }
-                },hour,minute,true);
+                },hour, minute, true);
         tpd.setTitle("Select Time");
         tpd.show();
     }
 
     /* ------------------------ invite people  ---------------*/
-    private void invitePeople(final ArrayList<String> peopleList){
-        final CharSequence[] items = {"Choose from business card", "Custom"};
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Invite People");
-        builder.setItems(items, new DialogInterface.OnClickListener() {
-
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                if (items[which].equals("Choose from business card")) {
-                    choosePeople();
-                } else if (items[which].equals("Custom")) {
-                    mPeopleInput.setVisibility(View.VISIBLE);
-                    mPeopleImage.setVisibility(View.VISIBLE);
-                    mPeopleInputCancel.setVisibility(View.VISIBLE);
-                }
-            }
-        });
-        AlertDialog alert = builder.create();
-        alert.show();
-    }
 
     private void choosePeople(){
         AlertDialog.Builder builderSingle = new AlertDialog.Builder(this);
         builderSingle.setIcon(R.drawable.ic_launcher);
-        builderSingle.setTitle("Select One Name:-");
+        builderSingle.setTitle("Invite People:");
+
         final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.select_dialog_singlechoice);
         DatabaseHandler db = new DatabaseHandler(getBaseContext());
         List<BusinessCard> list = db.getAllBusinessCard();
+
         for(int i = 0 ; i<list.size(); i++) {
             arrayAdapter.add(list.get(i).get_name());
         }
+
         builderSingle.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
 
         builderSingle.setAdapter(arrayAdapter,
                 new DialogInterface.OnClickListener() {
@@ -347,17 +311,23 @@ public class NewEventActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         String peopleName = arrayAdapter.getItem(which);
-                        LinearLayout linearLayout = (LinearLayout) findViewById(R.id.add_people_layout);
+                        if (invitedPeople.contains(peopleName)) {
+                            Toast.makeText(getApplicationContext(),
+                                    "The card was added",
+                                    Toast.LENGTH_LONG).show();
+                        } else {
+                            LinearLayout linearLayout = (LinearLayout) findViewById(R.id.add_people_layout);
 
-                        TextView valueTV = new TextView(getApplicationContext());
-                        valueTV.setText(peopleName);
-                        invitedPeople.add(peopleName);
-                        valueTV.setLayoutParams(new LinearLayout.LayoutParams(
-                                LinearLayout.LayoutParams.WRAP_CONTENT,
-                                LinearLayout.LayoutParams.WRAP_CONTENT));
-                        valueTV.setPadding(36, 16, 16, 16);
-                        valueTV.setTextSize(16);
-                        linearLayout.addView(valueTV);
+                            TextView valueTV = new TextView(getApplicationContext());
+                            valueTV.setText(peopleName);
+                            invitedPeople.add(peopleName);
+                            valueTV.setLayoutParams(new LinearLayout.LayoutParams(
+                                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                                    LinearLayout.LayoutParams.WRAP_CONTENT));
+                            valueTV.setPadding(36, 16, 16, 16);
+                            valueTV.setTextSize(16);
+                            linearLayout.addView(valueTV);
+                        }
                     }
                 });
         builderSingle.show();
@@ -388,7 +358,6 @@ public class NewEventActivity extends AppCompatActivity {
         String endValid;
         String startValid;
         boolean status ;
-        String pplInput = mPeopleInput.getText().toString();
         String location = mLocation.getText().toString();
         String description = mDescription.getText().toString();
 
@@ -405,11 +374,16 @@ public class NewEventActivity extends AppCompatActivity {
         String startDateTime = dateTimeFormat(startDate, checkTimeFormat(startTime));
         String endDateTime = dateTimeFormat(endDate, checkTimeFormat(endTime));
 
+        String people= "";
+        for(String temp : invitedPeople){
+            people = people + temp  + "   ";
+        }
+
         calendar.set_calendar_tile(title);
         calendar.set_All_day_status(ALL_DAY_STATUS);
         calendar.set_startDateTime(startDateTime);
         calendar.set_endDateTime(endDateTime);
-        calendar.set_invitedPeopleInput(pplInput);
+        calendar.set_invitedPeople(people);
         calendar.set_description(description);
 
         int startDay = breakDateFormat(2,startDate);
@@ -430,7 +404,6 @@ public class NewEventActivity extends AppCompatActivity {
                 .putExtra(CalendarContract.Events.EVENT_TIMEZONE,
                         TimeZone.getDefault().toString())
                 .putExtra(CalendarContract.Events.TITLE, title);
-
 
         int endYear, endMonth,endDay,endHH,endMM;
         Calendar endT;
@@ -526,12 +499,10 @@ public class NewEventActivity extends AppCompatActivity {
             mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                        NewEventActivity.this.finish();
-                    }
+                    NewEventActivity.this.finish();
+                }
 
             });
         }
     }
 }
-
-

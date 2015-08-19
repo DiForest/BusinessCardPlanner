@@ -79,7 +79,7 @@ public class BusinessEvent {
     }
 
     public void set_invitedPeople (String invitedPeople){
-        this._invitedPeople = _invitedPeople;
+        this._invitedPeople = invitedPeople;
     }
 
     public String get_invitedPeople(){
