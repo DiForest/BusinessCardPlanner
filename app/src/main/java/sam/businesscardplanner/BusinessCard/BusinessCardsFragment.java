@@ -3,6 +3,7 @@ package sam.businesscardplanner.BusinessCard;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -10,8 +11,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.SearchView;
 
 import java.util.List;
 
@@ -21,7 +22,7 @@ import sam.businesscardplanner.R;
 /**
  * Created by Administrator on 7/16/2015.
  */
-public class BusinessCardsFragment extends Fragment implements SearchView.OnQueryTextListener {
+public class BusinessCardsFragment extends Fragment {
     List list = null;
     RowViewAdapter adapter;
     private final int ADD = 1;
@@ -56,8 +57,23 @@ public class BusinessCardsFragment extends Fragment implements SearchView.OnQuer
             }
         });
 
-        ((SearchView) getActivity().findViewById(R.id.search_view)).setOnQueryTextListener(this);
-
+        EditText editSearch = (EditText) getActivity().findViewById(R.id.search_view);
+        editSearch.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (event.getAction() == KeyEvent.ACTION_DOWN) {
+                    switch (keyCode) {
+                        case KeyEvent.KEYCODE_DPAD_CENTER:
+                        case KeyEvent.KEYCODE_ENTER:
+                            serachByName();
+                            return true;
+                        default:
+                            break;
+                    }
+                }
+                return false;
+            }
+        });
     }
 
     public void onResume(){
@@ -65,6 +81,18 @@ public class BusinessCardsFragment extends Fragment implements SearchView.OnQuer
         final RowViewAdapter adapter = new RowViewAdapter(getActivity().getApplicationContext(),
                 generateData());
         final ListView listView = (ListView) getActivity().findViewById(R.id.business_card_list);
+        listView.setAdapter(adapter);
+    }
+
+    private void serachByName(){
+        EditText searchWords = (EditText) getActivity().findViewById(R.id.search_view);
+        String words = searchWords.getText().toString();
+        DatabaseHandler db = new DatabaseHandler(getActivity().getApplicationContext());
+        list.clear();
+        list = db.searchBusinessCard(words);
+        RowViewAdapter adapter = new RowViewAdapter(getActivity().getApplicationContext(),
+                list);
+        ListView listView = (ListView) getActivity().findViewById(R.id.business_card_list);
         listView.setAdapter(adapter);
     }
 
@@ -111,26 +139,12 @@ public class BusinessCardsFragment extends Fragment implements SearchView.OnQuer
         listView.setAdapter(adapter);
     }
 
-    private void triggerSortByName(){
+    private void triggerSortByName() {
         list.clear();
         final RowViewAdapter adapter = new RowViewAdapter(getActivity().getApplicationContext(),
                 generateData());
         final ListView listView = (ListView) getActivity().findViewById(R.id.business_card_list);
         listView.setAdapter(adapter);
-    }
-
-    @Override
-    public boolean onQueryTextSubmit(String query) {
-        onQueryTextChange(query);
-        return false;
-    }
-
-    @Override
-    public boolean onQueryTextChange(String newText) {
-        if(adapter!=null) {
-            adapter.getFilter().filter(newText.toString());
-        }
-        return false;
     }
 
 }

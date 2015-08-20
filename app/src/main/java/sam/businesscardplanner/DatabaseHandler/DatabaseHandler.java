@@ -214,21 +214,57 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         if(cursor != null){
             cursor.moveToFirst();
-
-            businessCard.set_id(Integer.parseInt(cursor.getString(0)));
-            businessCard.set_name(cursor.getString(1));
-            businessCard.set_company(cursor.getString(2));
-            businessCard.set_job(cursor.getString(3));
-            businessCard.set_address(cursor.getString(4));
-            businessCard.set_phone(cursor.getString(5));
-            businessCard.set_email(cursor.getString(6));
-            businessCard.set_workPhone(cursor.getString(7));
-            businessCard.set_address(cursor.getString(8));
-            businessCard.set_workWebsite(cursor.getString(9));
-            businessCard.set_image(cursor.getString(10));
-            businessCard.set_date(Integer.parseInt(cursor.getString(11)));
+                    businessCard.set_id(Integer.parseInt(cursor.getString(0)));
+                    businessCard.set_name(cursor.getString(1));
+                    businessCard.set_company(cursor.getString(2));
+                    businessCard.set_job(cursor.getString(3));
+                    businessCard.set_address(cursor.getString(4));
+                    businessCard.set_phone(cursor.getString(5));
+                    businessCard.set_email(cursor.getString(6));
+                    businessCard.set_workPhone(cursor.getString(7));
+                    businessCard.set_address(cursor.getString(8));
+                    businessCard.set_workWebsite(cursor.getString(9));
+                    businessCard.set_image(cursor.getString(10));
+                    businessCard.set_date(Integer.parseInt(cursor.getString(11)));
         }
         return businessCard;
+    }
+
+    public List<BusinessCard> searchBusinessCard(String name){
+
+        String query = "SELECT * FROM " + TABLE_BUSINESS_CARD ;
+        List<BusinessCard> businessCardList = new ArrayList<BusinessCard>();
+        BusinessCard businessCard = new BusinessCard();
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query,null);
+
+        if(cursor != null){
+           if( cursor.moveToFirst()){
+                do {
+                    String businessCardName = cursor.getString(1).toUpperCase();
+                    if(businessCardName.equals(name.toUpperCase())) {
+
+                        businessCard.set_id(Integer.parseInt(cursor.getString(0)));
+                        businessCard.set_name(cursor.getString(1));
+                        businessCard.set_company(cursor.getString(2));
+                        businessCard.set_job(cursor.getString(3));
+                        businessCard.set_address(cursor.getString(4));
+                        businessCard.set_phone(cursor.getString(5));
+                        businessCard.set_email(cursor.getString(6));
+                        businessCard.set_workPhone(cursor.getString(7));
+                        businessCard.set_address(cursor.getString(8));
+                        businessCard.set_workWebsite(cursor.getString(9));
+                        businessCard.set_image(cursor.getString(10));
+                        businessCard.set_date(Integer.parseInt(cursor.getString(11)));
+                        businessCardList.add(businessCard);
+                    }else{
+
+                    }
+                }while(cursor.moveToNext());
+            }
+        }
+        db.close();
+        return businessCardList;
 
     }
 

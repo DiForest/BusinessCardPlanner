@@ -118,12 +118,6 @@ public class MainActivity extends AppCompatActivity {
             case R.id.navigation_item_3:
                 fragmentClass = ScheduleFragment.class;
                 break;
-            case R.id.navigation_item_4:
-                fragmentClass = NoteFragment.class;
-                break;
-            case R.id.navigation_item_5:
-                fragmentClass = TagsFragment.class;
-                break;
             default:
                 fragmentClass = BusinessCardsFragment.class;
         }
