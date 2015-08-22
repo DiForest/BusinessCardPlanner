@@ -88,8 +88,6 @@ public class BusinessCardProfile extends AppCompatActivity{
         cardEmail.setText(businessCard.get_email());
         cardWorkPhone.setText(businessCard.get_workPhone());
         cardPhone.setText(businessCard.get_phone());
-        cardAddress.setText(businessCard.get_address());
-        cardWorkAddress.setText(businessCard.get_workAddress());
         cardJob.setText(businessCard.get_job());
         cardWorkWebsite.setText(businessCard.get_workWebsite());
         mDate.setText("Created on " + businessCard.get_date());

@@ -25,10 +25,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String KEY_IMAGE_BITMAP = "profileImage";
     private static final String KEY_COMPANY = "company";
     private static final String KEY_JOB = "job";
+    private static final String KEY_BUSINESS_TYPE = "businessType";
     private static final String KEY_PHONE = "phone";
     private static final String KEY_EMAIL = "email";
-    private static final String KEY_ADDRESS = "cardAddress";
-    private static final String KEY_WORK_ADDRESS = "workAddress";
+    private static final String KEY_ADDRESS_STREET = "street";
+    private static final String KEY_ADDRESS_CITY = "city";
+    private static final String KEY_ADDRESS_STATE = "state";
+    private static final String KEY_WORK_STREET = "workStreet";
+    private static final String KEY_WORK_CITY = "workCity";
+    private static final String KEY_WORK_STATE = "workState";
     private static final String KEY_WORK_PHONE = "workPhone";
     private static final String KEY_WORK_WEBSITE = "workWebsite";
     private static final String KEY_CARD_CREATED_DATE = "cardCreateDate";
@@ -62,11 +67,16 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             KEY_NAME + " TEXT, " +
             KEY_COMPANY + " TEXT, " +
             KEY_JOB + " TEXT, " +
-            KEY_ADDRESS + " TEXT, " +
+            KEY_BUSINESS_TYPE + " TEXT, "+
             KEY_PHONE + " TEXT, " +
             KEY_EMAIL + " TEXT, " +
             KEY_WORK_PHONE + " TEXT, " +
-            KEY_WORK_ADDRESS + " TEXT, " +
+            KEY_ADDRESS_STREET + " TEXT, " +
+            KEY_ADDRESS_CITY + " TEXT, "+
+            KEY_ADDRESS_STATE + " TEXT, " +
+            KEY_WORK_STREET + " TEXT, "+
+            KEY_WORK_CITY + " TEXT, "+
+            KEY_WORK_STATE + " TEXT, " +
             KEY_WORK_WEBSITE + " TEXT, " +
             KEY_IMAGE_BITMAP + " TEXT, " +
             KEY_CARD_CREATED_DATE + " INTEGER " + " );";
@@ -135,14 +145,20 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
 
         values.put(KEY_NAME , businessCard.get_name());
+        values.put(KEY_IMAGE_BITMAP, businessCard.get_image());
         values.put(KEY_JOB, businessCard.get_job());
         values.put(KEY_COMPANY, businessCard.get_company());
-        values.put(KEY_ADDRESS, businessCard.get_address());
+        values.put(KEY_BUSINESS_TYPE, businessCard.get__businessType());
         values.put(KEY_PHONE, businessCard.get_phone());
         values.put(KEY_EMAIL, businessCard.get_email());
+        values.put(KEY_ADDRESS_CITY, businessCard.get_street());
+        values.put(KEY_ADDRESS_CITY, businessCard.get_city());
+        values.put(KEY_ADDRESS_STATE, businessCard.get_state());
+        values.put(KEY_WORK_STREET, businessCard.get_workStreet());
+        values.put(KEY_WORK_CITY, businessCard.get_workCity());
+        values.put(KEY_WORK_STATE, businessCard.get_workState());
         values.put(KEY_WORK_PHONE, businessCard.get_workPhone());
-        values.put(KEY_WORK_ADDRESS, businessCard.get_workAddress());
-        values.put(KEY_IMAGE_BITMAP, businessCard.get_image());
+        values.put(KEY_WORK_WEBSITE, businessCard.get_workWebsite());
         values.put(KEY_CARD_CREATED_DATE, businessCard.get_date());
 
         db.insert(TABLE_BUSINESS_CARD, null, values);
@@ -151,7 +167,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     public List<BusinessCard> getAllBusinessCard() {
         List<BusinessCard> businessCardList = new ArrayList<BusinessCard>();
-        String selectQuery = "SELECT * FROM businessCard ORDER BY name";
+        String selectQuery = "SELECT * FROM " + TABLE_BUSINESS_CARD + " ORDER BY + " + KEY_NAME;
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -162,10 +178,21 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                     BusinessCard businessCard = new BusinessCard();
                     businessCard.set_id(Integer.parseInt(cursor.getString(0)));
                     businessCard.set_name(cursor.getString(1));
-                    businessCard.set_job(cursor.getString(3));
                     businessCard.set_company(cursor.getString(2));
-                    businessCard.set_date(Integer.parseInt(cursor.getString(11)));
-                    businessCard.set_image(cursor.getString(10));
+                    businessCard.set_job(cursor.getString(3));
+                    businessCard.set_businessType(cursor.getString(4));
+                    businessCard.set_phone(cursor.getString(5));
+                    businessCard.set_email(cursor.getString(6));
+                    businessCard.set_workPhone(cursor.getString(7));
+                    businessCard.set_street(cursor.getString(8));
+                    businessCard.set_city(cursor.getString(9));
+                    businessCard.set_state(cursor.getString(10));
+                    businessCard.set_workStreet(cursor.getString(11));
+                    businessCard.set_workCity(cursor.getString(12));
+                    businessCard.set_workState(cursor.getString(13));
+                    businessCard.set_workWebsite(cursor.getString(14));
+                    businessCard.set_image(cursor.getString(15));
+                    businessCard.set_date(Integer.parseInt(cursor.getString(16)));
 
                     businessCardList.add(businessCard);
                 } while (cursor.moveToNext());
@@ -177,7 +204,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     public List<BusinessCard> getAllBusinessCardInOrderDate() {
         List<BusinessCard> businessCardList = new ArrayList<BusinessCard>();
-        String selectQuery = "SELECT * FROM businessCard ORDER BY "
+        String selectQuery = "SELECT * FROM " + TABLE_BUSINESS_CARD + "ORDER BY "
                 + KEY_CARD_CREATED_DATE;
 
         SQLiteDatabase db = this.getWritableDatabase();
@@ -189,10 +216,21 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                     BusinessCard businessCard = new BusinessCard();
                     businessCard.set_id(Integer.parseInt(cursor.getString(0)));
                     businessCard.set_name(cursor.getString(1));
-                    businessCard.set_job(cursor.getString(3));
                     businessCard.set_company(cursor.getString(2));
-                    businessCard.set_date(Integer.parseInt(cursor.getString(11)));
-                    businessCard.set_image(cursor.getString(10));
+                    businessCard.set_job(cursor.getString(3));
+                    businessCard.set_businessType(cursor.getString(4));
+                    businessCard.set_phone(cursor.getString(5));
+                    businessCard.set_email(cursor.getString(6));
+                    businessCard.set_workPhone(cursor.getString(7));
+                    businessCard.set_street(cursor.getString(8));
+                    businessCard.set_city(cursor.getString(9));
+                    businessCard.set_state(cursor.getString(10));
+                    businessCard.set_workStreet(cursor.getString(11));
+                    businessCard.set_workCity(cursor.getString(12));
+                    businessCard.set_workState(cursor.getString(13));
+                    businessCard.set_workWebsite(cursor.getString(14));
+                    businessCard.set_image(cursor.getString(15));
+                    businessCard.set_date(Integer.parseInt(cursor.getString(16)));
 
                     //add into list
                     businessCardList.add(businessCard);
@@ -206,31 +244,35 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     //get ONE business card by id
     public BusinessCard getBusinessCard(int id){
 
-        String query = "SELECT * FROM " + TABLE_BUSINESS_CARD +
-                " WHERE "+ KEY_ID+ " = " + id;
+        String query = "SELECT * FROM " + TABLE_BUSINESS_CARD + " WHERE "+ KEY_ID + " = " + id;
         BusinessCard businessCard = new BusinessCard();
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query,null);
 
         if(cursor != null){
             cursor.moveToFirst();
-                    businessCard.set_id(Integer.parseInt(cursor.getString(0)));
-                    businessCard.set_name(cursor.getString(1));
-                    businessCard.set_company(cursor.getString(2));
-                    businessCard.set_job(cursor.getString(3));
-                    businessCard.set_address(cursor.getString(4));
-                    businessCard.set_phone(cursor.getString(5));
-                    businessCard.set_email(cursor.getString(6));
-                    businessCard.set_workPhone(cursor.getString(7));
-                    businessCard.set_address(cursor.getString(8));
-                    businessCard.set_workWebsite(cursor.getString(9));
-                    businessCard.set_image(cursor.getString(10));
-                    businessCard.set_date(Integer.parseInt(cursor.getString(11)));
+            businessCard.set_id(Integer.parseInt(cursor.getString(0)));
+            businessCard.set_name(cursor.getString(1));
+            businessCard.set_company(cursor.getString(2));
+            businessCard.set_job(cursor.getString(3));
+            businessCard.set_businessType(cursor.getString(4));
+            businessCard.set_phone(cursor.getString(5));
+            businessCard.set_email(cursor.getString(6));
+            businessCard.set_workPhone(cursor.getString(7));
+            businessCard.set_street(cursor.getString(8));
+            businessCard.set_city(cursor.getString(9));
+            businessCard.set_state(cursor.getString(10));
+            businessCard.set_workStreet(cursor.getString(11));
+            businessCard.set_workCity(cursor.getString(12));
+            businessCard.set_workState(cursor.getString(13));
+            businessCard.set_workWebsite(cursor.getString(14));
+            businessCard.set_image(cursor.getString(15));
+            businessCard.set_date(Integer.parseInt(cursor.getString(16)));
         }
         return businessCard;
     }
 
-    public List<BusinessCard> searchBusinessCard(String name){
+    public List<BusinessCard> searchBusinessCardByName(String name){
 
         String query = "SELECT * FROM " + TABLE_BUSINESS_CARD ;
         List<BusinessCard> businessCardList = new ArrayList<BusinessCard>();
@@ -243,95 +285,65 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 do {
                     String businessCardName = cursor.getString(1).toUpperCase();
                     if(businessCardName.equals(name.toUpperCase())) {
-
                         businessCard.set_id(Integer.parseInt(cursor.getString(0)));
                         businessCard.set_name(cursor.getString(1));
                         businessCard.set_company(cursor.getString(2));
                         businessCard.set_job(cursor.getString(3));
-                        businessCard.set_address(cursor.getString(4));
+                        businessCard.set_businessType(cursor.getString(4));
                         businessCard.set_phone(cursor.getString(5));
                         businessCard.set_email(cursor.getString(6));
                         businessCard.set_workPhone(cursor.getString(7));
-                        businessCard.set_address(cursor.getString(8));
-                        businessCard.set_workWebsite(cursor.getString(9));
-                        businessCard.set_image(cursor.getString(10));
-                        businessCard.set_date(Integer.parseInt(cursor.getString(11)));
-                        businessCardList.add(businessCard);
-                    }else{
-
+                        businessCard.set_street(cursor.getString(8));
+                        businessCard.set_city(cursor.getString(9));
+                        businessCard.set_state(cursor.getString(10));
+                        businessCard.set_workStreet(cursor.getString(11));
+                        businessCard.set_workCity(cursor.getString(12));
+                        businessCard.set_workState(cursor.getString(13));
+                        businessCard.set_workWebsite(cursor.getString(14));
+                        businessCard.set_image(cursor.getString(15));
+                        businessCard.set_date(Integer.parseInt(cursor.getString(16)));
                     }
                 }while(cursor.moveToNext());
             }
         }
         db.close();
         return businessCardList;
-
     }
 
-    //update the business card
     public int updateBusinessCard(BusinessCard businessCard){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
+
         int itemId = businessCard.get_id();
         values.put(KEY_NAME , businessCard.get_name());
+        values.put(KEY_IMAGE_BITMAP, businessCard.get_image());
         values.put(KEY_JOB, businessCard.get_job());
         values.put(KEY_COMPANY, businessCard.get_company());
-        values.put(KEY_ADDRESS, businessCard.get_address());
+        values.put(KEY_BUSINESS_TYPE, businessCard.get__businessType());
         values.put(KEY_PHONE, businessCard.get_phone());
         values.put(KEY_EMAIL, businessCard.get_email());
+        values.put(KEY_ADDRESS_CITY, businessCard.get_street());
+        values.put(KEY_ADDRESS_CITY, businessCard.get_city());
+        values.put(KEY_ADDRESS_STATE, businessCard.get_state());
+        values.put(KEY_WORK_STREET, businessCard.get_workStreet());
+        values.put(KEY_WORK_CITY, businessCard.get_workCity());
+        values.put(KEY_WORK_STATE, businessCard.get_workState());
         values.put(KEY_WORK_PHONE, businessCard.get_workPhone());
-        values.put(KEY_WORK_ADDRESS, businessCard.get_workAddress());
-        values.put(KEY_IMAGE_BITMAP, businessCard.get_image());
-        values.put(KEY_CARD_CREATED_DATE, businessCard.get_date());
+        values.put(KEY_WORK_WEBSITE, businessCard.get_workWebsite());
 
         return  db.update(TABLE_BUSINESS_CARD, values, KEY_ID
                 + " = " + itemId, null);
     }
 
-    //detele the business card
     public void deleteBusinessCard (int itemId){
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_BUSINESS_CARD, KEY_ID + " = " + itemId, null);
         db.close();
     }
 
-    //get the total number of busines card in the database
-    public int getBusinessCardCount(){
-        String countQuery = "SELECT * FROM "+ TABLE_BUSINESS_CARD;
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(countQuery, null);
-        cursor.close();
-
-        return cursor.getCount();
-    }
-
-    public List<Integer> getAllCardId(){
-        List<Integer> businessCardList = new ArrayList<Integer>();
-        String selectQuery = "SELECT " + KEY_ID + " FROM " + TABLE_BUSINESS_CARD;
-
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery(selectQuery, null);
-
-        if (cursor != null ){
-            if (cursor.moveToFirst()) {
-                do {
-                    int cardId = Integer.parseInt(cursor.getString(0));
-                    //add into list
-                    businessCardList.add(cardId);
-                } while (cursor.moveToNext());
-            }
-        }
-        db.close();
-        return businessCardList;
-    }
-
-
-
     /* --------------------------
     -----  Business Group Table  --------------
     ---------------------------------------------------------------------------- */
-
-    //create and add new group
     public void addGroup(BusinessGroups group){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();

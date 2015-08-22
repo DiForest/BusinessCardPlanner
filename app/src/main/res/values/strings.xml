@@ -15,9 +15,10 @@
     <string name="phone">Phone</string>
     <string name="address">Address</string>
     <string name="group">Group</string>
+    <string name="businessType">Business Type</string>
     <string name="created_date">Created at</string>
     <string name="website">Website</string>
-    <string name="email">email</string>
+    <string name="email">Email</string>
 
     <string name="member">Member</string>
     <string name="add_member">Add a Member</string>
@@ -26,4 +27,22 @@
     <string name="groupDescription">Description your group</string>
 
     <string name="album_name">CameraSample</string>
+
+    <string-array name="state">
+        <item>Selangor</item>
+        <item>Kuala Lumpur</item>
+        <item>Sarawak</item>
+        <item>Johor</item>
+        <item>Penang</item>
+        <item>Sabah</item>
+        <item>Perak</item>
+        <item>Pahang</item>
+        <item>Negeri Sembilan</item>
+        <item>Kedah</item>
+        <item>Malacca</item>
+        <item>Terengganu</item>
+        <item>Kelantan</item>
+        <item>Perlis</item>
+        <item>Labuan</item>
+    </string-array>
 </resources>

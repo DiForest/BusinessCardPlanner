@@ -143,6 +143,19 @@
                 android:layout_height="wrap_content"/>
 
             <TextView
+                android:id="@+id/card_business_type"
+                android:textSize="20dp"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"/>
+
+            <TextView
+                android:text="@string/businessType"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"/>
+
+            <TextView
                 android:id="@+id/card_work_phone"
                 android:textSize="20dp"
                 android:layout_width="fill_parent"

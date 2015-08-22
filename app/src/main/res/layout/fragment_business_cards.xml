@@ -3,31 +3,6 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
-        android:layout_height="wrap_content"
-        android:layout_width="fill_parent"
-        android:orientation="horizontal"
-        android:background="@drawable/round_corner">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:layout_weight="1"
-            android:id="@+id/btnSearch"
-            android:src="@drawable/ic_search_grey"/>
-        <EditText
-            android:id="@+id/search_view"
-            android:layout_width="fill_parent"
-            android:layout_weight="113"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:singleLine="true"
-            android:lines="1"
-            android:maxLines="1"
-            android:background="@drawable/round_corner"/>
-
-        </LinearLayout>
     <ListView
         android:id="@+id/business_card_list"
         android:layout_width="fill_parent"

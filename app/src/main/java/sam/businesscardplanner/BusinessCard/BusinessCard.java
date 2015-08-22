@@ -10,11 +10,16 @@ public class  BusinessCard {
     String _company;
     String _job;
     String _image;
-    String _address;
+    String _street;
+    String _city;
+    String _state;
     String _email;
     String _phone;
+    String _businessType;
+    String _workStreet;
+    String _workCity;
+    String _workState;
     String _workPhone;
-    String _workAddress;
     String _workWebsite;
     int _date;
 
@@ -24,19 +29,38 @@ public class  BusinessCard {
     }
 
     //constructor
-    public BusinessCard(int keyId, String name, String image, String company,String job,
-                        String address, String email,String phone,String workPhone,
-                        String workAddress, String workWebsite ,int date){
+    public BusinessCard(int keyId,
+                        String name,
+                        String image,
+                        String company,
+                        String job,
+                        String businessType,
+                        String street,
+                        String city,
+                        String state,
+                        String email,
+                        String phone,
+                        String workPhone,
+                        String workStreet,
+                        String workCity,
+                        String workState,
+                        String workWebsite ,
+                        int date){
         this._id = keyId;
         this._name = name;
         this._image = image;
         this._company = company;
         this._job = job;
-        this._address = address;
+        this._businessType = businessType;
+        this._street = street;
+        this._city =city;
+        this._state = state;
         this._email = email;
         this._phone = phone;
         this._workPhone = workPhone;
-        this._workAddress = workAddress;
+        this._workStreet = workStreet;
+        this._workCity =workCity;
+        this._workState = workState;
         this._workWebsite = workWebsite;
         this._date = date;
     }
@@ -86,6 +110,16 @@ public class  BusinessCard {
         this._job = job;
     }
 
+    public String get__businessType()
+    {
+        return this._businessType;
+    }
+
+    public void set_businessType(String businessType)
+    {
+        this._businessType = businessType;
+    }
+
     public String get_company()
     {
         return this._company;
@@ -106,14 +140,34 @@ public class  BusinessCard {
         this._phone = phone;
     }
 
-    public String get_address()
+    public String get_street()
     {
-        return this._address;
+        return this._street;
     }
 
-    public void set_address(String address)
+    public void set_street(String street)
     {
-        this._address = address;
+        this._street = street;
+    }
+
+    public String get_city()
+    {
+        return this._city;
+    }
+
+    public void set_city(String city)
+    {
+        this._city = city;
+    }
+
+    public String get_state()
+    {
+        return this._state;
+    }
+
+    public void set_state(String state)
+    {
+        this._state = state;
     }
 
     public String get_email ()
@@ -136,14 +190,34 @@ public class  BusinessCard {
         this._workPhone = workPhone;
     }
 
-    public String get_workAddress()
+    public String get_workStreet()
     {
-        return this._workAddress;
+        return this._workStreet;
     }
 
-    public void set_workAddress(String workAddress)
+    public void set_workStreet(String workStreet)
     {
-        this._workAddress = workAddress;
+        this._workStreet = workStreet;
+    }
+
+    public String get_workCity()
+    {
+        return this._workCity;
+    }
+
+    public void set_workCity(String workCity)
+    {
+        this._workCity = workCity;
+    }
+
+    public String get_workState()
+    {
+        return this._workState;
+    }
+
+    public void set_workState(String workState)
+    {
+        this._workState = workState;
     }
 
     public String get_workWebsite()

@@ -3,7 +3,6 @@ package sam.businesscardplanner.BusinessCard;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -11,7 +10,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.EditText;
 import android.widget.ListView;
 
 import java.util.List;
@@ -26,9 +24,6 @@ public class BusinessCardsFragment extends Fragment {
     List list = null;
     RowViewAdapter adapter;
     private final int ADD = 1;
-    private int SORTING_STATUS = 1;
-    private final int SORT_BY_NAME = 1;
-    private final int SORT_BY_DATE = 2;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -38,11 +33,11 @@ public class BusinessCardsFragment extends Fragment {
     }
 
     //set up the listview
-    public void onActivityCreated(Bundle savedInstanceState){
+    public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
         list = generateData();
-        final RowViewAdapter adapter =  new RowViewAdapter(getActivity().getApplicationContext(), list);
+        final RowViewAdapter adapter = new RowViewAdapter(getActivity().getApplicationContext(), list);
         ListView listView = (ListView) getActivity().findViewById(R.id.business_card_list);
         listView.setAdapter(adapter);
 
@@ -56,24 +51,6 @@ public class BusinessCardsFragment extends Fragment {
                 startActivity(intent);
             }
         });
-
-        EditText editSearch = (EditText) getActivity().findViewById(R.id.search_view);
-        editSearch.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (event.getAction() == KeyEvent.ACTION_DOWN) {
-                    switch (keyCode) {
-                        case KeyEvent.KEYCODE_DPAD_CENTER:
-                        case KeyEvent.KEYCODE_ENTER:
-                            serachByName();
-                            return true;
-                        default:
-                            break;
-                    }
-                }
-                return false;
-            }
-        });
     }
 
     public void onResume(){
@@ -84,16 +61,11 @@ public class BusinessCardsFragment extends Fragment {
         listView.setAdapter(adapter);
     }
 
-    private void serachByName(){
-        EditText searchWords = (EditText) getActivity().findViewById(R.id.search_view);
-        String words = searchWords.getText().toString();
-        DatabaseHandler db = new DatabaseHandler(getActivity().getApplicationContext());
-        list.clear();
-        list = db.searchBusinessCard(words);
-        RowViewAdapter adapter = new RowViewAdapter(getActivity().getApplicationContext(),
-                list);
-        ListView listView = (ListView) getActivity().findViewById(R.id.business_card_list);
-        listView.setAdapter(adapter);
+    public void onDestroy(){
+        super.onDestroy();
+        if(adapter!=null){
+            adapter.clear();
+        }
     }
 
     private List<BusinessCard> generateData(){

@@ -5,6 +5,7 @@
             android:checked="true"
             android:icon="@drawable/ic_burger"
             android:title="All Cards" />
+
         <item
             android:id="@+id/navigation_item_2"
             android:icon="@drawable/ic_group"
@@ -14,6 +15,11 @@
             android:id="@+id/navigation_item_3"
             android:icon="@drawable/ic_calendar"
             android:title="Schedule" />
+
+        <item
+            android:id="@+id/navigation_item_4"
+            android:icon="@drawable/ic_search_grey"
+            android:title="Search" />
 
     </group>
 </menu>
