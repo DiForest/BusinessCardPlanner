@@ -31,8 +31,8 @@ public class SearchAdapter extends ArrayAdapter<BusinessCard> implements Filtera
         super(context, R.layout.search_layout_row_items, cardsList);
 
         this.context = context;
-        this.cardsList = cardsList;
-        cardsFilterList = cardsList;
+        this.cardsList = new ArrayList<BusinessCard>(cardsList);
+        this.cardsFilterList = new ArrayList<BusinessCard>(cardsList);
     }
 
     @Override
@@ -96,13 +96,18 @@ public class SearchAdapter extends ArrayAdapter<BusinessCard> implements Filtera
             String prefix = constraint.toString().toUpperCase();
 
             if(prefix == null || prefix.length() == 0){
-                ArrayList<BusinessCard> list = new ArrayList<BusinessCard>(cardsList);
-                filterResults.values = list;
-                filterResults.count = list.size();
-            }else if (constraint != null && constraint.length() > 0) {
-                    ArrayList<BusinessCard> filterList = new ArrayList<BusinessCard>();
-                    for (int i = 0; i < cardsFilterList.size(); i++) {
-                        if ((cardsFilterList.get(i).get_name().toUpperCase())
+                synchronized (this){
+                    filterResults.values = cardsList;
+                    filterResults.count = cardsList.size();
+                }
+            }else {
+                ArrayList<BusinessCard> filterList = new ArrayList<BusinessCard>();
+                ArrayList<BusinessCard> unfilterList = new ArrayList<BusinessCard>();
+                synchronized (this){
+                    unfilterList.addAll(cardsList);
+                }
+                for (int i = 0; i < unfilterList.size(); i++) {
+                        if ((unfilterList.get(i).get_name().toUpperCase())
                                 .contains(constraint.toString().toUpperCase())) {
 
                             filterList.add(cardsList.get(i));
@@ -118,13 +123,11 @@ public class SearchAdapter extends ArrayAdapter<BusinessCard> implements Filtera
         @Override
         protected void publishResults(CharSequence constraint,
                                       FilterResults results) {
-            cardsList = (ArrayList<BusinessCard>) results.values;
-            notifyDataSetChanged();
-            clear();
-            int count = cardsList.size();
-            for(int i = 0; i<count; i++){
-                add(cardsList.get(i));
+            cardsFilterList = (ArrayList<BusinessCard>) results.values;
+            if(results.count>0){
                 notifyDataSetChanged();
+            }else{
+                notifyDataSetInvalidated();
             }
         }
     }
