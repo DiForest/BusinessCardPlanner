@@ -77,7 +77,7 @@ public class BusinessCardProfile extends AppCompatActivity{
         cardWorkWebsite = (TextView) findViewById(R.id.card_work_website);
 
         cardGroup = (TextView) findViewById(R.id.card_group);
-        cardBusinessType = (TextView) findViewById(R.id.business_type);
+        cardBusinessType = (TextView) findViewById(R.id.card_business_type);
     }
 
     private void setInformation(){
@@ -98,6 +98,7 @@ public class BusinessCardProfile extends AppCompatActivity{
         String workCity = businessCard.get_workCity();
         String workState = businessCard.get_workState();
 
+        cardBusinessType.setText(businessCard.get_businessType());
         cardWorkPhone.setText(businessCard.get_workPhone());
         cardPhone.setText(businessCard.get_phone());
         cardJob.setText(businessCard.get_job());

@@ -15,11 +15,5 @@
             android:id="@+id/navigation_item_3"
             android:icon="@drawable/ic_calendar"
             android:title="Schedule" />
-
-        <item
-            android:id="@+id/navigation_item_4"
-            android:icon="@drawable/ic_search_grey"
-            android:title="Search" />
-
     </group>
 </menu>

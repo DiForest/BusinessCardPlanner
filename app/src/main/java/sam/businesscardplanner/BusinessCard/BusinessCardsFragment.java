@@ -16,6 +16,7 @@ import java.util.List;
 
 import sam.businesscardplanner.DatabaseHandler.DatabaseHandler;
 import sam.businesscardplanner.R;
+import sam.businesscardplanner.Search.SearchActivity;
 
 /**
  * Created by Administrator on 7/16/2015.
@@ -86,6 +87,10 @@ public class BusinessCardsFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()) {
+            case R.id.action_search:
+                Intent searchIntent = new Intent(this.getActivity(), SearchActivity.class);
+                this.startActivity(searchIntent);
+                break;
             case R.id.action_add:
                 Intent intent = new Intent(this.getActivity(),AddNewCardActivity.class);
                 intent.putExtra("ADD OR EDIT", ADD);
