@@ -148,7 +148,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(KEY_IMAGE_BITMAP, businessCard.get_image());
         values.put(KEY_JOB, businessCard.get_job());
         values.put(KEY_COMPANY, businessCard.get_company());
-        values.put(KEY_BUSINESS_TYPE, businessCard.get__businessType());
+        values.put(KEY_BUSINESS_TYPE, businessCard.get_businessType());
         values.put(KEY_PHONE, businessCard.get_phone());
         values.put(KEY_EMAIL, businessCard.get_email());
         values.put(KEY_ADDRESS_CITY, businessCard.get_street());
@@ -319,7 +319,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(KEY_IMAGE_BITMAP, businessCard.get_image());
         values.put(KEY_JOB, businessCard.get_job());
         values.put(KEY_COMPANY, businessCard.get_company());
-        values.put(KEY_BUSINESS_TYPE, businessCard.get__businessType());
+        values.put(KEY_BUSINESS_TYPE, businessCard.get_businessType());
         values.put(KEY_PHONE, businessCard.get_phone());
         values.put(KEY_EMAIL, businessCard.get_email());
         values.put(KEY_ADDRESS_CITY, businessCard.get_street());

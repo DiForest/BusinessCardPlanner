@@ -35,6 +35,7 @@ public class BusinessCardProfile extends AppCompatActivity{
     TextView cardWorkAddress;
     TextView cardWorkWebsite;
     TextView cardEmail;
+    TextView cardBusinessType;
 
     private Toolbar mToolbar;
 
@@ -76,19 +77,31 @@ public class BusinessCardProfile extends AppCompatActivity{
         cardWorkWebsite = (TextView) findViewById(R.id.card_work_website);
 
         cardGroup = (TextView) findViewById(R.id.card_group);
+        cardBusinessType = (TextView) findViewById(R.id.business_type);
     }
 
     private void setInformation(){
         DatabaseHandler cards = new DatabaseHandler(this);
         BusinessCard businessCard = cards.getBusinessCard(ITEM_ID);
 
+        String addressStreet = businessCard.get_street();
+        String addressCity = businessCard.get_city();
+        String addressState = businessCard.get_state();
+
         cardName.setText(businessCard.get_name());
         setTitle(businessCard.get_name());
         cardCompany.setText("Worked at " + businessCard.get_company());
         cardEmail.setText(businessCard.get_email());
+        cardAddress.setText(addressStreet + ", " + addressCity + ", " + addressState);
+
+        String workStreet = businessCard.get_workStreet();
+        String workCity = businessCard.get_workCity();
+        String workState = businessCard.get_workState();
+
         cardWorkPhone.setText(businessCard.get_workPhone());
         cardPhone.setText(businessCard.get_phone());
         cardJob.setText(businessCard.get_job());
+        cardWorkAddress.setText(workStreet + ", " + workCity + ", " + workState);
         cardWorkWebsite.setText(businessCard.get_workWebsite());
         mDate.setText("Created on " + businessCard.get_date());
 

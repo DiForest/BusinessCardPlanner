@@ -37,7 +37,8 @@ public class BusinessCardsFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         list = generateData();
-        final RowViewAdapter adapter = new RowViewAdapter(getActivity().getApplicationContext(), list);
+        final RowViewAdapter adapter = new RowViewAdapter(getActivity().getApplicationContext(),
+                list);
         ListView listView = (ListView) getActivity().findViewById(R.id.business_card_list);
         listView.setAdapter(adapter);
 

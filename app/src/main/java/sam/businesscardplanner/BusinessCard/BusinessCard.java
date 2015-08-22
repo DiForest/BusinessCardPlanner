@@ -110,7 +110,7 @@ public class  BusinessCard {
         this._job = job;
     }
 
-    public String get__businessType()
+    public String get_businessType()
     {
         return this._businessType;
     }

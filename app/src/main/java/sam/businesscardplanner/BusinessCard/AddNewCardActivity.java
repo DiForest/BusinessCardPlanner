@@ -139,7 +139,7 @@ public class AddNewCardActivity extends AppCompatActivity {
         workStreetEditText.setText(businessCard.get_workCity());
         workPhoneEditText.setText(businessCard.get_workPhone());
         workWebsiteEditText.setText(businessCard.get_workWebsite());
-        businessTypeEditText.setText(businessCard.get__businessType());
+        businessTypeEditText.setText(businessCard.get_businessType());
 
         String imagePath = businessCard.get_image();
         if(imagePath!= null) {
