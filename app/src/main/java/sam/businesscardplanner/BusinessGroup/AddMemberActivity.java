@@ -132,33 +132,6 @@ public class AddMemberActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.search_menu, menu);
 
-        /*
-        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-        searchView.setIconifiedByDefault(false);
-
-        SearchView.OnQueryTextListener textChangeListener = new SearchView.OnQueryTextListener()
-        {
-            @Override
-            public boolean onQueryTextChange(String newText)
-            {
-                // this is your adapter that will be filtered
-                adapter.getFilter().filter(newText);
-                System.out.println("on text chnge text: "+newText);
-                return true;
-            }
-            @Override
-            public boolean onQueryTextSubmit(String query)
-            {
-                // this is your adapter that will be filtered
-                adapter.getFilter().filter(query);
-                System.out.println("on query submit: "+query);
-                return true;
-            }
-        };
-        searchView.setOnQueryTextListener(textChangeListener);
-        */
         return true;
 
     }
@@ -169,7 +142,6 @@ public class AddMemberActivity extends AppCompatActivity {
 
         switch (item.getItemId()) {
             case R.id.action_search:
-                //next actiivty to add member
                 return true;
         }
         return super.onOptionsItemSelected(item);
