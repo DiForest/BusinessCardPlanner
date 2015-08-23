@@ -224,6 +224,34 @@
                 android:layout_marginLeft="20dp"/>
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_height="fill_parent"
+                android:layout_width="fill_parent"
+                android:orientation="vertical"
+                android:layout_marginTop="2dip"
+                android:layout_marginBottom="2dip"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:padding="10dip"
+                android:background="@drawable/round_corner">
+
+                <TextView
+                    android:text="note"
+                    android:textStyle="bold"
+                    android:textSize="20dp"
+                    android:textColor="@color/colorPrimary"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dip" />
+
+                <TextView
+                    android:id="@+id/card_note"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dip"
+                    android:layout_marginLeft="20dp"/>
+            </LinearLayout>
+
             </LinearLayout>
 
         </ScrollView>

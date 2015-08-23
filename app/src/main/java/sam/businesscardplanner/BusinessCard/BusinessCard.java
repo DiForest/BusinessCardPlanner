@@ -22,6 +22,7 @@ public class  BusinessCard {
     String _workPhone;
     String _workWebsite;
     int _date;
+    String _note;
 
     //constructor
     public BusinessCard(){
@@ -45,7 +46,8 @@ public class  BusinessCard {
                         String workCity,
                         String workState,
                         String workWebsite ,
-                        int date){
+                        int date,
+                        String note){
         this._id = keyId;
         this._name = name;
         this._image = image;
@@ -63,6 +65,7 @@ public class  BusinessCard {
         this._workState = workState;
         this._workWebsite = workWebsite;
         this._date = date;
+        this._note = note;
     }
 
     //constructor
@@ -236,5 +239,13 @@ public class  BusinessCard {
 
     public void set_date(int date){
         this._date = date;
+    }
+
+    public String get_note(){
+        return this._note;
+    }
+
+    public void set_note(String note){
+        this._note = note;
     }
 }

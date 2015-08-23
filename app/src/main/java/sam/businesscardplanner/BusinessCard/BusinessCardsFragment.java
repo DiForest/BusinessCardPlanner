@@ -37,9 +37,8 @@ public class BusinessCardsFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        list = generateData();
         final RowViewAdapter adapter = new RowViewAdapter(getActivity().getApplicationContext(),
-                list);
+                generateData());
         ListView listView = (ListView) getActivity().findViewById(R.id.business_card_list);
         listView.setAdapter(adapter);
 
@@ -57,10 +56,21 @@ public class BusinessCardsFragment extends Fragment {
 
     public void onResume(){
         super.onResume();
+        list = generateData();
         final RowViewAdapter adapter = new RowViewAdapter(getActivity().getApplicationContext(),
-                generateData());
-        final ListView listView = (ListView) getActivity().findViewById(R.id.business_card_list);
+                list);
+        ListView listView = (ListView) getActivity().findViewById(R.id.business_card_list);
         listView.setAdapter(adapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                int itemID = adapter.getListItemId(position);
+                Intent intent = new Intent(BusinessCardsFragment.this.getActivity(),
+                        BusinessCardProfile.class);
+                intent.putExtra("ITEM ID", itemID);
+                startActivity(intent);
+            }
+        });
     }
 
     public void onDestroy(){

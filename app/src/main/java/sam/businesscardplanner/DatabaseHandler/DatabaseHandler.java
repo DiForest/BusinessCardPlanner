@@ -37,6 +37,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String KEY_WORK_PHONE = "workPhone";
     private static final String KEY_WORK_WEBSITE = "workWebsite";
     private static final String KEY_CARD_CREATED_DATE = "cardCreateDate";
+    private static final String KEY_NOTE = "businessNote";
 
     private static final String TABLE_BUSINESS_GROUP ="businessGroup";
     private static final String KEY_GROUP_ID = "id";
@@ -79,7 +80,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             KEY_WORK_STATE + " TEXT, " +
             KEY_WORK_WEBSITE + " TEXT, " +
             KEY_IMAGE_BITMAP + " TEXT, " +
-            KEY_CARD_CREATED_DATE + " INTEGER " + " );";
+            KEY_CARD_CREATED_DATE + " INTEGER, " +
+            KEY_NOTE + " TEXT " + " );";
 
     //create group statement
     private static String CREATE_BUSINESS_GROUP_TABLE = "CREATE TABLE "+ TABLE_BUSINESS_GROUP
@@ -151,7 +153,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(KEY_BUSINESS_TYPE, businessCard.get_businessType());
         values.put(KEY_PHONE, businessCard.get_phone());
         values.put(KEY_EMAIL, businessCard.get_email());
-        values.put(KEY_ADDRESS_CITY, businessCard.get_street());
+        values.put(KEY_ADDRESS_STREET, businessCard.get_street());
         values.put(KEY_ADDRESS_CITY, businessCard.get_city());
         values.put(KEY_ADDRESS_STATE, businessCard.get_state());
         values.put(KEY_WORK_STREET, businessCard.get_workStreet());
@@ -160,6 +162,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(KEY_WORK_PHONE, businessCard.get_workPhone());
         values.put(KEY_WORK_WEBSITE, businessCard.get_workWebsite());
         values.put(KEY_CARD_CREATED_DATE, businessCard.get_date());
+        values.put(KEY_NOTE, businessCard.get_note());
 
         db.insert(TABLE_BUSINESS_CARD, null, values);
         db.close();
@@ -193,6 +196,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                     businessCard.set_workWebsite(cursor.getString(14));
                     businessCard.set_image(cursor.getString(15));
                     businessCard.set_date(Integer.parseInt(cursor.getString(16)));
+                    businessCard.set_note(cursor.getString(17));
 
                     businessCardList.add(businessCard);
                 } while (cursor.moveToNext());
@@ -231,6 +235,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                     businessCard.set_workWebsite(cursor.getString(14));
                     businessCard.set_image(cursor.getString(15));
                     businessCard.set_date(Integer.parseInt(cursor.getString(16)));
+                    businessCard.set_note(cursor.getString(17));
 
                     //add into list
                     businessCardList.add(businessCard);
@@ -268,6 +273,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             businessCard.set_workWebsite(cursor.getString(14));
             businessCard.set_image(cursor.getString(15));
             businessCard.set_date(Integer.parseInt(cursor.getString(16)));
+            businessCard.set_note(cursor.getString(17));
         }
         return businessCard;
     }
@@ -302,6 +308,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                         businessCard.set_workWebsite(cursor.getString(14));
                         businessCard.set_image(cursor.getString(15));
                         businessCard.set_date(Integer.parseInt(cursor.getString(16)));
+                        businessCard.set_note(cursor.getString(17));
                     }
                 }while(cursor.moveToNext());
             }
@@ -330,6 +337,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(KEY_WORK_STATE, businessCard.get_workState());
         values.put(KEY_WORK_PHONE, businessCard.get_workPhone());
         values.put(KEY_WORK_WEBSITE, businessCard.get_workWebsite());
+        values.put(KEY_NOTE, businessCard.get_note());
 
         return  db.update(TABLE_BUSINESS_CARD, values, KEY_ID
                 + " = " + itemId, null);

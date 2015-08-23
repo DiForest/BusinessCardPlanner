@@ -29,6 +29,7 @@
     <string name="album_name">CameraSample</string>
 
     <string-array name="state">
+        <item>State</item>>
         <item>Selangor</item>
         <item>Kuala Lumpur</item>
         <item>Sarawak</item>

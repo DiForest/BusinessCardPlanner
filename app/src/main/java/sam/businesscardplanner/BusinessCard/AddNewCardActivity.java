@@ -49,6 +49,7 @@ public class AddNewCardActivity extends AppCompatActivity {
     private EditText workStreetEditText;
     private EditText workCityEditText;
     private EditText businessTypeEditText;
+    private EditText cardNoteEditText;
 
     private Spinner addressStateSpinner;
     private Spinner workStateSpinner;
@@ -91,15 +92,18 @@ public class AddNewCardActivity extends AppCompatActivity {
         workStreetEditText = (EditText) findViewById(R.id.work_street);
         workCityEditText = (EditText) findViewById(R.id.work_city);
         businessTypeEditText = (EditText) findViewById(R.id.business_type);
+        cardNoteEditText = (EditText) findViewById(R.id.card_note);
 
         addressStateSpinner= (Spinner) findViewById(R.id.address_state);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.state, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         addressStateSpinner.setAdapter(adapter);
+        addressStateSpinner.setSelection(0);
 
         workStateSpinner = (Spinner) findViewById(R.id.work_state);
         workStateSpinner.setAdapter(adapter);
+        workStateSpinner.setSelection(0);
 
         Intent intent = getIntent();
         int addOrEdit = intent.getExtras().getInt("ADD OR EDIT", -1);
@@ -140,6 +144,7 @@ public class AddNewCardActivity extends AppCompatActivity {
         workPhoneEditText.setText(businessCard.get_workPhone());
         workWebsiteEditText.setText(businessCard.get_workWebsite());
         businessTypeEditText.setText(businessCard.get_businessType());
+        cardNoteEditText.setText(businessCard.get_note());
 
         String imagePath = businessCard.get_image();
         if(imagePath!= null) {
@@ -399,6 +404,7 @@ public class AddNewCardActivity extends AppCompatActivity {
         String email = emailEditText.getText().toString();
         String website = workWebsiteEditText.getText().toString();
         String businessType = businessTypeEditText.getText().toString();
+        String cardNote = cardNoteEditText.getText().toString();
 
         if (mCurrentPhotoPath == null){
             Toast.makeText(this.getApplicationContext(),
@@ -436,7 +442,7 @@ public class AddNewCardActivity extends AppCompatActivity {
             Toast.makeText(this.getApplicationContext(),
                     "Must have a address city", Toast.LENGTH_LONG).show();
         }
-        else if (TextUtils.isEmpty(addressState)){
+        else if (addressStateSpinner.getSelectedItemPosition() == 0){
             phoneEditText.getText().toString();
             Toast.makeText(this.getApplicationContext(),
                     "Must have a address state", Toast.LENGTH_LONG).show();
@@ -447,6 +453,18 @@ public class AddNewCardActivity extends AppCompatActivity {
                     "Must have a business type", Toast.LENGTH_LONG).show();
         }
         else {
+
+            if( workStreet==null ){
+                workStreet = " ";
+                workState = " ";
+            }
+            if(workCity == null){
+                workCity = " ";
+                workState = " ";
+            }
+            if(workStateSpinner.getSelectedItemPosition() == 0){
+                workState = " ";
+            }
             businessCard.set_name(name);
             businessCard.set_job(job);
             businessCard.set_company(company);
@@ -464,6 +482,7 @@ public class AddNewCardActivity extends AppCompatActivity {
             businessCard.set_image(mCurrentPhotoPath);
             businessCard.set_workWebsite(website);
             businessCard.set_businessType(businessType);
+            businessCard.set_note(cardNote);
 
             DatabaseHandler db = new DatabaseHandler(getBaseContext());
             if(ADD_OR_EDIT_STATUS ==1) {

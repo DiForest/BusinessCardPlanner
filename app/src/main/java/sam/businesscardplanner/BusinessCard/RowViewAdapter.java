@@ -64,6 +64,10 @@ public class RowViewAdapter extends ArrayAdapter<BusinessCard> implements Filter
     }
 
 
+    public void addItem(List<BusinessCard> list){
+        this.cardsList = list;
+        notifyDataSetChanged();
+    }
 
     @Override
     public Filter getFilter(){
