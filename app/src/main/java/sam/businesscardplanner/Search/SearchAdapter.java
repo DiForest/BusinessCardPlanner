@@ -31,7 +31,7 @@ public class SearchAdapter extends ArrayAdapter<BusinessCard> implements Filtera
         super(context, R.layout.search_layout_row_items, cardsList);
 
         this.context = context;
-        this.cardsList = new ArrayList<BusinessCard>(cardsList);
+        this.cardsList = cardsList;
         this.cardsFilterList = new ArrayList<BusinessCard>(cardsList);
     }
 
@@ -66,10 +66,10 @@ public class SearchAdapter extends ArrayAdapter<BusinessCard> implements Filtera
             ImageView bcImage = (ImageView) convertView.findViewById(R.id.bc_image);
 
             nameView.setText(cardsList.get(position).get_name());
-            jobView.setText(cardsList.get(position).get_job());
-            companyView.setText(cardsList.get(position).get_company());
-            businessTypeView.setText(cardsList.get(position).get_businessType());
-            businessCityView.setText(cardsList.get(position).get_businessType());
+            jobView.setText("Job: "+cardsList.get(position).get_job());
+            companyView.setText("Company: "+cardsList.get(position).get_company());
+            businessTypeView.setText("Business type: "+cardsList.get(position).get_businessType());
+            businessCityView.setText("City: "+cardsList.get(position).get_businessType());
 
             String imagePath = cardsList.get(position).get_image();
             if (imagePath != null) {
@@ -95,40 +95,53 @@ public class SearchAdapter extends ArrayAdapter<BusinessCard> implements Filtera
 
             String prefix = constraint.toString().toUpperCase();
 
-            if(prefix == null || prefix.length() == 0){
-                synchronized (this){
+            if (prefix == null || prefix.length() == 0) {
+                synchronized (this) {
                     filterResults.values = cardsList;
                     filterResults.count = cardsList.size();
                 }
-            }else {
+            } else {
                 ArrayList<BusinessCard> filterList = new ArrayList<BusinessCard>();
                 ArrayList<BusinessCard> unfilterList = new ArrayList<BusinessCard>();
-                synchronized (this){
+                synchronized (this) {
                     unfilterList.addAll(cardsList);
                 }
                 for (int i = 0; i < unfilterList.size(); i++) {
-                        if ((unfilterList.get(i).get_name().toUpperCase())
-                                .contains(constraint.toString().toUpperCase())) {
-
-                            filterList.add(cardsList.get(i));
-                        }
+                    if ((unfilterList.get(i).get_name().toUpperCase())
+                            .contains(constraint.toString().toUpperCase())) {
+                        filterList.add(cardsList.get(i));
+                    } else if ((unfilterList.get(i).get_businessType().toUpperCase())
+                            .contains(constraint.toString().toUpperCase())) {
+                        filterList.add(cardsList.get(i));
+                    } else if ((unfilterList.get(i).get_company().toUpperCase())
+                            .contains(constraint.toString().toUpperCase())) {
+                        filterList.add(cardsList.get(i));
+                    } else if ((unfilterList.get(i).get_city().toUpperCase())
+                            .contains(constraint.toString().toUpperCase())) {
+                        filterList.add(cardsList.get(i));
+                    } else if ((unfilterList.get(i).get_job().toUpperCase())
+                            .contains(constraint.toString().toUpperCase())) {
+                        filterList.add(cardsList.get(i));
                     }
 
                     filterResults.count = filterList.size();
                     filterResults.values = filterList;
                 }
-            return filterResults;
+            }
+                return filterResults;
+
         }
 
         @Override
-        protected void publishResults(CharSequence constraint,
-                                      FilterResults results) {
-            cardsFilterList = (ArrayList<BusinessCard>) results.values;
-            if(results.count>0){
+        protected void publishResults(CharSequence constraint, FilterResults results){
+                cardsList = (ArrayList<BusinessCard>) results.values;
                 notifyDataSetChanged();
-            }else{
-                notifyDataSetInvalidated();
+                clear();
+                int count = cardsList.size();
+                for (int i = 0; i < count; i++) {
+                    add(cardsList.get(i));
+                    notifyDataSetChanged();
+                }
             }
         }
-    }
 }
