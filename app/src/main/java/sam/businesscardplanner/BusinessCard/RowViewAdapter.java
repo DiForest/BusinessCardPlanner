@@ -64,6 +64,7 @@ public class RowViewAdapter extends ArrayAdapter<BusinessCard> implements Filter
     }
 
 
+
     @Override
     public Filter getFilter(){
         if(valueFilter == null){

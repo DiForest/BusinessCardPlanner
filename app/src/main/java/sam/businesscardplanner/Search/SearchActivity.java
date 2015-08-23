@@ -1,17 +1,20 @@
 package sam.businesscardplanner.Search;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SearchView;
 
 import java.util.List;
 
 import sam.businesscardplanner.BusinessCard.BusinessCard;
+import sam.businesscardplanner.BusinessCard.BusinessCardProfile;
 import sam.businesscardplanner.DatabaseHandler.DatabaseHandler;
 import sam.businesscardplanner.R;
 
@@ -36,7 +39,20 @@ public class SearchActivity extends AppCompatActivity implements SearchView.OnQu
         searchView = (SearchView) findViewById(R.id.search_view);
         adapter = new SearchAdapter(getApplicationContext(),generateData());
         listView.setAdapter(adapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                int itemID = adapter.getListItemId(position);
+                viewMemberProfile(itemID);
+            }
+        });
         searchView.setOnQueryTextListener(this);
+    }
+
+    private void viewMemberProfile(int itemId){
+        Intent intent = new Intent(this, BusinessCardProfile.class);
+        intent.putExtra("ITEM ID", itemId);
+        startActivity(intent);
     }
 
     private List<BusinessCard> generateData(){

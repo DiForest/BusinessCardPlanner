@@ -50,6 +50,9 @@ public class SearchAdapter extends ArrayAdapter<BusinessCard> implements Filtera
         return cardsList.get(position).get_id();
     }
 
+    public int getListItemId(int position){
+        return cardsList.get(position).get_id();
+    }
     public View getView(int position, View convertView, ViewGroup parent){
 
         LayoutInflater inflater = (LayoutInflater) context
