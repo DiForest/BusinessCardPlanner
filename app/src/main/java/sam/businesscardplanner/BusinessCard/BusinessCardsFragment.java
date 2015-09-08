@@ -113,6 +113,14 @@ public class BusinessCardsFragment extends Fragment {
             case R.id.action_sort_by_name:
                 triggerSortByName();
                 return true;
+
+            case R.id.action_sort_by_desc_name:
+                triggerSortByDescName();
+                return true;
+
+            case R.id.action_sort_by_des_date:
+                triggerSortByDescDate();
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -135,4 +143,23 @@ public class BusinessCardsFragment extends Fragment {
         listView.setAdapter(adapter);
     }
 
+    private void triggerSortByDescDate(){
+        DatabaseHandler db = new DatabaseHandler(getActivity().getApplicationContext());
+        list.clear();
+        list = db.getAllBusinessCardInOrderDecsDate();
+        final RowViewAdapter adapter = new RowViewAdapter(getActivity().getApplicationContext(),
+                list);
+        final ListView listView = (ListView) getActivity().findViewById(R.id.business_card_list);
+        listView.setAdapter(adapter);
+    }
+
+    private void triggerSortByDescName() {
+        DatabaseHandler db = new DatabaseHandler(getActivity().getApplicationContext());
+        list.clear();
+        list = db.getAllBusinessCardByDesc();
+        final RowViewAdapter adapter = new RowViewAdapter(getActivity().getApplicationContext(),
+                generateData());
+        final ListView listView = (ListView) getActivity().findViewById(R.id.business_card_list);
+        listView.setAdapter(adapter);
+    }
 }

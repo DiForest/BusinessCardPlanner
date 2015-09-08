@@ -5,7 +5,6 @@
 
     <string name="action_settings">Settings</string>
     <string name="action_sort_by_name">Sort by Name A-Z</string>
-    <string name="action_sort_by_date">Sort by Name Z-A</string>
 
     <string name="contact_information">Contact Information</string>
     <string name="work">Work</string>

@@ -103,6 +103,15 @@ public class GroupsFragment extends Fragment {
             case R.id.action_sort_by_name:
                 triggerSortByName();
                 return true;
+
+            case R.id.action_sort_by_des_date:
+                triggerSortByDescDate();
+                return true;
+
+            case R.id.action_sort_by_desc_name:
+                triggerSortByDescName();
+                return true;
+
         }
         return super.onOptionsItemSelected(item);
     }
@@ -117,10 +126,30 @@ public class GroupsFragment extends Fragment {
         listView.setAdapter(adapter);
     }
 
+    private void triggerSortByDescDate(){
+        DatabaseHandler db = new DatabaseHandler(getActivity().getApplicationContext());
+        list.clear();
+        list = db.getAllGroupInOrderDescDate();
+        final GroupRowViewActivity adapter = new GroupRowViewActivity(getActivity().getApplicationContext(),
+                list);
+        final ListView listView = (ListView) getActivity().findViewById(R.id.group_list);
+        listView.setAdapter(adapter);
+    }
+
     private void triggerSortByName(){
         list.clear();
         final GroupRowViewActivity adapter = new GroupRowViewActivity(getActivity().getApplicationContext(),
                 generateData());
+        final ListView listView = (ListView) getActivity().findViewById(R.id.group_list);
+        listView.setAdapter(adapter);
+    }
+
+    private void triggerSortByDescName(){
+        DatabaseHandler db = new DatabaseHandler(getActivity().getApplicationContext());
+        list.clear();
+        list = db.getAllGroupInOrderDescName();
+        final GroupRowViewActivity adapter = new GroupRowViewActivity(getActivity().getApplicationContext(),
+                list);
         final ListView listView = (ListView) getActivity().findViewById(R.id.group_list);
         listView.setAdapter(adapter);
     }
