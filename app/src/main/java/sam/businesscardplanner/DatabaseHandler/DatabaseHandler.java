@@ -52,6 +52,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String PEOPLE_FOREIGN_KEY = "peopleForeignKey";
     private static final String PEOPLE_NAME = "peopleName";
 
+    private static final String TABLE_EVENT_PEOPLE ="eventPeople";
+    private static final String EP_ID = "id";
+    private static final String EVENT_FKEY ="eventFKey";
+    private static final String PEOPLE_FKEY ="peopleFKey";
+
     private static final String TABLE_EVENT = "businessEvent";
     private static final String KEY_EVENT_ID = "id";
     private static final String KEY_EVENT_TITLE = "businessEventName";
@@ -98,9 +103,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             PEOPLE_FOREIGN_KEY + " INT, " +
             PEOPLE_NAME + " TEXT," +
             "FOREIGN KEY ( " + GROUP_FOREIGN_KEY + " ) REFERENCES "
-            + TABLE_BUSINESS_GROUP + " ( "+ KEY_ID + " ), " +
+            + TABLE_BUSINESS_GROUP + " ( "+ KEY_GROUP_ID + " ), " +
             "FOREIGN KEY ( " + PEOPLE_FOREIGN_KEY + " ) REFERENCES "
-            + TABLE_BUSINESS_CARD + "( " + KEY_GROUP_ID +" )" +
+            + TABLE_BUSINESS_CARD + "( " + KEY_ID +" )" +
             ");";
 
     private static String CREATE_EVENT_TABLE = "CREATE TABLE "+ TABLE_EVENT + " ( " +
@@ -115,6 +120,18 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             KEY_END_TIME + " INTEGER " +
             " );";
 
+    //initialise the group and people table elements
+    private static String CREATE_EVENT_PEOPLE_TABLE = "CREATE TABLE " + TABLE_EVENT_PEOPLE + " ( " +
+            EP_ID + " INTEGER PRIMARY KEY," +
+            EVENT_FKEY + " INT, " +
+            PEOPLE_FKEY + " INT, " +
+            PEOPLE_NAME + " TEXT," +
+            "FOREIGN KEY ( " + EVENT_FKEY + " ) REFERENCES "
+            + TABLE_EVENT + " ( "+ KEY_EVENT_ID + " ), " +
+            "FOREIGN KEY ( " + PEOPLE_FKEY + " ) REFERENCES "
+            + TABLE_BUSINESS_CARD + "( " + KEY_ID +" )" +
+            ");";
+
     public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -125,7 +142,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.execSQL(CREATE_BUSINESS_GROUP_TABLE);
         db.execSQL(CREATE_EVENT_TABLE);
         db.execSQL(CREATE_GROUP_AND_PEOPLE_TABLE);
-        //db.execSQL(CREATE_EVENT_PEOPLE_TABLE);
+        db.execSQL(CREATE_EVENT_PEOPLE_TABLE);
     }
 
     //upgradde database table
@@ -134,6 +151,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_BUSINESS_GROUP);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_GROUP_PEOPLE);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_EVENT);
+        db.execSQL("DROP TABLE IF EXIST " + TABLE_EVENT_PEOPLE);
 
         onCreate(db);
     }
@@ -899,4 +917,75 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.delete(TABLE_EVENT,KEY_EVENT_ID + " = " +eventId,null);
         db.close();
     }
+
+    //event people table
+    public void addEventPeople(int eventId, int cardID){
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        BusinessCard bc = getBusinessCard(cardID);
+        String name = bc.get_name();
+        ContentValues values = new ContentValues();
+        values.put(EVENT_FKEY, eventId);
+        values.put(PEOPLE_FKEY, cardID);
+        values.put(PEOPLE_NAME, name);
+
+        db.insert(TABLE_GROUP_PEOPLE, null, values);
+        db.close();
+    }
+
+    public List<BusinessCard> getAllInvitedPeople(int eventId){
+        List<BusinessCard> cardList = new ArrayList<BusinessCard>();
+        String selectQuery = "SELECT * FROM "+ TABLE_EVENT_PEOPLE
+                + " WHERE " + EVENT_FKEY + " = " + eventId
+                + " ORDER BY " + PEOPLE_NAME;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        if(cursor != null){
+            if(cursor.moveToNext()){
+                do{
+                    int pplId = Integer.parseInt(cursor.getString(2));
+                    BusinessCard businessCard = getBusinessCard(pplId);
+                    cardList.add(businessCard);
+                }while (cursor.moveToNext());
+            }
+        }
+        db.close();
+
+        return cardList;
+    }
+
+    public BusinessCard getBusinessCard(String name){
+
+        String query = "SELECT * FROM " + TABLE_BUSINESS_CARD + " WHERE "+ KEY_NAME + " = " + name;
+        BusinessCard businessCard = new BusinessCard();
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+
+        if(cursor != null){
+            cursor.moveToFirst();
+            businessCard.set_id(Integer.parseInt(cursor.getString(0)));
+            businessCard.set_name(cursor.getString(1));
+            businessCard.set_company(cursor.getString(2));
+            businessCard.set_job(cursor.getString(3));
+            businessCard.set_businessType(cursor.getString(4));
+            businessCard.set_phone(cursor.getString(5));
+            businessCard.set_email(cursor.getString(6));
+            businessCard.set_workPhone(cursor.getString(7));
+            businessCard.set_street(cursor.getString(8));
+            businessCard.set_city(cursor.getString(9));
+            businessCard.set_state(cursor.getString(10));
+            businessCard.set_workStreet(cursor.getString(11));
+            businessCard.set_workCity(cursor.getString(12));
+            businessCard.set_workState(cursor.getString(13));
+            businessCard.set_workWebsite(cursor.getString(14));
+            businessCard.set_image(cursor.getString(15));
+            businessCard.set_date(Integer.parseInt(cursor.getString(16)));
+            businessCard.set_note(cursor.getString(17));
+        }
+        return businessCard;
+    }
+
+
 }

@@ -254,6 +254,7 @@ public class NewEventActivity extends AppCompatActivity {
         List<BusinessCard> list = db.getAllBusinessCard();
 
         for(int i = 0 ; i<list.size(); i++) {
+            //display the name in list let user choose
             arrayAdapter.add(list.get(i).get_name());
         }
 
@@ -349,8 +350,8 @@ public class NewEventActivity extends AppCompatActivity {
         calendar.set_startDate(startDateInt);
         calendar.set_startTime(startTimeInt);
         calendar.set_endDate(endDateInt);
-        calendar.set_endTime(endTimeInt);
         calendar.set_invitedPeople(people);
+        calendar.set_endTime(endTimeInt);
         calendar.set_description(description);
 
         int startDay = breakDateFormat(2,startDate);
