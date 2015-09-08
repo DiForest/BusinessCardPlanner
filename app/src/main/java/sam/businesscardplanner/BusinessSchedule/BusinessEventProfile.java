@@ -1,13 +1,18 @@
 package sam.businesscardplanner.BusinessSchedule;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import sam.businesscardplanner.DatabaseHandler.DatabaseHandler;
 import sam.businesscardplanner.R;
@@ -24,6 +29,7 @@ public class BusinessEventProfile extends AppCompatActivity{
     private TextView mInvitedPeople;
     private ImageView mBlank;
     private TextView mDescription;
+    private int EVENT_ID ;
 
     String title;
     String description ;
@@ -51,10 +57,10 @@ public class BusinessEventProfile extends AppCompatActivity{
         mBlank = (ImageView) findViewById(R.id.blank_end_date_image);
 
         Intent intent = getIntent();
-        int eventId = intent.getExtras().getInt("ITEM ID", -1);
+        EVENT_ID = intent.getExtras().getInt("ITEM ID", -1);
 
         DatabaseHandler db = new DatabaseHandler(this);
-        BusinessEvent be = db.getEvent(eventId);
+        BusinessEvent be = db.getEvent(EVENT_ID);
 
         title = be.get_calendar_tile();
         description = be.get_description();
@@ -100,5 +106,49 @@ public class BusinessEventProfile extends AppCompatActivity{
                 }
             });
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_delete, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.action_delete:
+                confirmDeleteBox();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void confirmDeleteBox(){
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setTitle("Delete Event");
+        alertDialogBuilder
+                .setMessage("Confirm delete this event?")
+                .setCancelable(false)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        DatabaseHandler db = new DatabaseHandler(getBaseContext());
+                        db.deleteEvent(EVENT_ID);
+                        Toast.makeText(getApplicationContext(),
+                                "Delete successful", Toast.LENGTH_LONG)
+                                .show();
+                        finish();
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
     }
 }

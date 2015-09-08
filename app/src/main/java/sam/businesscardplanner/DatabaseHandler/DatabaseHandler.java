@@ -325,7 +325,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         };
 
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.query(TABLE_BUSINESS_CARD,column,null, null, null, null,
+        Cursor cursor = db.query(TABLE_BUSINESS_CARD, column, null, null, null, null,
                 KEY_CARD_CREATED_DATE + " DESC");
 
         if (cursor != null ){
@@ -892,5 +892,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
         db.close();
         return be;
+    }
+
+    public void deleteEvent(int eventId){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_EVENT,KEY_EVENT_ID + " = " +eventId,null);
+        db.close();
     }
 }

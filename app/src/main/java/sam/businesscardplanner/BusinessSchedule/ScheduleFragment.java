@@ -51,6 +51,8 @@ public class ScheduleFragment extends Fragment{
                 startActivity(intent);
             }
         });
+
+
     }
 
     public void onResume(){
