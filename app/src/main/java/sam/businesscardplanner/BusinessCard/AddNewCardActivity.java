@@ -153,7 +153,7 @@ public class AddNewCardActivity extends AppCompatActivity {
         workStreetEditText.setText(businessCard.get_workCity());
         String[] workStateId = getResources().getStringArray(R.array.state);
         int workStatePosition = 0;
-        for(int i = 0 ; i < workStateId.length ; i ++) {
+        for(int i = 0 ; i < workStatePosition ; i ++) {
             if(workStateId[i].equals(businessCard.get_state())) {
                 workStatePosition = i;
                 break;
@@ -438,37 +438,35 @@ public class AddNewCardActivity extends AppCompatActivity {
                     "Must have a name", Toast.LENGTH_LONG).show();
         }
         else if (TextUtils.isEmpty(job)){
-            jobEditText.getText().toString();
+            jobEditText.setError("Please fill up the job.");
             Toast.makeText(this.getApplicationContext(),
                     "Must have a job", Toast.LENGTH_LONG).show();
         }
         else if (TextUtils.isEmpty(company)){
-            companyEditText.getText().toString();
             Toast.makeText(this.getApplicationContext(),
                     "Must have a company", Toast.LENGTH_LONG).show();
         }
         else if (TextUtils.isEmpty(phone)){
-            phoneEditText.getText().toString();
             Toast.makeText(this.getApplicationContext(),
                     "Must have a phone", Toast.LENGTH_LONG).show();
         }
         else if (TextUtils.isEmpty(addressStreet)){
-            phoneEditText.getText().toString();
             Toast.makeText(this.getApplicationContext(),
                     "Must have a address street", Toast.LENGTH_LONG).show();
         }
         else if (TextUtils.isEmpty(addressCity)){
-            phoneEditText.getText().toString();
             Toast.makeText(this.getApplicationContext(),
                     "Must have a address city", Toast.LENGTH_LONG).show();
         }
         else if (addressStateSpinner.getSelectedItemPosition() == 0){
-            phoneEditText.getText().toString();
             Toast.makeText(this.getApplicationContext(),
                     "Must have a address state", Toast.LENGTH_LONG).show();
         }
+        else if(email.contains("@")){
+            Toast.makeText(this.getApplicationContext(),
+                    "Please key in the correct email format", Toast.LENGTH_LONG).show();
+        }
         else if (TextUtils.isEmpty(businessType)){
-            phoneEditText.getText().toString();
             Toast.makeText(this.getApplicationContext(),
                     "Must have a business type", Toast.LENGTH_LONG).show();
         }
@@ -485,6 +483,7 @@ public class AddNewCardActivity extends AppCompatActivity {
             if(workStateSpinner.getSelectedItemPosition() == 0){
                 workState = " ";
             }
+
             businessCard.set_name(name);
             businessCard.set_job(job);
             businessCard.set_company(company);

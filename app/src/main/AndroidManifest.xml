@@ -41,6 +41,9 @@
         <activity android:name=".BusinessGroup.AddNewGroupActivity"
             android:label="Create new Group"/>
 
+        <activity android:name=".BusinessSchedule.ShowInvitedPeopleActivity"
+            />
+
         <activity android:name=".BusinessGroup.GroupsProfile" />
 
         <activity android:name=".BusinessGroup.AddMemberActivity">

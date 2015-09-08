@@ -341,8 +341,12 @@ public class NewEventActivity extends AppCompatActivity {
         }
 
         String people= "";
-        for(String temp : invitedPeople){
-            people = people + temp  + "   ";
+        for(int i= 0; i<invitedPeople.size(); i++ ){
+            if(i==invitedPeople.size()-1){
+                people = people + invitedPeople.get(i);
+            }else {
+                people = people + invitedPeople.get(i) + ",";
+            }
         }
 
         calendar.set_calendar_tile(title);

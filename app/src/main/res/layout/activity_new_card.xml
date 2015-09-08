@@ -176,7 +176,7 @@
             <!-- company address-->
             <EditText
                 android:id="@+id/work_street"
-                android:hint="Company address"
+                android:hint="Company street address"
                 android:textSize="18sp"
                 android:padding="10dp"
                 android:layout_margin="5dip"
@@ -186,7 +186,7 @@
 
                 <EditText
                     android:id="@+id/work_city"
-                    android:hint="Company address"
+                    android:hint="Company city address"
                     android:textSize="18sp"
                     android:padding="10dp"
                     android:layout_margin="5dip"
@@ -222,7 +222,7 @@
 
             <EditText
                 android:id="@+id/card_note"
-                android:hint="Company address"
+                android:hint="Remark"
                 android:textSize="18sp"
                 android:padding="10dp"
                 android:layout_margin="5dip"

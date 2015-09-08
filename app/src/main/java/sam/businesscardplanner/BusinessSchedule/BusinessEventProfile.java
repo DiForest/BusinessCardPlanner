@@ -85,6 +85,21 @@ public class BusinessEventProfile extends AppCompatActivity{
             mInvitedPeople.setText(be.get_invitedPeople());
         }else
             mInvitedPeople.setText("none");
+
+        mInvitedPeople.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(people.length()>1) {
+                    showInvitedPeople(people);
+                }
+            }
+        });
+    }
+
+    private void showInvitedPeople(String people){
+        Intent intent = new Intent(this,ShowInvitedPeopleActivity.class);
+        intent.putExtra("nameList", people);
+        startActivity(intent);
     }
 
 

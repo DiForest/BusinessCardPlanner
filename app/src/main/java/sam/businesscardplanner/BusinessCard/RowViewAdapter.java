@@ -47,8 +47,8 @@ public class RowViewAdapter extends ArrayAdapter<BusinessCard> implements Filter
         TextView date = (TextView) rowView.findViewById(R.id.create_date);
 
         nameView.setText(cardsList.get(position).get_name());
-        jobView.setText(cardsList.get(position).get_job());
-        companyView.setText(cardsList.get(position).get_company());
+        jobView.setText("Job: "+cardsList.get(position).get_job());
+        companyView.setText("Company: "+cardsList.get(position).get_company());
         date.setText("" + cardsList.get(position).get_date());
 
         String imagePath = cardsList.get(position).get_image();

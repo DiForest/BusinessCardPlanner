@@ -95,19 +95,44 @@ public class BusinessCardProfile extends AppCompatActivity{
         cardCompany.setText("Worked at " + businessCard.get_company());
         cardEmail.setText(businessCard.get_email());
         cardAddress.setText(addressStreet + ", " + addressCity + ", " + addressState);
+        cardPhone.setText(businessCard.get_phone());
+        cardJob.setText(businessCard.get_job());
 
         String workStreet = businessCard.get_workStreet();
         String workCity = businessCard.get_workCity();
         String workState = businessCard.get_workState();
 
         cardBusinessType.setText(businessCard.get_businessType());
-        cardWorkPhone.setText(businessCard.get_workPhone());
-        cardPhone.setText(businessCard.get_phone());
-        cardJob.setText(businessCard.get_job());
-        cardWorkAddress.setText(workStreet + ", " + workCity + ", " + workState);
-        cardWorkWebsite.setText(businessCard.get_workWebsite());
+
+        String phone = businessCard.get_workPhone();
+        if(!phone.isEmpty()) {
+            cardWorkPhone.setText(businessCard.get_workPhone());
+        }else{
+            cardWorkPhone.setText("Empty");
+        }
+
+        if(!workStreet.isEmpty()) {
+            cardWorkAddress.setText(workStreet + ", " + workCity + ", " + workState);
+        }else
+            cardWorkAddress.setText("Empty");
+
+        String website = businessCard.get_workWebsite();
+        if(!website.isEmpty()) {
+            cardWorkWebsite.setText(businessCard.get_workWebsite());
+        }else
+        {
+            cardWorkWebsite.setText("Empty");
+        }
+
         mDate.setText("Created on " + businessCard.get_date());
-        cardNote.setText(businessCard.get_note());
+
+        String note = businessCard.get_note();
+        if(!note.isEmpty()) {
+            cardNote.setText(businessCard.get_note());
+        }else
+        {
+            cardNote.setText("Empty");
+        }
 
         String imagePath = businessCard.get_image();
         if(imagePath!= null) {

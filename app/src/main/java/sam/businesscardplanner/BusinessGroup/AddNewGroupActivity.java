@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -88,32 +89,41 @@ public class AddNewGroupActivity extends AppCompatActivity {
     public void saveInfo(){
         String groupName = editGroupName.getText().toString();
         String description = editGroupDescription.getText().toString();
-
-        Calendar calendar = Calendar.getInstance();
-        int year = calendar.get(Calendar.YEAR);
-        int month_ = calendar.get(Calendar.MONTH) +1;
-        int day_ = calendar.get(Calendar.DATE);
-
-        int date = year * 10000 + month_ * 100 + day_;
-
-        DatabaseHandler db = new DatabaseHandler(getBaseContext());
-
-        BusinessGroups businessGroups= new BusinessGroups();
-        businessGroups.set_name(groupName);
-        businessGroups.set_description(description);
-
-        if(ADD_OR_EDIT_STATUS ==1){
-            businessGroups.set_member_count(0);
-            businessGroups.set_created_date(date);
-            db.addGroup(businessGroups);
+        if(TextUtils.isEmpty(groupName)){
             Toast.makeText(this.getApplicationContext(),
-                    "Created Successfully", Toast.LENGTH_LONG)
-                    .show();
-        }else if(ADD_OR_EDIT_STATUS == 2){
-            db.updateGroups(businessGroups,GROUP_ID);
+                    "Must have a group name", Toast.LENGTH_LONG).show();
+        } else if(TextUtils.isEmpty(description)){
             Toast.makeText(this.getApplicationContext(),
-                    "Updated Successfully", Toast.LENGTH_LONG)
-                    .show();
+                    "Must have a description", Toast.LENGTH_LONG).show();
+
+        }else {
+
+            Calendar calendar = Calendar.getInstance();
+            int year = calendar.get(Calendar.YEAR);
+            int month_ = calendar.get(Calendar.MONTH) + 1;
+            int day_ = calendar.get(Calendar.DATE);
+
+            int date = year * 10000 + month_ * 100 + day_;
+
+            DatabaseHandler db = new DatabaseHandler(getBaseContext());
+
+            BusinessGroups businessGroups = new BusinessGroups();
+            businessGroups.set_name(groupName);
+            businessGroups.set_description(description);
+
+            if (ADD_OR_EDIT_STATUS == 1) {
+                businessGroups.set_member_count(0);
+                businessGroups.set_created_date(date);
+                db.addGroup(businessGroups);
+                Toast.makeText(this.getApplicationContext(),
+                        "Created Successfully", Toast.LENGTH_LONG)
+                        .show();
+            } else if (ADD_OR_EDIT_STATUS == 2) {
+                db.updateGroups(businessGroups, GROUP_ID);
+                Toast.makeText(this.getApplicationContext(),
+                        "Updated Successfully", Toast.LENGTH_LONG)
+                        .show();
+            }
         }
     }
 

@@ -958,7 +958,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     public BusinessCard getBusinessCard(String name){
 
-        String query = "SELECT * FROM " + TABLE_BUSINESS_CARD + " WHERE "+ KEY_NAME + " = " + name;
+        String query = "SELECT * FROM " + TABLE_BUSINESS_CARD
+                + " WHERE "+ KEY_NAME + " LIKE '%"
+                + name + "%'";
         BusinessCard businessCard = new BusinessCard();
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
