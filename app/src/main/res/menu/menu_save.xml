@@ -5,8 +5,7 @@
 
     <item
         android:id="@+id/action_save"
-        android:title="save"
-        android:icon="@drawable/ic_add"
+        android:title="SAVE"
         android:orderInCategory="100"
         app:showAsAction="ifRoom"/>
 

@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -98,8 +99,7 @@ public class BusinessCardsFragment extends Fragment {
 
         switch (item.getItemId()) {
             case R.id.action_search:
-                Intent searchIntent = new Intent(this.getActivity(), SearchActivity.class);
-                this.startActivity(searchIntent);
+                triggerSearch();
                 break;
             case R.id.action_add:
                 Intent intent = new Intent(this.getActivity(),AddNewCardActivity.class);
@@ -161,5 +161,17 @@ public class BusinessCardsFragment extends Fragment {
                 generateData());
         final ListView listView = (ListView) getActivity().findViewById(R.id.business_card_list);
         listView.setAdapter(adapter);
+    }
+
+    private void triggerSearch(){
+        DatabaseHandler db = new DatabaseHandler(getActivity().getApplicationContext());
+        List<BusinessCard> tempList = db.getAllBusinessCard();
+        if(!tempList.isEmpty()){
+            Intent searchIntent = new Intent(this.getActivity(), SearchActivity.class);
+            this.startActivity(searchIntent);
+        }else{
+            Toast.makeText(getActivity().getApplicationContext(),
+                    "You have no business card", Toast.LENGTH_LONG).show();
+        }
     }
 }

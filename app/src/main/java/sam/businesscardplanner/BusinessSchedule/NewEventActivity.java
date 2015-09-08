@@ -16,7 +16,6 @@ import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -37,9 +36,7 @@ import sam.businesscardplanner.R;
  */
 public class NewEventActivity extends AppCompatActivity {
 
-    private TextView mReminderDate;
-    private TextView mReminderTime;
-    private ImageView mReminderCancel;
+
 
     private TextView mPeople;
     private TextView mNote;
@@ -52,14 +49,10 @@ public class NewEventActivity extends AppCompatActivity {
     private EditText mDescription;
 
     private int ALL_DAY_STATUS = 0;
-    private boolean NOTIFICATION_STATUS = true;
-    private int PEOPLE_INVITED = 0;
     private static final int END_TIME_OR_DATE = 1;
     private static final int START_TIME_OR_DATE = 2;
-    private static final int NOTIFICATION = 3;
 
     private LinearLayout mEndDateTimeSector;
-    private ImageView iconBlank;
     private Switch switchAllDay;
 
     private Toolbar mToolbar;
@@ -91,16 +84,11 @@ public class NewEventActivity extends AppCompatActivity {
         mStartTime = (TextView) findViewById(R.id.txt_start_time);
         mEndTime = (TextView) findViewById(R.id.txt_end_time);
 
-        mReminderDate = (TextView) findViewById(R.id.txt_notice_date);
-        mReminderTime = (TextView) findViewById(R.id.txt_notice_time);
-        mReminderCancel = (ImageView) findViewById(R.id.notification_cancel);
-
         mPeople = (TextView) findViewById(R.id.txt_people);
         mDescription = (EditText) findViewById(R.id.edit_description);
 
         mLocation = (EditText) findViewById(R.id.txt_location);
         mTitle = (EditText) findViewById(R.id.edit_title);
-        iconBlank = (ImageView) findViewById(R.id.icon_blank);
 
         //set the current date
         mStartDate.setText(getDateString());
@@ -134,32 +122,6 @@ public class NewEventActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 showTimePicker(END_TIME_OR_DATE);
-            }
-        });
-
-        mReminderDate.setOnClickListener(new View.OnClickListener(){
-
-            @Override
-            public void onClick(View v) {
-                showDatePicker(NOTIFICATION);
-                mReminderTime.setVisibility(View.VISIBLE);
-                mReminderCancel.setVisibility(View.VISIBLE);
-            }
-        });
-
-        mReminderTime.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                showTimePicker(END_TIME_OR_DATE);
-            }
-        });
-
-        mReminderCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mReminderTime.setVisibility(View.GONE);
-                mReminderDate.setText("Notification");
-                mReminderCancel.setVisibility(View.GONE);
             }
         });
 
@@ -267,9 +229,7 @@ public class NewEventActivity extends AppCompatActivity {
 
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        if(status == 3){
-                            mReminderTime.setText(hourOfDay + ":" + minute);
-                        } else if (status == 2) {
+                        if (status == 2) {
                             mStartTime.setText(hourOfDay + ":" + minute);
                         } else if(status ==1){
                             mEndTime.setText(hourOfDay + ":" + minute);

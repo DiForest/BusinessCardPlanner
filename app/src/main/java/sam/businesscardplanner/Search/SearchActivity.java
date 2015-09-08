@@ -37,7 +37,8 @@ public class SearchActivity extends AppCompatActivity implements SearchView.OnQu
 
         listView = (ListView) findViewById(R.id.search_list);
         searchView = (SearchView) findViewById(R.id.search_view);
-        adapter = new SearchAdapter(getApplicationContext(),generateData());
+
+        adapter = new SearchAdapter(getApplicationContext(), generateData());
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -46,6 +47,7 @@ public class SearchActivity extends AppCompatActivity implements SearchView.OnQu
                 viewMemberProfile(itemID);
             }
         });
+
         searchView.setOnQueryTextListener(this);
     }
 
@@ -60,6 +62,7 @@ public class SearchActivity extends AppCompatActivity implements SearchView.OnQu
         List<BusinessCard> businessCardList = db.getAllBusinessCard();
         return businessCardList;
     }
+
 
     @Override
     public boolean onQueryTextSubmit(String query) {
