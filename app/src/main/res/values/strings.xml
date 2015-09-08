@@ -5,7 +5,7 @@
 
     <string name="action_settings">Settings</string>
     <string name="action_sort_by_name">Sort by Name A-Z</string>
-    <string name="action_sort_by_date">Sort by Created Date</string>
+    <string name="action_sort_by_date">Sort by Name Z-A</string>
 
     <string name="contact_information">Contact Information</string>
     <string name="work">Work</string>
@@ -29,21 +29,20 @@
     <string name="album_name">CameraSample</string>
 
     <string-array name="state">
-        <item>State</item>>
-        <item>Selangor</item>
-        <item>Kuala Lumpur</item>
-        <item>Sarawak</item>
+        <item>State</item>
         <item>Johor</item>
-        <item>Penang</item>
-        <item>Sabah</item>
-        <item>Perak</item>
-        <item>Pahang</item>
-        <item>Negeri Sembilan</item>
         <item>Kedah</item>
-        <item>Malacca</item>
-        <item>Terengganu</item>
         <item>Kelantan</item>
-        <item>Perlis</item>
+        <item>Kuala Lumpur</item>
         <item>Labuan</item>
+        <item>Malacca</item>
+        <item>Negeri Sembilan</item>
+        <item>Pahang</item>>
+        <item>Penang</item>
+        <item>Perlis</item>
+        <item>Sabah</item>
+        <item>Sarawak</item>
+        <item>Selangor</item>
+        <item>Terengganu</item>
     </string-array>
 </resources>

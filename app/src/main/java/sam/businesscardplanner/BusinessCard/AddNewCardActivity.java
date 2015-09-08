@@ -139,8 +139,28 @@ public class AddNewCardActivity extends AppCompatActivity {
         phoneEditText.setText(businessCard.get_phone());
         addressStreetEditText.setText(businessCard.get_street());
         addressCityEditText.setText(businessCard.get_city());
+        String[] stateId = getResources().getStringArray(R.array.state);
+        int statePosition = 0;
+        for(int i = 0 ; i < stateId.length ; i ++) {
+            if(stateId[i].equals(businessCard.get_state())) {
+                statePosition = i;
+                break;
+            }
+        }
+        addressStateSpinner.setSelection(statePosition);
+
         workStreetEditText.setText(businessCard.get_workStreet());
         workStreetEditText.setText(businessCard.get_workCity());
+        String[] workStateId = getResources().getStringArray(R.array.state);
+        int workStatePosition = 0;
+        for(int i = 0 ; i < workStateId.length ; i ++) {
+            if(workStateId[i].equals(businessCard.get_state())) {
+                workStatePosition = i;
+                break;
+            }
+        }
+        addressStateSpinner.setSelection(workStatePosition);
+
         workPhoneEditText.setText(businessCard.get_workPhone());
         workWebsiteEditText.setText(businessCard.get_workWebsite());
         businessTypeEditText.setText(businessCard.get_businessType());
