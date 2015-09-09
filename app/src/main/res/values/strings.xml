@@ -44,4 +44,40 @@
         <item>Selangor</item>
         <item>Terengganu</item>
     </string-array>
+
+    <string-array name="city">
+        <item>Select City</item>
+        <item>Alor Setar</item>
+        <item>Bandar Sunway</item>
+        <item>Bangsar</item>
+        <item>Batu Pahat</item>
+        <item>Butterworth</item>
+        <item>George Town</item>
+        <item>Ipoh</item>
+        <item>Johor Bahru</item>
+        <item>Kajang</item>
+        <item>Klang</item>
+        <item>Kota Damansara</item>
+        <item>Kota Kinabalu</item>
+        <item>Kulim</item>
+        <item>Kuala Terrenganu</item>
+        <item>Kuching</item>
+        <item>Kuala Selangor</item>
+        <item>Miri</item>
+        <item>Muar</item>
+        <item>Malacca city</item>
+        <item>Petaling Jaya</item>
+        <item>Port Dickson</item>
+        <item>Port Klang</item>
+        <item>Puchong</item>
+        <item>Semporna</item>
+        <item>Sandakan</item>
+        <item>Shah Alam</item>
+        <item>Seremban</item>
+        <item>Sepang</item>
+        <item>Subang Jaya</item>
+        <item>Tawau</item>
+        <item>Others</item>
+
+    </string-array>
 </resources>

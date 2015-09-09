@@ -99,7 +99,7 @@ public class AddNewCardActivity extends AppCompatActivity {
                 R.array.state, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         addressStateSpinner.setAdapter(adapter);
-        addressStateSpinner.setSelection(0);
+        addressStateSpinner.setSelection(0, false);
 
         workStateSpinner = (Spinner) findViewById(R.id.work_state);
         workStateSpinner.setAdapter(adapter);
@@ -139,27 +139,29 @@ public class AddNewCardActivity extends AppCompatActivity {
         phoneEditText.setText(businessCard.get_phone());
         addressStreetEditText.setText(businessCard.get_street());
         addressCityEditText.setText(businessCard.get_city());
+
         String[] stateId = getResources().getStringArray(R.array.state);
         int statePosition = 0;
+        String status = businessCard.get_state();
         for(int i = 0 ; i < stateId.length ; i ++) {
-            if(stateId[i].equals(businessCard.get_state())) {
+            if(stateId[i].equals(status)) {
                 statePosition = i;
-                break;
             }
         }
-        addressStateSpinner.setSelection(statePosition);
+        addressStateSpinner.setSelection(statePosition,false);
 
         workStreetEditText.setText(businessCard.get_workStreet());
         workStreetEditText.setText(businessCard.get_workCity());
         String[] workStateId = getResources().getStringArray(R.array.state);
         int workStatePosition = 0;
         for(int i = 0 ; i < workStatePosition ; i ++) {
-            if(workStateId[i].equals(businessCard.get_state())) {
+            if(workStateId[i].equals(businessCard.get_workState())) {
                 workStatePosition = i;
+                addressStateSpinner.setSelection(workStatePosition,false);
                 break;
             }
         }
-        addressStateSpinner.setSelection(workStatePosition);
+        workStateSpinner.setSelection(workStatePosition,false);
 
         workPhoneEditText.setText(businessCard.get_workPhone());
         workWebsiteEditText.setText(businessCard.get_workWebsite());
@@ -302,7 +304,7 @@ public class AddNewCardActivity extends AppCompatActivity {
         return MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
     }
 
-    protected void onSaveInstanceState(Bundle outsState){
+    protected void onSaveInstanceState(Bundle outsState) {
         outsState.putParcelable(BITMAP_STORAGE_KEY, imageBitmap);
         super.onSaveInstanceState(outsState);
     }
@@ -415,6 +417,7 @@ public class AddNewCardActivity extends AppCompatActivity {
         String company = companyEditText.getText().toString();
         String phone = phoneEditText.getText().toString();
         String addressStreet = addressStreetEditText.getText().toString();
+
         String addressCity = addressCityEditText.getText().toString();
         String addressState = addressStateSpinner.getSelectedItem().toString();
         String workStreet = workStreetEditText.getText().toString();
@@ -461,10 +464,6 @@ public class AddNewCardActivity extends AppCompatActivity {
         else if (addressStateSpinner.getSelectedItemPosition() == 0){
             Toast.makeText(this.getApplicationContext(),
                     "Must have a address state", Toast.LENGTH_LONG).show();
-        }
-        else if(email.contains("@")){
-            Toast.makeText(this.getApplicationContext(),
-                    "Please key in the correct email format", Toast.LENGTH_LONG).show();
         }
         else if (TextUtils.isEmpty(businessType)){
             Toast.makeText(this.getApplicationContext(),

@@ -158,7 +158,7 @@ public class BusinessCardsFragment extends Fragment {
         list.clear();
         list = db.getAllBusinessCardByDesc();
         final RowViewAdapter adapter = new RowViewAdapter(getActivity().getApplicationContext(),
-                generateData());
+                list);
         final ListView listView = (ListView) getActivity().findViewById(R.id.business_card_list);
         listView.setAdapter(adapter);
     }
